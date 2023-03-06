@@ -1,4 +1,5 @@
 from ib_insync import *
+import credentials
 
 
 def getCandlesLow(array):
@@ -42,7 +43,8 @@ HISTORY_DATA_INTERVAL = "1 D"
 # ----------------------------
 
 ib = IB()
-ib.connect('127.0.0.1', 7497, clientId=1)
+ib.connect(credentials.IB_HOST, credentials.IB_PORT,
+           clientId=credentials.IB_CLIENT_ID)
 contract = Forex(PAIR)
 
 bars = getHistoricalData()

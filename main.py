@@ -1,6 +1,7 @@
 import imaplib
 import email
 import time
+import credentials
 
 
 def sleep(sleepTime):
@@ -9,9 +10,9 @@ def sleep(sleepTime):
         print(sleepTime-x, end="\r")
 
 
-imap_server = "imap.gmail.com"
-email_address = "jonas.bartusevicius1990@gmail.com"
-password = "ylobdthrnqfrujmn"
+imap_server = credentials.IMAP_SERVER
+email_address = credentials.EMAIL_ADDRESS
+password = credentials.EMAIL_PASSWORD
 
 while True == True:
     imap = imaplib.IMAP4_SSL(imap_server)
