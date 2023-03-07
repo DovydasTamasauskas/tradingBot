@@ -33,7 +33,7 @@ def printPosition(stopLoss, takeProfit, entry, positionType):
 
 
 # ----------------------------
-POSITION_TYPE = "LONG"
+POSITION_TYPE = "SHORT"
 PAIR = 'EURUSD'
 STOP_LOSS_CANDLE_COUNT = 3
 MAX_STOP_LOSS = 0.02
@@ -42,23 +42,23 @@ HISTORY_DATA_INTERVAL = "1 D"
 TAKE_PROFIT_RATIO = 1.5
 # add to stopLoss??
 # ----------------------------
+if POSITION_TYPE == "LONG" or POSITION_TYPE == "SHORT":
+    ib = IB()
+    ib.connect(credentials.IB_HOST, credentials.IB_PORT,
+               clientId=credentials.IB_CLIENT_ID)
+    contract = Forex(PAIR)
 
-ib = IB()
-ib.connect(credentials.IB_HOST, credentials.IB_PORT,
-           clientId=credentials.IB_CLIENT_ID)
-contract = Forex(PAIR)
+    bars = getHistoricalData()
+    marketPrice = getAskPrice()
 
-bars = getHistoricalData()
-marketPrice = getAskPrice()
+    if POSITION_TYPE == "LONG":
+        stopLoss = getCandlesLow(bars[-STOP_LOSS_CANDLE_COUNT:])
+        takeProfit = round((marketPrice-stopLoss) *
+                           TAKE_PROFIT_RATIO+marketPrice, 5)
 
-if POSITION_TYPE == "LONG":
-    stopLoss = getCandlesLow(bars[-STOP_LOSS_CANDLE_COUNT:])
-    takeProfit = round((marketPrice-stopLoss)*TAKE_PROFIT_RATIO+marketPrice, 5)
-
-    printPosition(stopLoss, takeProfit, marketPrice, POSITION_TYPE)
-
-if POSITION_TYPE == "SHORT":
-    stopLoss = getCandlesHigh(bars[-STOP_LOSS_CANDLE_COUNT:])
-    takeProfit = round(marketPrice-(stopLoss-marketPrice)*TAKE_PROFIT_RATIO, 5)
+    if POSITION_TYPE == "SHORT":
+        stopLoss = getCandlesHigh(bars[-STOP_LOSS_CANDLE_COUNT:])
+        takeProfit = round(marketPrice-(stopLoss-marketPrice)
+                           * TAKE_PROFIT_RATIO, 5)
 
     printPosition(stopLoss, takeProfit, marketPrice, POSITION_TYPE)

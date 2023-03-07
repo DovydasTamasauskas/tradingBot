@@ -2,6 +2,7 @@ import imaplib
 import email
 import time
 import credentials
+import json
 
 
 def sleep(sleepTime):
@@ -13,6 +14,26 @@ def sleep(sleepTime):
 imap_server = credentials.IMAP_SERVER
 email_address = credentials.EMAIL_ADDRESS
 password = credentials.EMAIL_PASSWORD
+
+
+def slice(val, start=0, end=None):
+    return val[start:end]
+
+
+def toJson(subject):
+    return json.loads(slice(subject, 3))
+
+
+POSITION = "position"
+PAIR = "US30USD"
+TIME = "15min"
+STOP_LOSS_CANDLES = "3"
+MAX_STOP_LOSS = "0.02"
+TAKE_PROFIT_RATIO = "1.5"
+
+# subject = 'BOT{"'+POSITION+'": "long","'+PAIR+'": "US30USD", "'+TIME+'": "15min", "' + \
+#     STOP_LOSS_CANDLES+'": "3", "'+MAX_STOP_LOSS + \
+#     '": "0.02", "'+TAKE_PROFIT_RATIO+'": "1.5"}'
 
 while True == True:
     imap = imaplib.IMAP4_SSL(imap_server)
@@ -26,11 +47,9 @@ while True == True:
         message = email.message_from_bytes(data[0][1])
         subject = message.get("Subject")
         print(subject)
-        splited = subject.split()
-        print(splited)
-        requirements = ["stopLoss", "maxStopLoss"]
-        if splited[0].find(requirements[0]):
-            if splited[0].find("="):
-                print(splited[0].split("=")[1])
+
+        if subject[0:3] == "BOT":
+            person_dict = toJson(subject)
+            print(person_dict[POSITION])
     sleep(5)
     imap.close()
