@@ -1,5 +1,6 @@
 from ib_insync import *
 import credentials
+import send
 
 
 def getCandlesLow(array):
@@ -10,26 +11,44 @@ def getCandlesHigh(array):
     return max(list(map(lambda x: x.high, array)))
 
 
-def getAskPrice():
+def getAskPrice(ib, contract):
     market = ib.reqMktData(contract, '', False, False)
     ib.sleep(2)
     return market.ask
 
 
-def getHistoricalData():
+def getHistoricalData(ib, contract):
     return ib.reqHistoricalData(
         contract, endDateTime='', durationStr=HISTORY_DATA_INTERVAL,
         barSizeSetting=TIME_INTERVAL, whatToShow='MIDPOINT', useRTH=True)
 
 
-def printPosition(stopLoss, takeProfit, entry, positionType):
+def sendMessage(connection, stopLoss, takeProfit, entry, positionType, pair):
     if MAX_STOP_LOSS > abs(stopLoss - entry):
-        print(positionType)
-        print("entry =      "+str(entry))
-        print("stopLoss =   "+str(stopLoss))
-        print("takeProfit = "+str(takeProfit))
+        message = getPositionStructure(stopLoss, takeProfit, entry)
+        title = getSuccessPositionTitle(positionType, pair)
     else:
-        print('Position exceded stop loss limit')
+        message = "Exceded stopLoss limit"
+        title = getFailedPositionTitle(positionType, pair)
+    send.sendMessage(connection, title, message)
+
+
+def getPositionStructure(stopLoss, takeProfit, entry):
+    return "entry =      " + \
+        str(entry)+"\n stopLoss =   "+str(stopLoss) + \
+        "\n takeProfit = "+str(takeProfit)
+
+
+def getPositionTitle(positionType, pair):
+    return positionType + " " + pair
+
+
+def getSuccessPositionTitle(positionType, pair):
+    return "Entered " + getPositionTitle(positionType, pair)
+
+
+def getFailedPositionTitle(positionType, pair):
+    return "Failed to enter " + getPositionTitle(positionType, pair)
 
 
 # ----------------------------
@@ -42,23 +61,32 @@ HISTORY_DATA_INTERVAL = "1 D"
 TAKE_PROFIT_RATIO = 1.5
 # add to stopLoss??
 # ----------------------------
-if POSITION_TYPE == "LONG" or POSITION_TYPE == "SHORT":
-    ib = IB()
-    ib.connect(credentials.IB_HOST, credentials.IB_PORT,
-               clientId=credentials.IB_CLIENT_ID)
-    contract = Forex(PAIR)
 
-    bars = getHistoricalData()
-    marketPrice = getAskPrice()
 
-    if POSITION_TYPE == "LONG":
-        stopLoss = getCandlesLow(bars[-STOP_LOSS_CANDLE_COUNT:])
-        takeProfit = round((marketPrice-stopLoss) *
-                           TAKE_PROFIT_RATIO+marketPrice, 5)
+def main(connection, POSITION_TYPE="SHORT", PAIR='EURUSD',
+         STOP_LOSS_CANDLE_COUNT=3,
+         MAX_STOP_LOSS=0.02,
+         TIME_INTERVAL="15 mins",
+         HISTORY_DATA_INTERVAL="1 D",
+         TAKE_PROFIT_RATIO=1.5):
+    if POSITION_TYPE == "LONG" or POSITION_TYPE == "SHORT":
+        ib = IB()
+        ib.connect(credentials.IB_HOST, credentials.IB_PORT,
+                   clientId=credentials.IB_CLIENT_ID)
+        contract = Forex(PAIR)
 
-    if POSITION_TYPE == "SHORT":
-        stopLoss = getCandlesHigh(bars[-STOP_LOSS_CANDLE_COUNT:])
-        takeProfit = round(marketPrice-(stopLoss-marketPrice)
-                           * TAKE_PROFIT_RATIO, 5)
+        bars = getHistoricalData(ib, contract)
+        marketPrice = getAskPrice(ib, contract)
 
-    printPosition(stopLoss, takeProfit, marketPrice, POSITION_TYPE)
+        if POSITION_TYPE == "LONG":
+            stopLoss = getCandlesLow(bars[-STOP_LOSS_CANDLE_COUNT:])
+            takeProfit = round((marketPrice-stopLoss) *
+                               TAKE_PROFIT_RATIO+marketPrice, 5)
+
+        if POSITION_TYPE == "SHORT":
+            stopLoss = getCandlesHigh(bars[-STOP_LOSS_CANDLE_COUNT:])
+            takeProfit = round(marketPrice-(stopLoss-marketPrice)
+                               * TAKE_PROFIT_RATIO, 5)
+
+        sendMessage(connection, stopLoss, takeProfit,
+                    marketPrice, POSITION_TYPE, PAIR)

@@ -5,7 +5,7 @@ from time import time
 
 def sendMessage(connection, title, message):
     new_message = Message()
-    new_message["From"] = "dovydas@bot.com"
+    new_message["From"] = "tradingBot@bot.com"
     new_message["Subject"] = title
     new_message.set_payload(message)
 

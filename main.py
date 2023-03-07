@@ -3,7 +3,7 @@ import email
 import time
 import credentials
 import json
-import send
+import ib
 
 
 def sleep(sleepTime):
@@ -58,8 +58,8 @@ while True == True:
 
         if isBotMessage(subject):
             person_dict = toJson(subject)
-            send.sendMessage(connection, "tihis is a title", "main")
             print("found 1 message")
+            ib.main(connection)
 
     sleep(5)
     connection.close()
