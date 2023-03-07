@@ -12,17 +12,28 @@ def sleep(sleepTime):
         print(sleepTime-x, end="\r")
 
 
-imap_server = credentials.IMAP_SERVER
-email_address = credentials.EMAIL_ADDRESS
-password = credentials.EMAIL_PASSWORD
-
-
 def slice(val, start=0, end=None):
     return val[start:end]
 
 
 def toJson(subject):
     return json.loads(slice(subject, 3))
+
+
+def searchUnseenMessages(connection):
+    _, msgs = connection.search(None, "(UNSEEN)")
+    return msgs
+
+
+def fetchMessage(connection, msg):
+    _, data = connection.fetch(msg, "(RFC822)")
+    message = email.message_from_bytes(data[0][1])
+    subject = message.get("Subject")
+    return subject
+
+
+def isBotMessage(subject):
+    return subject[0:3] == "BOT"
 
 
 POSITION = "position"
@@ -37,21 +48,18 @@ TAKE_PROFIT_RATIO = "1.5"
 #     '": "0.02", "'+TAKE_PROFIT_RATIO+'": "1.5"}'
 
 while True == True:
-    imap = imaplib.IMAP4_SSL(imap_server)
-    imap.login(email_address, password)
-    imap.select("Inbox")
-    _, msgs = imap.search(None, "(UNSEEN)")
-    print("getting messages")
+    connection = imaplib.IMAP4_SSL(credentials.IMAP_SERVER)
+    connection.login(credentials.EMAIL_ADDRESS, credentials.EMAIL_PASSWORD)
+    connection.select("Inbox")
+    msgs = searchUnseenMessages(connection)
 
     for msg in msgs[0].split():
-        _, data = imap.fetch(msg, "(RFC822)")
-        message = email.message_from_bytes(data[0][1])
-        subject = message.get("Subject")
-        print(subject)
+        subject = fetchMessage(connection, msg)
 
-        if subject[0:3] == "BOT":
+        if isBotMessage(subject):
             person_dict = toJson(subject)
-            print(person_dict[POSITION])
-            send.sendMessage(imap, "tihis is a title", "main")
+            send.sendMessage(connection, "tihis is a title", "main")
+            print("found 1 message")
+
     sleep(5)
-    imap.close()
+    connection.close()

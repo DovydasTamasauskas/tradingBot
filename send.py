@@ -1,10 +1,6 @@
 import imaplib
 from email.message import Message
 from time import time
-import credentials
-
-connection = imaplib.IMAP4_SSL(credentials.IMAP_SERVER)
-connection.login(credentials.EMAIL_ADDRESS, credentials.EMAIL_PASSWORD)
 
 
 def sendMessage(connection, title, message):
