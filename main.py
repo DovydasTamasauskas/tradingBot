@@ -3,6 +3,7 @@ import email
 import time
 import credentials
 import json
+import send
 
 
 def sleep(sleepTime):
@@ -51,5 +52,6 @@ while True == True:
         if subject[0:3] == "BOT":
             person_dict = toJson(subject)
             print(person_dict[POSITION])
+            send.sendMessage(imap, "tihis is a title", "main")
     sleep(5)
     imap.close()
