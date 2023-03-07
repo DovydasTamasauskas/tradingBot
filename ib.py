@@ -39,6 +39,7 @@ STOP_LOSS_CANDLE_COUNT = 3
 MAX_STOP_LOSS = 0.02
 TIME_INTERVAL = "15 mins"
 HISTORY_DATA_INTERVAL = "1 D"
+TAKE_PROFIT_RATIO = 1.5
 # add to stopLoss??
 # ----------------------------
 
@@ -52,12 +53,12 @@ marketPrice = getAskPrice()
 
 if POSITION_TYPE == "LONG":
     stopLoss = getCandlesLow(bars[-STOP_LOSS_CANDLE_COUNT:])
-    takeProfit = round((marketPrice - stopLoss)*1.5+marketPrice, 5)
+    takeProfit = round((marketPrice-stopLoss)*TAKE_PROFIT_RATIO+marketPrice, 5)
 
     printPosition(stopLoss, takeProfit, marketPrice, POSITION_TYPE)
 
 if POSITION_TYPE == "SHORT":
     stopLoss = getCandlesHigh(bars[-STOP_LOSS_CANDLE_COUNT:])
-    takeProfit = round(marketPrice-(stopLoss-marketPrice)*1.5, 5)
+    takeProfit = round(marketPrice-(stopLoss-marketPrice)*TAKE_PROFIT_RATIO, 5)
 
     printPosition(stopLoss, takeProfit, marketPrice, POSITION_TYPE)
