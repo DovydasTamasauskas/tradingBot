@@ -41,23 +41,30 @@ def handleNewMessage(connection, subject):
     if len(subject) > 10:
         params = toJson(subject)
         print("found 1 message")
-        ib.main(connection)
+        ib.main(connection, params)
     else:
         print("message its too short")
 
 
 def isTest():
-    return sys.argv[1] == 'test'
+    arg = sys.argv
+    if len(arg) > 1:
+        return sys.argv[1] == 'test'
+    return False
 
 
-def main():
+def open_connection():
     connection = imaplib.IMAP4_SSL(credentials.IMAP_SERVER)
     connection.login(credentials.EMAIL_ADDRESS,
                      credentials.EMAIL_PASSWORD)
     connection.select("Inbox")
+    return connection
 
+
+def main():
     if isTest() == False:
         while True == True:
+            connection = open_connection()
             msgs = searchUnseenMessages(connection)
 
             for msg in msgs[0].split():
@@ -69,6 +76,7 @@ def main():
             sleep(5)
             connection.close()
     else:
+        connection = open_connection()
         subject = 'BOT{"position": "long", "pair": "EURUSD", "time": "15 mins", "stopLossCanldes": "2", "maxStopLoss": "0.02", "takeProfitRatio": "1.5"}'
         handleNewMessage(connection, subject)
 

@@ -71,12 +71,7 @@ TAKE_PROFIT_RATIO = 1.5
 # ----------------------------
 
 
-def main(connection, POSITION_TYPE="SHORT", PAIR='EURUSD',
-         STOP_LOSS_CANDLE_COUNT=3,
-         MAX_STOP_LOSS=0.02,
-         TIME_INTERVAL="15 mins",
-         HISTORY_DATA_INTERVAL="1 D",
-         TAKE_PROFIT_RATIO=1.5):
+def main(connection, params):
     if isLong(POSITION_TYPE) or isShort(POSITION_TYPE):
         ib = IB()
         ib.connect(credentials.IB_HOST, credentials.IB_PORT,
