@@ -51,6 +51,14 @@ def getFailedPositionTitle(positionType, pair):
     return "Failed to enter " + getPositionTitle(positionType, pair)
 
 
+def isLong(param):
+    return param.lower() == 'long'
+
+
+def isShort(param):
+    return param.lower() == 'short'
+
+
 # ----------------------------
 POSITION_TYPE = "SHORT"
 PAIR = 'EURUSD'
@@ -69,7 +77,7 @@ def main(connection, POSITION_TYPE="SHORT", PAIR='EURUSD',
          TIME_INTERVAL="15 mins",
          HISTORY_DATA_INTERVAL="1 D",
          TAKE_PROFIT_RATIO=1.5):
-    if POSITION_TYPE == "LONG" or POSITION_TYPE == "SHORT":
+    if isLong(POSITION_TYPE) or isShort(POSITION_TYPE):
         ib = IB()
         ib.connect(credentials.IB_HOST, credentials.IB_PORT,
                    clientId=credentials.IB_CLIENT_ID)
@@ -78,12 +86,12 @@ def main(connection, POSITION_TYPE="SHORT", PAIR='EURUSD',
         bars = getHistoricalData(ib, contract)
         marketPrice = getAskPrice(ib, contract)
 
-        if POSITION_TYPE == "LONG":
+        if isLong(POSITION_TYPE):
             stopLoss = getCandlesLow(bars[-STOP_LOSS_CANDLE_COUNT:])
             takeProfit = round((marketPrice-stopLoss) *
                                TAKE_PROFIT_RATIO+marketPrice, 5)
 
-        if POSITION_TYPE == "SHORT":
+        if isShort(POSITION_TYPE):
             stopLoss = getCandlesHigh(bars[-STOP_LOSS_CANDLE_COUNT:])
             takeProfit = round(marketPrice-(stopLoss-marketPrice)
                                * TAKE_PROFIT_RATIO, 5)

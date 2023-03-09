@@ -36,16 +36,14 @@ def isBotMessage(subject):
     return subject[0:3] == "BOT"
 
 
-POSITION = "position"
-PAIR = "US30USD"
-TIME = "15min"
-STOP_LOSS_CANDLES = "3"
-MAX_STOP_LOSS = "0.02"
-TAKE_PROFIT_RATIO = "1.5"
+def handleNewMessage(connection, subject):
+    if len(subject) > 10:
+        params = toJson(subject)
+        print("found 1 message")
+        ib.main(connection)
+    else:
+        print("message its too short")
 
-# subject = 'BOT{"'+POSITION+'": "long","'+PAIR+'": "US30USD", "'+TIME+'": "15min", "' + \
-#     STOP_LOSS_CANDLES+'": "3", "'+MAX_STOP_LOSS + \
-#     '": "0.02", "'+TAKE_PROFIT_RATIO+'": "1.5"}'
 
 while True == True:
     connection = imaplib.IMAP4_SSL(credentials.IMAP_SERVER)
@@ -57,9 +55,7 @@ while True == True:
         subject = fetchMessage(connection, msg)
 
         if isBotMessage(subject):
-            person_dict = toJson(subject)
-            print("found 1 message")
-            ib.main(connection)
+            handleNewMessage(connection, subject)
 
     sleep(5)
     connection.close()
