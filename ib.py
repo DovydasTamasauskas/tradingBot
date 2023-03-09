@@ -59,12 +59,6 @@ def isShort(param):
     return param.lower() == 'short'
 
 
-# ----------------------------
-HISTORY_DATA_INTERVAL = "1 D"
-# add to stopLoss??
-# ----------------------------
-
-
 position = 'position'
 pair = 'pair'
 time = 'time'
