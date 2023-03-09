@@ -1,6 +1,7 @@
 import credentials
 import send
 import ib_insync
+import sys
 
 
 def getCandlesLow(array):
@@ -12,15 +13,23 @@ def getCandlesHigh(array):
 
 
 def getAskPrice(ib, contract):
-    market = ib.reqMktData(contract, '', False, False)
-    ib.sleep(2)
+    try:
+        market = ib.reqMktData(contract, '', False, False)
+        ib.sleep(2)
+    except:
+        print('Failed to get market data')
+        return None
     return market.ask
 
 
 def getHistoricalData(ib, contract, timeInterval, historyInterval):
-    return ib.reqHistoricalData(
-        contract, endDateTime='', durationStr=historyInterval,
-        barSizeSetting=timeInterval, whatToShow='MIDPOINT', useRTH=True)
+    try:
+        return ib.reqHistoricalData(
+            contract, endDateTime='', durationStr=historyInterval,
+            barSizeSetting=timeInterval, whatToShow='MIDPOINT', useRTH=True)
+    except:
+        print('Failed to get HISTORICAL data')
+        return None
 
 
 def sendMessage(connection, stopLoss, takeProfit, entry, positionType, pair, maxStopLoss):
@@ -59,6 +68,17 @@ def isShort(param):
     return param.lower() == 'short'
 
 
+def openIbConnection():
+    try:
+        ib = ib_insync.IB()
+        ib.connect(credentials.IB_HOST, credentials.IB_PORT,
+                   clientId=credentials.IB_CLIENT_ID)
+    except:
+        print('failed to loggin into IBRK')
+        sys.exit()
+    return ib
+
+
 position = 'position'
 pair = 'pair'
 time = 'time'
@@ -70,24 +90,23 @@ historyDataInterval = 'historyDataInterval'
 
 def main(connection, params):
     if isLong(params[position]) or isShort(params[position]):
-        ib = ib_insync.IB()
-        ib.connect(credentials.IB_HOST, credentials.IB_PORT,
-                   clientId=credentials.IB_CLIENT_ID)
+        ib = openIbConnection()
         contract = ib_insync.Forex(params[pair])
 
         bars = getHistoricalData(
             ib, contract, params[time], params[historyDataInterval])
         marketPrice = getAskPrice(ib, contract)
 
-        if isLong(params[position]):
-            stopLoss = getCandlesLow(bars[-params[stopLossCanldes]:])
-            takeProfit = round((marketPrice-stopLoss) *
-                               params[takeProfitRatio]+marketPrice, 5)
+        if bars != None and marketPrice != None:
+            if isLong(params[position]):
+                stopLoss = getCandlesLow(bars[-params[stopLossCanldes]:])
+                takeProfit = round((marketPrice-stopLoss) *
+                                   params[takeProfitRatio]+marketPrice, 5)
 
-        if isShort(params[position]):
-            stopLoss = getCandlesHigh(bars[-params[stopLossCanldes]:])
-            takeProfit = round(marketPrice-(stopLoss-marketPrice)
-                               * params[takeProfitRatio], 5)
+            if isShort(params[position]):
+                stopLoss = getCandlesHigh(bars[-params[stopLossCanldes]:])
+                takeProfit = round(marketPrice-(stopLoss-marketPrice)
+                                   * params[takeProfitRatio], 5)
 
-        sendMessage(connection, stopLoss, takeProfit,
-                    marketPrice, params[position], params[pair], params[maxStopLoss])
+            sendMessage(connection, stopLoss, takeProfit,
+                        marketPrice, params[position], params[pair], params[maxStopLoss])
