@@ -1,6 +1,6 @@
-from ib_insync import *
 import credentials
 import send
+import ib_insync
 
 
 def getCandlesLow(array):
@@ -73,10 +73,10 @@ TAKE_PROFIT_RATIO = 1.5
 
 def main(connection, params):
     if isLong(POSITION_TYPE) or isShort(POSITION_TYPE):
-        ib = IB()
+        ib = ib_insync.IB()
         ib.connect(credentials.IB_HOST, credentials.IB_PORT,
                    clientId=credentials.IB_CLIENT_ID)
-        contract = Forex(PAIR)
+        contract = ib_insync.Forex(PAIR)
 
         bars = getHistoricalData(ib, contract)
         marketPrice = getAskPrice(ib, contract)
