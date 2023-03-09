@@ -77,7 +77,7 @@ def main():
             connection.close()
     else:
         connection = open_connection()
-        subject = 'BOT{"position": "long", "pair": "EURUSD", "time": "15 mins", "stopLossCanldes": "2", "maxStopLoss": "0.02", "takeProfitRatio": "1.5"}'
+        subject = 'BOT{"position": "long", "pair": "EURUSD", "time": "15 mins", "stopLossCanldes": 3, "maxStopLoss": 0.02, "takeProfitRatio": 1.5, "historyDataInterval": "1 D"}'
         handleNewMessage(connection, subject)
 
 

@@ -17,14 +17,14 @@ def getAskPrice(ib, contract):
     return market.ask
 
 
-def getHistoricalData(ib, contract):
+def getHistoricalData(ib, contract, timeInterval, historyInterval):
     return ib.reqHistoricalData(
-        contract, endDateTime='', durationStr=HISTORY_DATA_INTERVAL,
-        barSizeSetting=TIME_INTERVAL, whatToShow='MIDPOINT', useRTH=True)
+        contract, endDateTime='', durationStr=historyInterval,
+        barSizeSetting=timeInterval, whatToShow='MIDPOINT', useRTH=True)
 
 
-def sendMessage(connection, stopLoss, takeProfit, entry, positionType, pair):
-    if MAX_STOP_LOSS > abs(stopLoss - entry):
+def sendMessage(connection, stopLoss, takeProfit, entry, positionType, pair, maxStopLoss):
+    if maxStopLoss > abs(stopLoss - entry):
         message = getPositionStructure(stopLoss, takeProfit, entry)
         title = getSuccessPositionTitle(positionType, pair)
     else:
@@ -60,36 +60,40 @@ def isShort(param):
 
 
 # ----------------------------
-POSITION_TYPE = "SHORT"
-PAIR = 'EURUSD'
-STOP_LOSS_CANDLE_COUNT = 3
-MAX_STOP_LOSS = 0.02
-TIME_INTERVAL = "15 mins"
 HISTORY_DATA_INTERVAL = "1 D"
-TAKE_PROFIT_RATIO = 1.5
 # add to stopLoss??
 # ----------------------------
 
 
+position = 'position'
+pair = 'pair'
+time = 'time'
+stopLossCanldes = 'stopLossCanldes'
+maxStopLoss = 'maxStopLoss'
+takeProfitRatio = 'takeProfitRatio'
+historyDataInterval = 'historyDataInterval'
+
+
 def main(connection, params):
-    if isLong(POSITION_TYPE) or isShort(POSITION_TYPE):
+    if isLong(params[position]) or isShort(params[position]):
         ib = ib_insync.IB()
         ib.connect(credentials.IB_HOST, credentials.IB_PORT,
                    clientId=credentials.IB_CLIENT_ID)
-        contract = ib_insync.Forex(PAIR)
+        contract = ib_insync.Forex(params[pair])
 
-        bars = getHistoricalData(ib, contract)
+        bars = getHistoricalData(
+            ib, contract, params[time], params[historyDataInterval])
         marketPrice = getAskPrice(ib, contract)
 
-        if isLong(POSITION_TYPE):
-            stopLoss = getCandlesLow(bars[-STOP_LOSS_CANDLE_COUNT:])
+        if isLong(params[position]):
+            stopLoss = getCandlesLow(bars[-params[stopLossCanldes]:])
             takeProfit = round((marketPrice-stopLoss) *
-                               TAKE_PROFIT_RATIO+marketPrice, 5)
+                               params[takeProfitRatio]+marketPrice, 5)
 
-        if isShort(POSITION_TYPE):
-            stopLoss = getCandlesHigh(bars[-STOP_LOSS_CANDLE_COUNT:])
+        if isShort(params[position]):
+            stopLoss = getCandlesHigh(bars[-params[stopLossCanldes]:])
             takeProfit = round(marketPrice-(stopLoss-marketPrice)
-                               * TAKE_PROFIT_RATIO, 5)
+                               * params[takeProfitRatio], 5)
 
         sendMessage(connection, stopLoss, takeProfit,
-                    marketPrice, POSITION_TYPE, PAIR)
+                    marketPrice, params[position], params[pair], params[maxStopLoss])
