@@ -4,6 +4,7 @@ import time
 import credentials
 import json
 import ib
+import sys
 
 
 def sleep(sleepTime):
@@ -45,17 +46,31 @@ def handleNewMessage(connection, subject):
         print("message its too short")
 
 
-while True == True:
+def isTest():
+    return sys.argv[1] == 'test'
+
+
+def main():
     connection = imaplib.IMAP4_SSL(credentials.IMAP_SERVER)
-    connection.login(credentials.EMAIL_ADDRESS, credentials.EMAIL_PASSWORD)
+    connection.login(credentials.EMAIL_ADDRESS,
+                     credentials.EMAIL_PASSWORD)
     connection.select("Inbox")
-    msgs = searchUnseenMessages(connection)
 
-    for msg in msgs[0].split():
-        subject = fetchMessage(connection, msg)
+    if isTest() == False:
+        while True == True:
+            msgs = searchUnseenMessages(connection)
 
-        if isBotMessage(subject):
-            handleNewMessage(connection, subject)
+            for msg in msgs[0].split():
+                subject = fetchMessage(connection, msg)
 
-    sleep(5)
-    connection.close()
+                if isBotMessage(subject):
+                    handleNewMessage(connection, subject)
+
+            sleep(5)
+            connection.close()
+    else:
+        subject = 'BOT{"position": "long", "pair": "EURUSD", "time": "15 mins", "stopLossCanldes": "2", "maxStopLoss": "0.02", "takeProfitRatio": "1.5"}'
+        handleNewMessage(connection, subject)
+
+
+main()
