@@ -81,4 +81,5 @@ def main():
         handleNewMessage(connection, subject)
 
 
-main()
+if __name__ == "__main__":
+    main()
