@@ -1,5 +1,5 @@
-FAILED_TO_GET_MARKET_DATA = 'Failed to get market data'
-FAILED_TO_GET_HISTORICAL_DATA = 'Failed to get HISTORICAL data'
+FAILED_TO_FETCH_MARKET_DATA = 'Failed to get market data'
+FAILED_TO_FETCH_HISTORICAL_DATA = 'Failed to get HISTORICAL data'
 FAILED_TO_LOGIN_INTO_BROKER_ACCOUNT = 'failed to loggin into IBRK'
 EXEDED_STOPLOSS_LIMIT = 'Exceded stopLoss limit'
 

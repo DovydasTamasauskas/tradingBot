@@ -20,7 +20,7 @@ def getAskPrice(ib, contract):
         market = ib.reqMktData(contract, '', False, False)
         ib.sleep(2)
     except:
-        print(messages.FAILED_TO_GET_MARKET_DATA)
+        print(messages.FAILED_TO_FETCH_MARKET_DATA)
         return None
     return market.ask
 
@@ -31,7 +31,7 @@ def getHistoricalData(ib, contract, timeInterval, historyInterval):
             contract, endDateTime='', durationStr=historyInterval,
             barSizeSetting=timeInterval, whatToShow='MIDPOINT', useRTH=True)
     except:
-        print(messages.FAILED_TO_GET_HISTORICAL_DATA)
+        print(messages.FAILED_TO_FETCH_HISTORICAL_DATA)
         return None
 
 

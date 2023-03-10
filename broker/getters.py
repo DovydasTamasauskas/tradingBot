@@ -62,4 +62,5 @@ def getHistoryDataInterval(params):
     try:
         return params[historyDataInterval]
     except:
+        print(messages.FAILED_TO_GET_HISTORY_DATA_INTERVAL)
         return defaultProps.HISTORY_DATA_INTERVAL
