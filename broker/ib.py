@@ -3,6 +3,8 @@ import send
 import ib_insync
 import sys
 from . import getters
+from . import defaultProps
+from . import messages
 
 
 def getCandlesLow(array):
@@ -18,7 +20,7 @@ def getAskPrice(ib, contract):
         market = ib.reqMktData(contract, '', False, False)
         ib.sleep(2)
     except:
-        print('Failed to get market data')
+        print(messages.FAILED_TO_GET_MARKET_DATA)
         return None
     return market.ask
 
@@ -29,7 +31,7 @@ def getHistoricalData(ib, contract, timeInterval, historyInterval):
             contract, endDateTime='', durationStr=historyInterval,
             barSizeSetting=timeInterval, whatToShow='MIDPOINT', useRTH=True)
     except:
-        print('Failed to get HISTORICAL data')
+        print(messages.FAILED_TO_GET_HISTORICAL_DATA)
         return None
 
 
@@ -38,15 +40,15 @@ def sendMessage(connection, stopLoss, takeProfit, entry, positionType, pair, max
         message = getPositionStructure(stopLoss, takeProfit, entry)
         title = getSuccessPositionTitle(positionType, pair)
     else:
-        message = "Exceded stopLoss limit"
+        message = messages.EXEDED_STOPLOSS_LIMIT
         title = getFailedPositionTitle(positionType, pair)
     send.sendMessage(connection, title, message)
 
 
 def getPositionStructure(stopLoss, takeProfit, entry):
-    return "entry =      " + \
-        str(entry)+"\n stopLoss =   "+str(stopLoss) + \
-        "\n takeProfit = "+str(takeProfit)
+    return "entry =      " + str(entry) + \
+        "\n stopLoss =   " + str(stopLoss) + \
+        "\n takeProfit = " + str(takeProfit)
 
 
 def getPositionTitle(positionType, pair):
@@ -62,11 +64,11 @@ def getFailedPositionTitle(positionType, pair):
 
 
 def isLong(param):
-    return param.lower() == 'long'
+    return param.lower() == defaultProps.LONG
 
 
 def isShort(param):
-    return param.lower() == 'short'
+    return param.lower() == defaultProps.SHORT
 
 
 def openIbConnection():
@@ -75,7 +77,7 @@ def openIbConnection():
         ib.connect(credentials.IB_HOST, credentials.IB_PORT,
                    clientId=credentials.IB_CLIENT_ID)
     except:
-        print('failed to loggin into IBRK')
+        print(messages.FAILED_TO_LOGIN_INTO_BROKER_ACCOUNT)
         sys.exit()
     return ib
 
