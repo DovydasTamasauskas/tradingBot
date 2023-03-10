@@ -1,5 +1,5 @@
 import credentials
-import send
+import notification.send as send
 import ib_insync
 import sys
 from . import getters
