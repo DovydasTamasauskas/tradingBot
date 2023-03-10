@@ -23,33 +23,33 @@ def sendMessage(connection, stopLoss, takeProfit, entry, positionType, pair, max
     notify.sendMessage(connection, title, message)
 
 
-def getPositionStructure(stopLoss, takeProfit, entry):
+def getPositionStructure(stopLoss: float, takeProfit: float, entry: float):
     return "entry =      " + str(entry) + \
         "\n stopLoss =   " + str(stopLoss) + \
         "\n takeProfit = " + str(takeProfit)
 
 
-def getPositionTitle(positionType, pair):
+def getPositionTitle(positionType: str, pair):
     return positionType + " " + pair
 
 
-def getSuccessPositionTitle(positionType, pair):
+def getSuccessPositionTitle(positionType: str, pair):
     return "Entered " + getPositionTitle(positionType, pair)
 
 
-def getFailedPositionTitle(positionType, pair):
+def getFailedPositionTitle(positionType: str, pair):
     return "Failed to enter " + getPositionTitle(positionType, pair)
 
 
-def isLong(param):
+def isLong(param: str):
     return param.lower() == defaultProps.LONG
 
 
-def isShort(param):
+def isShort(param: str):
     return param.lower() == defaultProps.SHORT
 
 
-def slice(val, start=0, end=None):
+def slice(val: str, start=0, end=None):
     return val[start:end]
 
 

@@ -16,7 +16,7 @@ def openIbConnection():
         sys.exit()
 
 
-def getAskPrice(ib: ib_insync, contract):
+def getAskPrice(ib: ib_insync, contract: ib_insync.Forex):
     try:
         market = ib.reqMktData(contract, '', False, False)
         ib.sleep(2)
@@ -26,7 +26,7 @@ def getAskPrice(ib: ib_insync, contract):
         return None
 
 
-def getHistoricalData(ib, contract, timeInterval, historyInterval):
+def getHistoricalData(ib: ib_insync, contract: ib_insync.Forex, timeInterval: int, historyInterval: int):
     try:
         return ib.reqHistoricalData(
             contract, endDateTime='', durationStr=historyInterval,
@@ -36,5 +36,5 @@ def getHistoricalData(ib, contract, timeInterval, historyInterval):
         return None
 
 
-def setContract(pair):
+def setContract(pair: str):
     return ib_insync.Forex(pair)
