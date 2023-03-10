@@ -5,6 +5,7 @@ import credentials
 import json
 import broker.ib as ib
 import sys
+import notification.notify as notification
 
 
 def sleep(sleepTime):
@@ -19,18 +20,6 @@ def slice(val, start=0, end=None):
 
 def toJson(subject):
     return json.loads(slice(subject, 3))
-
-
-def searchUnseenMessages(connection):
-    _, msgs = connection.search(None, "(UNSEEN)")
-    return msgs
-
-
-def fetchMessage(connection, msg):
-    _, data = connection.fetch(msg, "(RFC822)")
-    message = email.message_from_bytes(data[0][1])
-    subject = message.get("Subject")
-    return subject
 
 
 def isBotMessage(subject):
@@ -53,22 +42,14 @@ def isTest():
     return False
 
 
-def open_connection():
-    connection = imaplib.IMAP4_SSL(credentials.IMAP_SERVER)
-    connection.login(credentials.EMAIL_ADDRESS,
-                     credentials.EMAIL_PASSWORD)
-    connection.select("Inbox")
-    return connection
-
-
 def main():
     if isTest() == False:
         while True == True:
-            connection = open_connection()
-            msgs = searchUnseenMessages(connection)
+            connection = notification.open_connection()
+            msgs = notification.searchUnseenMessages(connection)
 
             for msg in msgs[0].split():
-                subject = fetchMessage(connection, msg)
+                subject = notification.fetchMessage(connection, msg)
 
                 if isBotMessage(subject):
                     handleNewMessage(connection, subject)
@@ -76,7 +57,7 @@ def main():
             sleep(5)
             connection.close()
     else:
-        connection = open_connection()
+        connection = notification.open_connection()
         subject = 'BOT{"position": "long", "pair": "EURUSD", "time": "15 mins", "stopLossCanldes": 3, "maxStopLoss": 0.02, "takeProfitRatio": 1.5, "historyDataInterval": "1 D"}'
         handleNewMessage(connection, subject)
 

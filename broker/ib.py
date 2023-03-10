@@ -1,5 +1,5 @@
 import credentials
-import notification.send as send
+import notification.notify as notify
 import ib_insync
 import sys
 from . import getters
@@ -42,7 +42,7 @@ def sendMessage(connection, stopLoss, takeProfit, entry, positionType, pair, max
     else:
         message = messages.EXEDED_STOPLOSS_LIMIT
         title = getFailedPositionTitle(positionType, pair)
-    send.sendMessage(connection, title, message)
+    notify.sendMessage(connection, title, message)
 
 
 def getPositionStructure(stopLoss, takeProfit, entry):
