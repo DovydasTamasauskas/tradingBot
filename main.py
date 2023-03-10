@@ -3,6 +3,7 @@ import json
 import broker.ib as ib
 import sys
 import notification.notify as notification
+import shared.functions as functions
 
 
 def sleep(sleepTime):
@@ -11,12 +12,8 @@ def sleep(sleepTime):
         print(sleepTime-x, end="\r")
 
 
-def slice(val, start=0, end=None):
-    return val[start:end]
-
-
 def toJson(subject):
-    return json.loads(slice(subject, 3))
+    return json.loads(functions.slice(subject, 3))
 
 
 def isBotMessage(subject):

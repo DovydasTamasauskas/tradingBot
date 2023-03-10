@@ -1,5 +1,5 @@
 
-from . import messages
+import shared.messages as messages
 import ib_insync
 import credentials
 import sys

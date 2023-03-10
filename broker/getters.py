@@ -1,5 +1,5 @@
 from . import defaultProps
-from . import messages
+import shared.messages as messages
 
 position = 'position'
 pair = 'pair'

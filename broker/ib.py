@@ -2,7 +2,8 @@ import notification.notify as notify
 import broker.interactiveBrokers as interactiveBrokers
 from . import getters
 from . import defaultProps
-from . import messages
+import shared.messages as messages
+import shared.functions as functions
 
 
 def getCandlesLow(array):
@@ -49,10 +50,6 @@ def isShort(param: str):
     return param.lower() == defaultProps.SHORT
 
 
-def slice(val: str, start=0, end=None):
-    return val[start:end]
-
-
 def main(connection, p):
     position = getters.getPosition(p)
     if isLong(position) or isShort(position):
@@ -61,20 +58,22 @@ def main(connection, p):
         pair = getters.getPair(p)
         contract = interactiveBrokers.setContract(pair)
 
-        bars = interactiveBrokers.getHistoricalData(
+        historicalData = interactiveBrokers.getHistoricalData(
             ib, contract, getters.getTime(p), getters.getHistoryDataInterval(p))
         marketPrice = interactiveBrokers.getAskPrice(ib, contract)
 
-        if bars != None and marketPrice != None:
+        if historicalData != None and marketPrice != None:
             stopLossCanldes = getters.getStopLossCanldes(p)
             takeProfitRatio = getters.getTakeProfitRatio(p)
+            stopLossCandles = functions.slice(historicalData, -stopLossCanldes)
+
             if isLong(position):
-                stopLoss = getCandlesLow(slice(bars, -stopLossCanldes))
+                stopLoss = getCandlesLow(stopLossCandles)
                 takeProfit = round((marketPrice-stopLoss) *
                                    takeProfitRatio+marketPrice, 5)
 
             if isShort(position):
-                stopLoss = getCandlesHigh(slice(bars, -stopLossCanldes))
+                stopLoss = getCandlesHigh(stopLossCandles)
                 takeProfit = round(marketPrice-(stopLoss-marketPrice)
                                    * takeProfitRatio, 5)
 
