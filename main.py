@@ -1,7 +1,4 @@
-import imaplib
-import email
 import time
-import credentials
 import json
 import broker.ib as ib
 import sys
