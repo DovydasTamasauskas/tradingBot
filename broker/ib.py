@@ -2,6 +2,7 @@ import credentials
 import send
 import ib_insync
 import sys
+from . import getters
 
 
 def getCandlesLow(array):
@@ -79,34 +80,26 @@ def openIbConnection():
     return ib
 
 
-position = 'position'
-pair = 'pair'
-time = 'time'
-stopLossCanldes = 'stopLossCanldes'
-maxStopLoss = 'maxStopLoss'
-takeProfitRatio = 'takeProfitRatio'
-historyDataInterval = 'historyDataInterval'
-
-
-def main(connection, params):
-    if isLong(params[position]) or isShort(params[position]):
+def main(connection, p):
+    if isLong(getters.getPosition(p)) or isShort(getters.getPosition(p)):
         ib = openIbConnection()
-        contract = ib_insync.Forex(params[pair])
+        contract = ib_insync.Forex(getters.getPair(p))
 
         bars = getHistoricalData(
-            ib, contract, params[time], params[historyDataInterval])
+            ib, contract, getters.getTime(p), getters.getHistoryDataInterval(p))
         marketPrice = getAskPrice(ib, contract)
 
         if bars != None and marketPrice != None:
-            if isLong(params[position]):
-                stopLoss = getCandlesLow(bars[-params[stopLossCanldes]:])
+            if isLong(getters.getPosition(p)):
+                stopLoss = getCandlesLow(bars[-getters.getStopLossCanldes(p):])
                 takeProfit = round((marketPrice-stopLoss) *
-                                   params[takeProfitRatio]+marketPrice, 5)
+                                   getters.getTakeProfitRatio(p)+marketPrice, 5)
 
-            if isShort(params[position]):
-                stopLoss = getCandlesHigh(bars[-params[stopLossCanldes]:])
+            if isShort(getters.getPosition(p)):
+                stopLoss = getCandlesHigh(
+                    bars[-getters.getStopLossCanldes(p):])
                 takeProfit = round(marketPrice-(stopLoss-marketPrice)
-                                   * params[takeProfitRatio], 5)
+                                   * getters.getTakeProfitRatio(p), 5)
 
             sendMessage(connection, stopLoss, takeProfit,
-                        marketPrice, params[position], params[pair], params[maxStopLoss])
+                        marketPrice, getters.getPosition(p), getters.getPair(p), getters.getMaxStopLoss(p))

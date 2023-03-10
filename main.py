@@ -3,7 +3,7 @@ import email
 import time
 import credentials
 import json
-import ib
+import broker.ib as ib
 import sys
 
 
