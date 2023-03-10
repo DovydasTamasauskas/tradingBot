@@ -1,7 +1,5 @@
-import credentials
 import notification.notify as notify
-import ib_insync
-import sys
+import broker.interactiveBrokers as interactiveBrokers
 from . import getters
 from . import defaultProps
 from . import messages
@@ -13,26 +11,6 @@ def getCandlesLow(array):
 
 def getCandlesHigh(array):
     return max(list(map(lambda x: x.high, array)))
-
-
-def getAskPrice(ib, contract):
-    try:
-        market = ib.reqMktData(contract, '', False, False)
-        ib.sleep(2)
-    except:
-        print(messages.FAILED_TO_FETCH_MARKET_DATA)
-        return None
-    return market.ask
-
-
-def getHistoricalData(ib, contract, timeInterval, historyInterval):
-    try:
-        return ib.reqHistoricalData(
-            contract, endDateTime='', durationStr=historyInterval,
-            barSizeSetting=timeInterval, whatToShow='MIDPOINT', useRTH=True)
-    except:
-        print(messages.FAILED_TO_FETCH_HISTORICAL_DATA)
-        return None
 
 
 def sendMessage(connection, stopLoss, takeProfit, entry, positionType, pair, maxStopLoss):
@@ -71,37 +49,34 @@ def isShort(param):
     return param.lower() == defaultProps.SHORT
 
 
-def openIbConnection():
-    try:
-        ib = ib_insync.IB()
-        ib.connect(credentials.IB_HOST, credentials.IB_PORT,
-                   clientId=credentials.IB_CLIENT_ID)
-    except:
-        print(messages.FAILED_TO_LOGIN_INTO_BROKER_ACCOUNT)
-        sys.exit()
-    return ib
+def slice(val, start=0, end=None):
+    return val[start:end]
 
 
 def main(connection, p):
-    if isLong(getters.getPosition(p)) or isShort(getters.getPosition(p)):
-        ib = openIbConnection()
-        contract = ib_insync.Forex(getters.getPair(p))
+    position = getters.getPosition(p)
+    if isLong(position) or isShort(position):
+        ib = interactiveBrokers.openIbConnection()
 
-        bars = getHistoricalData(
+        pair = getters.getPair(p)
+        contract = interactiveBrokers.setContract(pair)
+
+        bars = interactiveBrokers.getHistoricalData(
             ib, contract, getters.getTime(p), getters.getHistoryDataInterval(p))
-        marketPrice = getAskPrice(ib, contract)
+        marketPrice = interactiveBrokers.getAskPrice(ib, contract)
 
         if bars != None and marketPrice != None:
-            if isLong(getters.getPosition(p)):
-                stopLoss = getCandlesLow(bars[-getters.getStopLossCanldes(p):])
+            stopLossCanldes = getters.getStopLossCanldes(p)
+            takeProfitRatio = getters.getTakeProfitRatio(p)
+            if isLong(position):
+                stopLoss = getCandlesLow(slice(bars, -stopLossCanldes))
                 takeProfit = round((marketPrice-stopLoss) *
-                                   getters.getTakeProfitRatio(p)+marketPrice, 5)
+                                   takeProfitRatio+marketPrice, 5)
 
-            if isShort(getters.getPosition(p)):
-                stopLoss = getCandlesHigh(
-                    bars[-getters.getStopLossCanldes(p):])
+            if isShort(position):
+                stopLoss = getCandlesHigh(slice(bars, -stopLossCanldes))
                 takeProfit = round(marketPrice-(stopLoss-marketPrice)
-                                   * getters.getTakeProfitRatio(p), 5)
+                                   * takeProfitRatio, 5)
 
             sendMessage(connection, stopLoss, takeProfit,
-                        marketPrice, getters.getPosition(p), getters.getPair(p), getters.getMaxStopLoss(p))
+                        marketPrice, position, pair, getters.getMaxStopLoss(p))
