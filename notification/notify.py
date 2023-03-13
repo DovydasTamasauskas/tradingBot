@@ -1,6 +1,7 @@
 import imaplib
 import email
 from email.message import Message
+import shared.functions as functions
 import shared.consts as consts
 from time import time
 import credentials
@@ -15,14 +16,14 @@ def sendMessage(connection, title, message):
         connection.append('INBOX', '', imaplib.Time2Internaldate(
             time()), str(new_message).encode('utf-8'))
     except:
-        print(consts.FAILED_TO_SEND_EMAIL)
+        functions.log(consts.FAILED_TO_SEND_EMAIL)
 
 
 def searchUnseenMessages(connection):
     try:
         _, msgs = connection.search(None, "(UNSEEN)")
     except:
-        print(consts.FAILED_TO_SEARCH_FOR_UNSEEN_MESSAGES)
+        functions.log(consts.FAILED_TO_SEARCH_FOR_UNSEEN_MESSAGES)
     return msgs
 
 
@@ -32,7 +33,7 @@ def fetchMessage(connection, msg):
         message = email.message_from_bytes(data[0][1])
         subject = message.get("Subject")
     except:
-        print(consts.FAILED_TO_FETCH_MESSAGES)
+        functions.log(consts.FAILED_TO_FETCH_MESSAGES)
     return subject
 
 
@@ -43,5 +44,5 @@ def openConnection():
                          credentials.EMAIL_PASSWORD)
         connection.select("Inbox")
     except:
-        print(consts.FAILED_TO_OPEN_EMAIL_CONNECTION)
+        functions.log(consts.FAILED_TO_OPEN_EMAIL_CONNECTION)
     return connection
