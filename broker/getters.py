@@ -16,7 +16,7 @@ def getPosition(params):
     try:
         return params[position]
     except:
-        functions.log(consts.FAILED_TO_GET_POSITION)
+        functions.error(consts.FAILED_TO_GET_POSITION)
         sys.exit()
 
 
@@ -24,15 +24,15 @@ def getPair(params):
     try:
         return params[pair]
     except:
-        functions.log(consts.FAILED_TO_GET_PAIR)
-        return defaultProps.PAIR
+        functions.error(consts.FAILED_TO_GET_PAIR)
+        sys.exit()
 
 
 def getTime(params):
     try:
         return params[time]
     except:
-        functions.log(consts.FAILED_TO_GET_TIME)
+        functions.warrning(consts.FAILED_TO_GET_TIME)
         return defaultProps.TIME
 
 
@@ -40,7 +40,7 @@ def getStopLossCanldes(params):
     try:
         return params[stopLossCanldes]
     except:
-        functions.log(consts.FAILED_TO_GET_STOPLOSS_CANDLES)
+        functions.warrning(consts.FAILED_TO_GET_STOPLOSS_CANDLES)
         return defaultProps.STOP_CANDLES_COUNT
 
 
@@ -48,7 +48,7 @@ def getMaxStopLoss(params):
     try:
         return params[maxStopLoss]
     except:
-        functions.log(consts.FAILED_TO_GET_MAX_STOPLOSS)
+        functions.warrning(consts.FAILED_TO_GET_MAX_STOPLOSS)
         return defaultProps.MAX_STOP_LOSS
 
 
@@ -56,7 +56,7 @@ def getTakeProfitRatio(params):
     try:
         return params[takeProfitRatio]
     except:
-        functions.log(consts.FAILED_TO_GET_TAKE_PROFIT_RATIO)
+        functions.warrning(consts.FAILED_TO_GET_TAKE_PROFIT_RATIO)
         return defaultProps.TAKE_PROFIT_RATIO
 
 
@@ -64,5 +64,5 @@ def getHistoryDataInterval(params):
     try:
         return params[historyDataInterval]
     except:
-        functions.log(consts.FAILED_TO_GET_HISTORY_DATA_INTERVAL)
+        functions.warrning(consts.FAILED_TO_GET_HISTORY_DATA_INTERVAL)
         return defaultProps.HISTORY_DATA_INTERVAL

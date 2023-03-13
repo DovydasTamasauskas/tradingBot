@@ -20,7 +20,7 @@ def toJson(subject):
     try:
         return json.loads(functions.slice(subject, len(consts.BOT)))
     except:
-        functions.log(consts.FAILED_TO_READ_PROPS)
+        functions.error(consts.FAILED_TO_READ_PROPS)
         sys.exit()
 
 
@@ -35,7 +35,7 @@ def handleNewMessage(connection, subject):
         functions.log(consts.MESSAGE_FOUND)
         positionHandler.handlePosition(connection, params)
     else:
-        functions.log(consts.FAILED_TO_READ_PROPS)
+        functions.warrning(consts.FAILED_TO_READ_PROPS)
 
 
 def main():
