@@ -1,20 +1,21 @@
 
 import broker.getters as getters
-import shared.messages as messages
+import shared.consts as consts
 import notification.notify as notify
 
 
 def sendMessage(connection, stopLoss, takeProfit, entry, params):
-
     position = getters.getPosition(params)
     pair = getters.getPair(params)
     maxStopLoss = getters.getMaxStopLoss(params)
+
     if maxStopLoss > abs(stopLoss - entry):
         message = getPositionStructure(stopLoss, takeProfit, entry)
         title = getSuccessPositionTitle(position, pair)
     else:
-        message = messages.EXEDED_STOPLOSS_LIMIT
+        message = consts.EXEDED_STOPLOSS_LIMIT
         title = getFailedPositionTitle(position, pair)
+
     notify.sendMessage(connection, title, message)
 
 

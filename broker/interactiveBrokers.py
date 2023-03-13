@@ -1,5 +1,5 @@
 
-import shared.messages as messages
+import shared.consts as consts
 import ib_insync
 import credentials
 import sys
@@ -12,7 +12,7 @@ def openIbConnection():
                    clientId=credentials.IB_CLIENT_ID)
         return ib
     except:
-        print(messages.FAILED_TO_LOGIN_INTO_BROKER_ACCOUNT)
+        print(consts.FAILED_TO_LOGIN_INTO_BROKER_ACCOUNT)
         sys.exit()
 
 
@@ -22,7 +22,7 @@ def getAskPrice(ib: ib_insync, contract: ib_insync.Forex):
         ib.sleep(2)
         return market.ask
     except:
-        print(messages.FAILED_TO_FETCH_MARKET_DATA)
+        print(consts.FAILED_TO_FETCH_MARKET_DATA)
         return None
 
 
@@ -32,7 +32,7 @@ def getHistoricalData(ib: ib_insync, contract: ib_insync.Forex, timeInterval: in
             contract, endDateTime='', durationStr=historyInterval,
             barSizeSetting=timeInterval, whatToShow='MIDPOINT', useRTH=True)
     except:
-        print(messages.FAILED_TO_FETCH_HISTORICAL_DATA)
+        print(consts.FAILED_TO_FETCH_HISTORICAL_DATA)
         return None
 
 

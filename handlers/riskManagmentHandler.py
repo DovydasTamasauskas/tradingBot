@@ -1,5 +1,6 @@
 
 import shared.functions as functions
+import shared.consts as consts
 import broker.interactiveBrokers as interactiveBrokers
 import broker.getters as getters
 
@@ -14,10 +15,11 @@ def getStopLoss(ib, contract, params):
         ib, contract, time, historicalDataInterval)
     stopLossCandles = functions.slice(historicalData, -stopLossCanldes)
 
-    if getters.isLong(position):
+    if isLong(position):
         stopLoss = getCandlesLow(stopLossCandles)
-    if getters.isShort(position):
+    if isShort(position):
         stopLoss = getCandlesHigh(stopLossCandles)
+
     return stopLoss
 
 
@@ -25,10 +27,11 @@ def getTakeProfit(stopLoss, marketPrice, params):
     takeProfitRatio = getters.getTakeProfitRatio(params)
     position = getters.getPosition(params)
 
-    if getters.isLong(position):
+    if isLong(position):
         takeProfit = (marketPrice-stopLoss) * takeProfitRatio + marketPrice
-    if getters.isShort(position):
+    if isShort(position):
         takeProfit = marketPrice-(stopLoss-marketPrice) * takeProfitRatio
+
     return round(takeProfit, 5)
 
 
@@ -38,3 +41,11 @@ def getCandlesLow(array):
 
 def getCandlesHigh(array):
     return max(list(map(lambda x: x.high, array)))
+
+
+def isLong(param: str):
+    return param.lower() == consts.LONG
+
+
+def isShort(param: str):
+    return param.lower() == consts.SHORT

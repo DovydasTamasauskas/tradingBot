@@ -27,7 +27,7 @@ def fetchMessage(connection, msg):
     return subject
 
 
-def open_connection():
+def openConnection():
     connection = imaplib.IMAP4_SSL(credentials.IMAP_SERVER)
     connection.login(credentials.EMAIL_ADDRESS,
                      credentials.EMAIL_PASSWORD)

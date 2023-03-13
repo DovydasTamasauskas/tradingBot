@@ -1,5 +1,5 @@
 from . import defaultProps
-import shared.messages as messages
+import shared.consts as consts
 import sys
 
 position = 'position'
@@ -15,16 +15,15 @@ def getPosition(params):
     try:
         return params[position]
     except:
-        print(messages.FAILED_TO_GET_POSITION)
+        print(consts.FAILED_TO_GET_POSITION)
         sys.exit()
-        return defaultProps.POSITION
 
 
 def getPair(params):
     try:
         return params[pair]
     except:
-        print(messages.FAILED_TO_GET_PAIR)
+        print(consts.FAILED_TO_GET_PAIR)
         return defaultProps.PAIR
 
 
@@ -32,7 +31,7 @@ def getTime(params):
     try:
         return params[time]
     except:
-        print(messages.FAILED_TO_GET_TIME)
+        print(consts.FAILED_TO_GET_TIME)
         return defaultProps.TIME
 
 
@@ -40,7 +39,7 @@ def getStopLossCanldes(params):
     try:
         return params[stopLossCanldes]
     except:
-        print(messages.FAILED_TO_GET_STOPLOSS_CANDLES)
+        print(consts.FAILED_TO_GET_STOPLOSS_CANDLES)
         return defaultProps.STOP_CANDLES_COUNT
 
 
@@ -48,7 +47,7 @@ def getMaxStopLoss(params):
     try:
         return params[maxStopLoss]
     except:
-        print(messages.FAILED_TO_GET_MAX_STOPLOSS)
+        print(consts.FAILED_TO_GET_MAX_STOPLOSS)
         return defaultProps.MAX_STOP_LOSS
 
 
@@ -56,7 +55,7 @@ def getTakeProfitRatio(params):
     try:
         return params[takeProfitRatio]
     except:
-        print(messages.FAILED_TO_GET_TAKE_PROFIT_RATIO)
+        print(consts.FAILED_TO_GET_TAKE_PROFIT_RATIO)
         return defaultProps.TAKE_PROFIT_RATIO
 
 
@@ -64,13 +63,5 @@ def getHistoryDataInterval(params):
     try:
         return params[historyDataInterval]
     except:
-        print(messages.FAILED_TO_GET_HISTORY_DATA_INTERVAL)
+        print(consts.FAILED_TO_GET_HISTORY_DATA_INTERVAL)
         return defaultProps.HISTORY_DATA_INTERVAL
-
-
-def isLong(param: str):
-    return param.lower() == defaultProps.LONG
-
-
-def isShort(param: str):
-    return param.lower() == defaultProps.SHORT

@@ -4,6 +4,7 @@ import handlers.positionHandler as positionHandler
 import sys
 import notification.notify as notification
 import shared.functions as functions
+import shared.consts as consts
 
 
 def sleep(sleepTime):
@@ -13,33 +14,38 @@ def sleep(sleepTime):
 
 
 def toJson(subject):
-    return json.loads(functions.slice(subject, 3))
+    try:
+        return json.loads(functions.slice(subject, 3))
+    except:
+        print(consts.FAILED_TO_READ_PROPS)
+        sys.exit()
 
 
 def isBotMessage(subject):
-    return subject[0:3] == "BOT"
+    prefix = consts.BOT
+    return subject[0:len(prefix)] == prefix
 
 
 def handleNewMessage(connection, subject):
-    if len(subject) > 10:
+    if len(subject) > len(consts.BOT):
         params = toJson(subject)
-        print("found 1 message")
+        print(consts.MESSAGE_FOUND)
         positionHandler.handlePosition(connection, params)
     else:
-        print("message its too short")
+        print(consts.FAILED_TO_READ_PROPS)
 
 
 def isTest():
     arg = sys.argv
     if len(arg) > 1:
-        return sys.argv[1] == 'test'
+        return sys.argv[1] == consts.TEST
     return False
 
 
 def main():
     if isTest() == False:
         while True == True:
-            connection = notification.open_connection()
+            connection = notification.openConnection()
             msgs = notification.searchUnseenMessages(connection)
 
             for msg in msgs[0].split():
@@ -51,9 +57,9 @@ def main():
             sleep(5)
             connection.close()
     else:
-        connection = notification.open_connection()
-        subject = 'BOT{"position": "long", "pair": "EURUSD", "time": "15 mins", "stopLossCanldes": 3, "maxStopLoss": 0.02, "takeProfitRatio": 1.5, "historyDataInterval": "1 D"}'
-        handleNewMessage(connection, subject)
+        connection = notification.openConnection()
+        print(consts.TEST_RUNNING_MESSAGE)
+        positionHandler.handlePosition(connection, consts.TEST_JSON)
 
 
 if __name__ == "__main__":
