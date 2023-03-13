@@ -1,7 +1,7 @@
 
 import sys
 import shared.consts as consts
-import shared.functions as functions
+import shared.print as print
 import notification.notify as notification
 import handlers.positionHandler as positionHandler
 
@@ -16,6 +16,6 @@ def isTest():
 def runTests():
     if isTest():
         connection = notification.openConnection()
-        functions.log(consts.TEST_RUNNING_MESSAGE)
+        print.log(consts.TEST_RUNNING_MESSAGE)
         positionHandler.handlePosition(connection, consts.TEST_JSON)
         sys.exit()

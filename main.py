@@ -1,10 +1,10 @@
 import time
 import json
-import sys
 import test
 import handlers.positionHandler as positionHandler
 import notification.notify as notification
 import shared.functions as functions
+import shared.print as print
 import shared.consts as consts
 
 SLEEP_INTERVAL_SEC = 5
@@ -13,14 +13,14 @@ SLEEP_INTERVAL_SEC = 5
 def sleep(sleepTime):
     for x in range(sleepTime):
         time.sleep(1)
-        functions.log(sleepTime-x, end="\r")
+        print.log(sleepTime-x, end="\r")
 
 
 def toJson(subject):
     try:
         return json.loads(functions.slice(subject, len(consts.BOT)))
     except:
-        functions.error(consts.FAILED_TO_READ_PROPS)
+        print.error(consts.FAILED_TO_READ_PROPS)
 
 
 def isBotMessage(subject):
@@ -31,10 +31,10 @@ def isBotMessage(subject):
 def handleNewMessage(connection, subject):
     if len(subject) > len(consts.BOT):
         params = toJson(subject)
-        functions.log(consts.MESSAGE_FOUND)
+        print.log(consts.MESSAGE_FOUND)
         positionHandler.handlePosition(connection, params)
     else:
-        functions.warrning(consts.FAILED_TO_READ_PROPS)
+        print.warrning(consts.FAILED_TO_READ_PROPS)
 
 
 def main():
