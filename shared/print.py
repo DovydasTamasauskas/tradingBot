@@ -14,7 +14,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-def log(message):
+def info(message):
     print(bcolors.OKGREEN + message + bcolors.ENDC)
 
 

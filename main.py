@@ -13,7 +13,7 @@ SLEEP_INTERVAL_SEC = 5
 def sleep(sleepTime):
     for x in range(sleepTime):
         time.sleep(1)
-        print.log(sleepTime-x, end="\r")
+        print.info(sleepTime-x, end="\r")
 
 
 def toJson(subject):
@@ -31,7 +31,7 @@ def isBotMessage(subject):
 def handleNewMessage(connection, subject):
     if len(subject) > len(consts.BOT):
         params = toJson(subject)
-        print.log(consts.MESSAGE_FOUND)
+        print.info(consts.MESSAGE_FOUND)
         positionHandler.handlePosition(connection, params)
     else:
         print.warrning(consts.FAILED_TO_READ_PROPS)

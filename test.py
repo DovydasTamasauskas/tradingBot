@@ -16,6 +16,6 @@ def isTest():
 def runTests():
     if isTest():
         connection = notification.openConnection()
-        print.log(consts.TEST_RUNNING_MESSAGE)
+        print.info(consts.TEST_RUNNING_MESSAGE)
         positionHandler.handlePosition(connection, consts.TEST_JSON)
         sys.exit()
