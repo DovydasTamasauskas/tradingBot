@@ -1,3 +1,6 @@
+import sys
+
+
 def slice(val: str, start=0, end=None):
     return val[start:end]
 
@@ -24,3 +27,4 @@ def warrning(message):
 
 def error(message):
     print(bcolors.FAIL + message + bcolors.ENDC)
+    sys.exit()

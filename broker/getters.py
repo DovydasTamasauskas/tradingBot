@@ -17,7 +17,6 @@ def getPosition(params):
         return params[position]
     except:
         functions.error(consts.FAILED_TO_GET_POSITION)
-        sys.exit()
 
 
 def getPair(params):
@@ -25,7 +24,6 @@ def getPair(params):
         return params[pair]
     except:
         functions.error(consts.FAILED_TO_GET_PAIR)
-        sys.exit()
 
 
 def getTime(params):

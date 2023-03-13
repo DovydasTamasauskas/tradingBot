@@ -14,7 +14,6 @@ def openIbConnection():
         return ib
     except:
         functions.error(consts.FAILED_TO_LOGIN_INTO_BROKER_ACCOUNT)
-        sys.exit()
 
 
 def getAskPrice(ib: ib_insync, contract: ib_insync.Forex):

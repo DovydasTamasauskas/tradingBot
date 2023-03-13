@@ -21,7 +21,6 @@ def toJson(subject):
         return json.loads(functions.slice(subject, len(consts.BOT)))
     except:
         functions.error(consts.FAILED_TO_READ_PROPS)
-        sys.exit()
 
 
 def isBotMessage(subject):
