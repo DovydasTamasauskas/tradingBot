@@ -1,6 +1,6 @@
 import time
 import json
-import positionHandler
+import handlers.positionHandler as positionHandler
 import sys
 import notification.notify as notification
 import shared.functions as functions
