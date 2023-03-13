@@ -1,6 +1,6 @@
 import time
 import json
-import messageHandler
+import positionHandler
 import sys
 import notification.notify as notification
 import shared.functions as functions
@@ -24,7 +24,7 @@ def handleNewMessage(connection, subject):
     if len(subject) > 10:
         params = toJson(subject)
         print("found 1 message")
-        messageHandler.main(connection, params)
+        positionHandler.handlePosition(connection, params)
     else:
         print("message its too short")
 
