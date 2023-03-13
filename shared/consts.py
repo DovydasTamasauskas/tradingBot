@@ -11,6 +11,12 @@ FAILED_TO_GET_MAX_STOPLOSS = "Failed to get max stoploss"
 FAILED_TO_GET_TAKE_PROFIT_RATIO = "Failed to get take profit ratio"
 FAILED_TO_GET_HISTORY_DATA_INTERVAL = "Failed to get history data interval"
 
+
+FAILED_TO_SEND_EMAIL = "Failed to send email"
+FAILED_TO_SEARCH_FOR_UNSEEN_MESSAGES = "Failed to search for unseen messages"
+FAILED_TO_FETCH_MESSAGES = "Failed to fetch messages"
+FAILED_TO_OPEN_EMAIL_CONNECTION = "Failed to open email connection"
+
 MESSAGE_FOUND = "Message founded"
 BOT = "BOT"  # tradingView message indentification message
 FAILED_TO_READ_PROPS = "Failed to read props sent by tradingView"

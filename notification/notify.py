@@ -1,35 +1,47 @@
 import imaplib
 import email
 from email.message import Message
+import shared.consts as consts
 from time import time
 import credentials
 
 
 def sendMessage(connection, title, message):
-    new_message = Message()
-    new_message["From"] = "tradingBot@bot.com"
-    new_message["Subject"] = title
-    new_message.set_payload(message)
-
-    connection.append('INBOX', '', imaplib.Time2Internaldate(
-        time()), str(new_message).encode('utf-8'))
+    try:
+        new_message = Message()
+        new_message["From"] = credentials.BOT_EMAIL_ADDRESS
+        new_message["Subject"] = title
+        new_message.set_payload(message)
+        connection.append('INBOX', '', imaplib.Time2Internaldate(
+            time()), str(new_message).encode('utf-8'))
+    except:
+        print(consts.FAILED_TO_SEND_EMAIL)
 
 
 def searchUnseenMessages(connection):
-    _, msgs = connection.search(None, "(UNSEEN)")
+    try:
+        _, msgs = connection.search(None, "(UNSEEN)")
+    except:
+        print(consts.FAILED_TO_SEARCH_FOR_UNSEEN_MESSAGES)
     return msgs
 
 
 def fetchMessage(connection, msg):
-    _, data = connection.fetch(msg, "(RFC822)")
-    message = email.message_from_bytes(data[0][1])
-    subject = message.get("Subject")
+    try:
+        _, data = connection.fetch(msg, "(RFC822)")
+        message = email.message_from_bytes(data[0][1])
+        subject = message.get("Subject")
+    except:
+        print(consts.FAILED_TO_FETCH_MESSAGES)
     return subject
 
 
 def openConnection():
-    connection = imaplib.IMAP4_SSL(credentials.IMAP_SERVER)
-    connection.login(credentials.EMAIL_ADDRESS,
-                     credentials.EMAIL_PASSWORD)
-    connection.select("Inbox")
+    try:
+        connection = imaplib.IMAP4_SSL(credentials.IMAP_SERVER)
+        connection.login(credentials.EMAIL_ADDRESS,
+                         credentials.EMAIL_PASSWORD)
+        connection.select("Inbox")
+    except:
+        print(consts.FAILED_TO_OPEN_EMAIL_CONNECTION)
     return connection

@@ -1,10 +1,13 @@
 import time
 import json
-import handlers.positionHandler as positionHandler
 import sys
+import test
+import handlers.positionHandler as positionHandler
 import notification.notify as notification
 import shared.functions as functions
 import shared.consts as consts
+
+SLEEP_INTERVAL_SEC = 5
 
 
 def sleep(sleepTime):
@@ -15,7 +18,7 @@ def sleep(sleepTime):
 
 def toJson(subject):
     try:
-        return json.loads(functions.slice(subject, 3))
+        return json.loads(functions.slice(subject, len(consts.BOT)))
     except:
         print(consts.FAILED_TO_READ_PROPS)
         sys.exit()
@@ -35,32 +38,21 @@ def handleNewMessage(connection, subject):
         print(consts.FAILED_TO_READ_PROPS)
 
 
-def isTest():
-    arg = sys.argv
-    if len(arg) > 1:
-        return sys.argv[1] == consts.TEST
-    return False
-
-
 def main():
-    if isTest() == False:
-        while True == True:
-            connection = notification.openConnection()
-            msgs = notification.searchUnseenMessages(connection)
-
-            for msg in msgs[0].split():
-                subject = notification.fetchMessage(connection, msg)
-
-                if isBotMessage(subject):
-                    handleNewMessage(connection, subject)
-
-            sleep(5)
-            connection.close()
-    else:
+    while True == True:
         connection = notification.openConnection()
-        print(consts.TEST_RUNNING_MESSAGE)
-        positionHandler.handlePosition(connection, consts.TEST_JSON)
+        msgs = notification.searchUnseenMessages(connection)
+
+        for msg in msgs[0].split():
+            subject = notification.fetchMessage(connection, msg)
+
+            if isBotMessage(subject):
+                handleNewMessage(connection, subject)
+
+        sleep(SLEEP_INTERVAL_SEC)
+        connection.close()
 
 
 if __name__ == "__main__":
+    test.runTests()  # run tests form sys props - $python3 main.py test
     main()
