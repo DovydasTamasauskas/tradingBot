@@ -1,5 +1,6 @@
 from . import defaultProps
 import shared.messages as messages
+import sys
 
 position = 'position'
 pair = 'pair'
@@ -15,6 +16,7 @@ def getPosition(params):
         return params[position]
     except:
         print(messages.FAILED_TO_GET_POSITION)
+        sys.exit()
         return defaultProps.POSITION
 
 
@@ -64,3 +66,11 @@ def getHistoryDataInterval(params):
     except:
         print(messages.FAILED_TO_GET_HISTORY_DATA_INTERVAL)
         return defaultProps.HISTORY_DATA_INTERVAL
+
+
+def isLong(param: str):
+    return param.lower() == defaultProps.LONG
+
+
+def isShort(param: str):
+    return param.lower() == defaultProps.SHORT

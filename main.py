@@ -1,6 +1,6 @@
 import time
 import json
-import broker.ib as ib
+import messageHandler
 import sys
 import notification.notify as notification
 import shared.functions as functions
@@ -24,7 +24,7 @@ def handleNewMessage(connection, subject):
     if len(subject) > 10:
         params = toJson(subject)
         print("found 1 message")
-        ib.main(connection, params)
+        messageHandler.main(connection, params)
     else:
         print("message its too short")
 
