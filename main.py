@@ -9,13 +9,6 @@ import shared.consts as consts
 SLEEP_INTERVAL_SEC = 5
 
 
-def toJson(subject):
-    try:
-        return json.loads(functions.slice(subject, len(consts.BOT)))
-    except:
-        print.error(consts.FAILED_TO_READ_PROPS)
-
-
 def isBotMessage(subject):
     prefix = consts.BOT
     return subject[0:len(prefix)] == prefix
@@ -23,7 +16,7 @@ def isBotMessage(subject):
 
 def handleNewMessage(connection, subject):
     if len(subject) > len(consts.BOT):
-        params = toJson(subject)
+        params = functions.toJson(subject)
         print.info(consts.MESSAGE_FOUND)
         positionHandler.handlePosition(connection, params)
     else:

@@ -17,9 +17,10 @@ def openIbConnection():
 
 def getAskPrice(ib: ib_insync, contract: ib_insync.Forex):
     try:
-        market = ib.reqMktData(contract, '', False, False)
-        ib.sleep(2)
-        return market.ask
+        # market = ib.reqMktData(contract, '', False, False)
+        # ib.sleep(2)
+        return 1.06656
+        # return market.ask
     except:
         log.warrning(consts.FAILED_TO_FETCH_MARKET_DATA)
         return None
