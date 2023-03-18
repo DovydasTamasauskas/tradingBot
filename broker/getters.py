@@ -5,6 +5,7 @@ import shared.print as print
 position = 'position'
 pair = 'pair'
 time = 'time'
+alertPrice = 'alertPrice'
 stopLossCanldes = 'stopLossCanldes'
 maxStopLoss = 'maxStopLoss'
 takeProfitRatio = 'takeProfitRatio'
@@ -31,6 +32,14 @@ def getTime(params):
     except:
         print.warrning(consts.FAILED_TO_GET_TIME)
         return defaultProps.TIME
+
+
+def getAlertPrice(params):
+    try:
+        return params[alertPrice]
+    except:
+        print.warrning(consts.FAILED_TO_GET_ALERT_TIME)
+        return defaultProps.ALERT_TIME
 
 
 def getStopLossCanldes(params):

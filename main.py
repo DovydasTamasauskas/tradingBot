@@ -1,4 +1,3 @@
-import time
 import json
 import test
 import handlers.positionHandler as positionHandler
@@ -8,12 +7,6 @@ import shared.print as print
 import shared.consts as consts
 
 SLEEP_INTERVAL_SEC = 5
-
-
-def sleep(sleepTime):
-    for x in range(sleepTime):
-        time.sleep(1)
-        print.info(sleepTime-x, end="\r")
 
 
 def toJson(subject):
@@ -48,7 +41,7 @@ def main():
             if isBotMessage(subject):
                 handleNewMessage(connection, subject)
 
-        sleep(SLEEP_INTERVAL_SEC)
+        functions.sleep(SLEEP_INTERVAL_SEC)
         connection.close()
 
 

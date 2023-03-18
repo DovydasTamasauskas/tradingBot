@@ -6,6 +6,7 @@ EXEDED_STOPLOSS_LIMIT = 'Exceded stopLoss limit'
 FAILED_TO_GET_POSITION = "Failed to get position"
 FAILED_TO_GET_PAIR = "Failed to get pair"
 FAILED_TO_GET_TIME = "Failed to get time"
+FAILED_TO_GET_ALERT_TIME = "Failed to get alert triggered time"
 FAILED_TO_GET_STOPLOSS_CANDLES = "Failed to get stoploss candles"
 FAILED_TO_GET_MAX_STOPLOSS = "Failed to get max stoploss"
 FAILED_TO_GET_TAKE_PROFIT_RATIO = "Failed to get take profit ratio"
@@ -24,8 +25,6 @@ FAILED_TO_READ_PROPS = "Failed to read props sent by tradingView"
 
 TEST = "test"  # sys props tu run test
 TEST_RUNNING_MESSAGE = "Test running ..."
-TEST_JSON = {"position": "long", "pair": "EURUSD", "time": "15 mins", "stopLossCanldes": 3,
-             "maxStopLoss": 0.02, "takeProfitRatio": 1.5, "historyDataInterval": "1 D"}
 
 SHORT = 'short'
 LONG = 'long'

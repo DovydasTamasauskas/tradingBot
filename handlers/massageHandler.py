@@ -8,21 +8,23 @@ def sendMessage(connection, stopLoss, takeProfit, entry, params):
     position = getters.getPosition(params)
     pair = getters.getPair(params)
     maxStopLoss = getters.getMaxStopLoss(params)
+    alertPrice = getters.getAlertPrice(params)
 
     if maxStopLoss > abs(stopLoss - entry):
-        message = getPositionStructure(stopLoss, takeProfit, entry)
+        message = getPositionStructure(stopLoss, takeProfit, entry, alertPrice)
         title = getSuccessPositionTitle(position, pair)
     else:
-        message = consts.EXEDED_STOPLOSS_LIMIT
+        message = getPositionStructure(stopLoss, takeProfit, entry, alertPrice)
         title = getFailedPositionTitle(position, pair)
 
     notify.sendMessage(connection, title, message)
 
 
-def getPositionStructure(stopLoss: float, takeProfit: float, entry: float):
+def getPositionStructure(stopLoss: float, takeProfit: float, entry: float, alertPrice):
     return "entry =      " + str(entry) + \
         "\n stopLoss =   " + str(stopLoss) + \
-        "\n takeProfit = " + str(takeProfit)
+        "\n takeProfit = " + str(takeProfit) + \
+        "\n alertTirggerPrice = " + str(alertPrice)
 
 
 def getPositionTitle(positionType: str, pair):
