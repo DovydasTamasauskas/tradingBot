@@ -3,7 +3,7 @@ import test
 import handlers.positionHandler as positionHandler
 import notification.notify as notification
 import shared.functions as functions
-import shared.print as print
+import shared.log as log
 import shared.consts as consts
 
 SLEEP_INTERVAL_SEC = 5
@@ -17,10 +17,10 @@ def isBotMessage(subject):
 def handleNewMessage(connection, subject):
     if len(subject) > len(consts.BOT):
         params = functions.toJson(subject)
-        print.info(consts.MESSAGE_FOUND)
+        log.info(consts.MESSAGE_FOUND)
         positionHandler.handlePosition(connection, params)
     else:
-        print.warrning(consts.FAILED_TO_READ_PROPS)
+        log.warrning(consts.FAILED_TO_READ_PROPS)
 
 
 def main():

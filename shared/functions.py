@@ -3,7 +3,7 @@
 import time
 import json
 import shared.consts as consts
-import shared.print as log
+import shared.log as log
 
 
 def slice(val: str, start=0, end=None):

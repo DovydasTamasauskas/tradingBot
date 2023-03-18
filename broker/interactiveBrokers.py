@@ -1,6 +1,6 @@
 
 import shared.consts as consts
-import shared.print as log
+import shared.log as log
 import ib_insync
 import credentials
 
