@@ -8,7 +8,7 @@ def handlePosition(connection, p):
     ib = interactiveBrokers.openIbConnection()
 
     pair = getters.getPair(p)
-    contract = interactiveBrokers.setContract(pair)
+    contract = interactiveBrokers.setForexContract(pair)
 
     marketPrice = interactiveBrokers.getAskPrice(ib, contract)
 

@@ -31,10 +31,10 @@ def fetchMessage(connection, msg):
     try:
         _, data = connection.fetch(msg, "(RFC822)")
         message = email.message_from_bytes(data[0][1])
-        subject = message.get("Subject")
+        return {'subject': message.get("Subject"), 'body': message.get_payload()}
     except:
         log.warrning(consts.FAILED_TO_FETCH_MESSAGES)
-    return subject
+    return None
 
 
 def openConnection():

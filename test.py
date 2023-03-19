@@ -8,7 +8,7 @@ import shared.functions as functions
 
 
 TEST_JSON = {"position": "long", "pair": "EURUSD", "time": "15 mins", "time2": "15", "stopLossCanldes": 3,
-             "maxStopLoss": 0.02, "takeProfitRatio": 1.5, "historyDataInterval": "1 D", "alertPrice": 1.5, "triggeredTime": "15:15:15"}
+             "maxStopLoss": 0.02, "takeProfitRatio": 1.5, "historyDataInterval": "1 D", "alertPrice": 1.5, "alertTime": "15:15:15"}
 
 
 def isTest():
@@ -25,9 +25,11 @@ def runTests():
         positionHandler.handlePosition(connection, TEST_JSON)
 
         functions.sleep(5)
-        # msgs = notification.searchUnseenMessages(connection)
+        msgs = notification.searchUnseenMessages(connection)
 
-        # for msg in msgs[0].split():
-        #     subject = notification.fetchMessage(connection, msg)
+        for msg in msgs[0].split():
+            subject = notification.fetchMessage(connection, msg)
+            print(subject['body'])
+            subject['body'].find('alertTime = ')
 
         sys.exit()

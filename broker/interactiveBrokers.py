@@ -36,5 +36,9 @@ def getHistoricalData(ib: ib_insync, contract: ib_insync.Forex, timeInterval: in
         return None
 
 
-def setContract(pair: str):
+def setForexContract(pair: str):
+    return ib_insync.Forex(pair)
+
+
+def setCryptoContract(pair: str):
     return ib_insync.Forex(pair)

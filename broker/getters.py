@@ -6,6 +6,7 @@ position = 'position'
 pair = 'pair'
 time = 'time'
 alertPrice = 'alertPrice'
+alertTime = 'alertTime'
 stopLossCanldes = 'stopLossCanldes'
 maxStopLoss = 'maxStopLoss'
 takeProfitRatio = 'takeProfitRatio'
@@ -37,6 +38,14 @@ def getTime(params):
 def getAlertPrice(params):
     try:
         return params[alertPrice]
+    except:
+        log.warrning(consts.FAILED_TO_GET_ALERT_PRICE)
+        return defaultProps.ALERT_PRICE
+
+
+def getAlertTime(params):
+    try:
+        return params[alertTime]
     except:
         log.warrning(consts.FAILED_TO_GET_ALERT_TIME)
         return defaultProps.ALERT_TIME

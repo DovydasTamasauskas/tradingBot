@@ -29,7 +29,7 @@ def main():
         msgs = notification.searchUnseenMessages(connection)
 
         for msg in msgs[0].split():
-            subject = notification.fetchMessage(connection, msg)
+            subject = notification.fetchMessage(connection, msg)['subject']
 
             if isBotMessage(subject):
                 handleNewMessage(connection, subject)
