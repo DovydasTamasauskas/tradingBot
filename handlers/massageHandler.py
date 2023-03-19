@@ -29,10 +29,11 @@ def getPositionStructure(stopLoss: float, takeProfit: float, entry: float, param
     enterTime = datetime.now().strftime("%H:%M:%S")
     params = setters.setEnterTime(params, enterTime)
 
-    return "entry =      " + str(entry) + \
-        "\n stopLoss =   " + str(stopLoss) + \
-        "\n takeProfit = " + str(takeProfit) + \
-        "\n" + str(params)
+    return str(params)
+    # return "entry =      " + str(entry) + \
+    #     "\n stopLoss =   " + str(stopLoss) + \
+    #     "\n takeProfit = " + str(takeProfit) + \
+    #     "\n" + str(params)
 
 
 def getPositionTitle(positionType: str, pair):

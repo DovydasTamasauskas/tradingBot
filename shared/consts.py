@@ -26,7 +26,7 @@ FAILED_TO_OPEN_EMAIL_CONNECTION = "Failed to open email connection"
 
 MESSAGE_FOUND = "Message founded"
 BOT = "BOT"  # tradingView message indentification message
-FAILED_TO_READ_PROPS = "Failed to read props sent by tradingView"
+FAILED_TO_READ_PROPS = "Failed to convert props to JSON"
 
 
 TEST = "test"  # sys props tu run test
