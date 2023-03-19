@@ -15,6 +15,10 @@ class bcolors:
 
 
 def info(message):
+    print(bcolors.OKCYAN + message + bcolors.ENDC)
+
+
+def success(message):
     print(bcolors.OKGREEN + message + bcolors.ENDC)
 
 
