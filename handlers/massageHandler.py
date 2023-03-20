@@ -11,14 +11,17 @@ def sendMessage(connection, stopLoss, takeProfit, entry, params):
     pair = getters.getPair(params)
     maxStopLoss = getters.getMaxStopLoss(params)
 
-    if maxStopLoss > abs(stopLoss - entry):
-        message = getPositionStructure(stopLoss, takeProfit, entry, params)
-        title = getSuccessPositionTitle(position, pair)
-    else:
-        message = getPositionStructure(stopLoss, takeProfit, entry, params)
-        title = getFailedPositionTitle(position, pair)
-
-    notify.sendMessage(connection, title, message)
+    # if maxStopLoss > abs(stopLoss - entry):
+    message = getPositionStructure(stopLoss, takeProfit, entry, params)
+    title = getSuccessPositionTitle(position, pair)
+    print("send message")
+    print(title)
+    print(message)
+    # else:
+    #     message = getPositionStructure(stopLoss, takeProfit, entry, params)
+    #     title = getFailedPositionTitle(position, pair)
+    #     print("error")
+    # notify.sendMessage(connection, title, message)
 
 
 def getPositionStructure(stopLoss: float, takeProfit: float, entry: float, params):

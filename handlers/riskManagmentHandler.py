@@ -43,9 +43,9 @@ def getCandlesHigh(array):
     return max(list(map(lambda x: x.high, array)))
 
 
-def isLong(param: str):
+def isLong(param):
     return param.lower() == consts.LONG
 
 
-def isShort(param: str):
+def isShort(param):
     return param.lower() == consts.SHORT

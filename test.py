@@ -17,8 +17,8 @@ def isTest():
 
 def runTests():
     if isTest():
-        TEST_JSON = {"position": "long", "pair": "EURUSD", "time": "15 mins", "time2": "15", "stopLossCanldes": 3,
-                     "maxStopLoss": 0.02, "takeProfitRatio": 1.5, "historyDataInterval": "1 D", "alertPrice": 1.5, "alertTime": "10:10:10"}
+        TEST_JSON = {"position": "long", "pair": "BTC", "time": "15 mins", "time2": "15", "stopLossCanldes": 3,
+                     "maxStopLoss": 200, "takeProfitRatio": 1.5, "historyDataInterval": "1 D", "alertPrice": 1.5, "alertTime": "10:10:10"}
 
         connection = notification.openConnection()
         log.info(consts.TEST_RUNNING_MESSAGE)

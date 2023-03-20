@@ -2,13 +2,22 @@ import broker.interactiveBrokers as interactiveBrokers
 import broker.getters as getters
 import handlers.riskManagmentHandler as riskManagmentHandler
 import handlers.massageHandler as massageHandler
+import broker.contracts as contracts
+import shared.consts as consts
 
 
 def handlePosition(connection, p):
     ib = interactiveBrokers.openIbConnection()
 
     pair = getters.getPair(p)
-    contract = interactiveBrokers.setForexContract(pair)
+
+    match contracts.getMarket(pair):
+        case contracts.crypto:
+            contract = interactiveBrokers.setCryptoContract(pair)
+        case contracts.fiat:
+            contract = interactiveBrokers.setForexContract(pair)
+        case _:
+            print(consts.FAILED_TO_GET_CONTRACT_TYPE)
 
     marketPrice = interactiveBrokers.getAskPrice(ib, contract)
 

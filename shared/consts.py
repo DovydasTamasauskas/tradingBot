@@ -12,6 +12,7 @@ FAILED_TO_GET_STOPLOSS_CANDLES = "Failed to get stoploss candles"
 FAILED_TO_GET_MAX_STOPLOSS = "Failed to get max stoploss"
 FAILED_TO_GET_TAKE_PROFIT_RATIO = "Failed to get take profit ratio"
 FAILED_TO_GET_HISTORY_DATA_INTERVAL = "Failed to get history data interval"
+FAILED_TO_GET_CONTRACT_TYPE = "Failed to define contract type"
 
 FAILED_TO_SET_ENTER_PRICE = "Failed to set enter price"
 FAILED_TO_SET_STOP_LOSS = "Failed to set stop loss"
