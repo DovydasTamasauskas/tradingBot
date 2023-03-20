@@ -1,4 +1,3 @@
-import json
 import test
 import handlers.positionHandler as positionHandler
 import notification.notify as notification

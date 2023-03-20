@@ -1,7 +1,7 @@
 FAILED_TO_FETCH_MARKET_DATA = 'Failed to get market data'
 FAILED_TO_FETCH_HISTORICAL_DATA = 'Failed to get HISTORICAL data'
 FAILED_TO_LOGIN_INTO_BROKER_ACCOUNT = 'failed to loggin into IBRK'
-EXEDED_STOPLOSS_LIMIT = 'Exceded stopLoss limit'
+EXCEEDED_STOPLOSS_LIMIT = 'Exceded stopLoss limit'
 
 FAILED_TO_GET_POSITION = "Failed to get position"
 FAILED_TO_GET_PAIR = "Failed to get pair"
