@@ -5,6 +5,7 @@ import shared.log as log
 import shared.consts as consts
 import notification.notify as notify
 from datetime import datetime
+import broker.interactiveBrokers as interactiveBrokers
 
 
 def sendMessage(connection, stopLoss, takeProfit, entry, params):
@@ -22,10 +23,12 @@ def sendMessage(connection, stopLoss, takeProfit, entry, params):
         title = getSuccessPositionTitle(position, pair)
         log.info(title)
         log.info(message)
+        interactiveBrokers.createOrder()
     else:
         message = str(params)
         title = getFailedPositionTitle(position, pair)
         log.info(consts.EXCEEDED_STOPLOSS_LIMIT)
+        interactiveBrokers.createOrder()
     notify.sendMessage(connection, title, message)
 
 

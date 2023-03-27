@@ -3,6 +3,7 @@ import shared.functions as functions
 import shared.consts as consts
 import broker.interactiveBrokers as interactiveBrokers
 import broker.getters as getters
+import shared.log as log
 
 
 def getStopLoss(ib, contract, params):
@@ -36,11 +37,17 @@ def getTakeProfit(stopLoss, marketPrice, params):
 
 
 def getCandlesLow(array):
-    return min(list(map(lambda x: x.low, array)))
+    try:
+        return min(list(map(lambda x: x.low, array)))
+    except:
+        log.error(consts.FAILED_TO_CALCULATE_LOW)
 
 
 def getCandlesHigh(array):
-    return max(list(map(lambda x: x.high, array)))
+    try:
+        return max(list(map(lambda x: x.high, array)))
+    except:
+        log.error(consts.FAILED_TO_CALCULATE_HIGH)
 
 
 def isLong(param):

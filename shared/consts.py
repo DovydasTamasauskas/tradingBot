@@ -14,6 +14,9 @@ FAILED_TO_GET_TAKE_PROFIT_RATIO = "Failed to get take profit ratio"
 FAILED_TO_GET_HISTORY_DATA_INTERVAL = "Failed to get history data interval"
 FAILED_TO_GET_CONTRACT_TYPE = "Failed to define contract type"
 
+FAILED_TO_CALCULATE_LOW = "Failed to calculate canldes low"
+FAILED_TO_CALCULATE_HIGH = "Failed to calculte candles high"
+
 FAILED_TO_SET_ENTER_PRICE = "Failed to set enter price"
 FAILED_TO_SET_STOP_LOSS = "Failed to set stop loss"
 FAILED_TO_SET_TAKE_PROFIT = "Failed to set take profit"

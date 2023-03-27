@@ -4,11 +4,14 @@ import shared.consts as consts
 
 crypto = 'crypto'
 fiat = 'fiat'
+stock = 'stock'
 
 
 contractList = {
     'BTC': crypto,
-    'EURUSD': fiat
+    'EURUSD': fiat,
+    'TSLA': stock,
+    'SAB1L': stock,
 }
 
 

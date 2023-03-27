@@ -16,6 +16,8 @@ def handlePosition(connection, p):
             contract = interactiveBrokers.setCryptoContract(pair)
         case contracts.fiat:
             contract = interactiveBrokers.setForexContract(pair)
+        case contracts.stock:
+            contract = interactiveBrokers.setStockContract(pair)
         case _:
             print(consts.FAILED_TO_GET_CONTRACT_TYPE)
 

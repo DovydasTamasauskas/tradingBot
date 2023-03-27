@@ -27,12 +27,27 @@ def getAskPrice(ib, contract):
 
 def getHistoricalData(ib, contract, timeInterval, historyInterval):
     try:
-        return ib.reqHistoricalData(
+        historicalData = ib.reqHistoricalData(
             contract, endDateTime='', durationStr=historyInterval,
             barSizeSetting=timeInterval, whatToShow='MIDPOINT', useRTH=True)
+        if len(historicalData) == 0:
+            log.error(consts.FAILED_TO_FETCH_HISTORICAL_DATA)
+        return historicalData
     except:
-        log.warrning(consts.FAILED_TO_FETCH_HISTORICAL_DATA)
+        log.error(consts.FAILED_TO_FETCH_HISTORICAL_DATA)
         return None
+
+
+def createOrder():
+    #  ib_insync.order.StopLimitOrder(action='BUY', totalQuantity=1, stopPrice=20000, lmtPrice=30000)
+    # ib_insync.order.MarketOrder(action='BUY', totalQuantity=10000)
+    ib = ib_insync.IB()
+    contract = ib_insync.Forex('EURUSD')
+    # ib.qualifyContracts(contract)
+
+    order = ib_insync.LimitOrder('SELL', 20000, 1.11)
+    trade = ib.placeOrder(contract, order)
+    print(trade)
 
 
 def setForexContract(pair):
@@ -41,3 +56,8 @@ def setForexContract(pair):
 
 def setCryptoContract(pair):
     return ib_insync.Crypto(pair, 'PAXOS', 'USD')
+
+
+def setStockContract(stock):
+    return ib_insync.Stock(stock, 'SMART', 'USD')
+    # return ib_insync.Stock(stock, 'N.VILNIUS', 'EUR')
