@@ -1,11 +1,11 @@
 
-import broker.getters as getters
-import broker.setters as setters
+import handlers.jsonHandler.getters as getters
+import handlers.jsonHandler.setters as setters
 import shared.log as log
 import shared.consts as consts
 import notification.notify as notify
 from datetime import datetime
-import broker.interactiveBrokers as interactiveBrokers
+import brokers.interactiveBrokers.api as api
 
 
 def sendMessage(connection, stopLoss, takeProfit, entry, contract, params):
@@ -21,7 +21,7 @@ def sendMessage(connection, stopLoss, takeProfit, entry, contract, params):
     if maxStopLoss > abs(stopLoss - entry):
         message = str(params)
         title = getSuccessPositionTitle(position, pair)
-        interactiveBrokers.createOrder(contract, params)
+        api.createOrder(contract, params)
     else:
         message = str(params)
         title = getFailedPositionTitle(position, pair)

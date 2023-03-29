@@ -3,7 +3,7 @@ import shared.consts as consts
 import shared.log as log
 import ib_insync
 import credentials
-import broker.getters as getters
+import handlers.jsonHandler.getters as getters
 
 
 def openIbConnection():

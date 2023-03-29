@@ -3,9 +3,9 @@ import sys
 import shared.consts as consts
 import shared.log as log
 import notification.notify as notification
-import handlers.positionHandler as positionHandler
+import brokers.interactiveBrokers.handlePosition as interactiveBrokers
 import shared.functions as functions
-import broker.getters as getters
+import handlers.jsonHandler.getters as getters
 
 
 def isTest():
@@ -18,11 +18,11 @@ def isTest():
 def runTests():
     if isTest():
         TEST_JSON = {"position": "long", "pair": "EURUSD", "size": 100, "time": "15 mins", "time2": "15", "stopLossCanldes": 3,
-                     "maxStopLoss": 0.02, "takeProfitRatio": 1.5, "historyDataInterval": "1 D", "alertPrice": 1.5, "alertTime": "10:10:10"}
+                     "maxStopLoss": 0.02, "takeProfitRatio": 1.5, "historyDataInterval": "1 D", "alertPrice": 1.5, "alertTime": "10:10:10", "limitPrice": 99}
 
         connection = notification.openConnection()
         log.info(consts.TEST_RUNNING_MESSAGE)
-        positionHandler.handlePosition(connection, TEST_JSON)
+        interactiveBrokers.handlePosition(connection, TEST_JSON)
 
         functions.sleep(5)
         msgs = notification.searchUnseenMessages(connection)

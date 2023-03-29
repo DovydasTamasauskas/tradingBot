@@ -1,5 +1,5 @@
 import test
-import handlers.positionHandler as positionHandler
+import brokers.interactiveBrokers.handlePosition as interactiveBrokers
 import notification.notify as notification
 import shared.functions as functions
 import shared.log as log
@@ -17,7 +17,7 @@ def handleNewMessage(connection, subject):
     if len(subject) > len(consts.BOT):
         params = functions.toJson(subject)
         log.info(consts.MESSAGE_FOUND)
-        positionHandler.handlePosition(connection, params)
+        interactiveBrokers.handlePosition(connection, params)
     else:
         log.warrning(consts.FAILED_TO_READ_PROPS)
 

@@ -1,8 +1,8 @@
 
 import shared.functions as functions
 import shared.consts as consts
-import broker.interactiveBrokers as interactiveBrokers
-import broker.getters as getters
+import brokers.interactiveBrokers.api as api
+import handlers.jsonHandler.getters as getters
 import shared.log as log
 
 
@@ -12,7 +12,7 @@ def getStopLoss(ib, contract, params):
     historicalDataInterval = getters.getHistoryDataInterval(params)
     position = getters.getPosition(params)
 
-    historicalData = interactiveBrokers.getHistoricalData(
+    historicalData = api.getHistoricalData(
         ib, contract, time, historicalDataInterval)
     stopLossCandles = functions.slice(historicalData, -stopLossCanldes)
 
