@@ -27,4 +27,4 @@ def handlePosition(connection, p):
     takeProfit = riskManagmentHandler.getTakeProfit(stopLoss, marketPrice, p)
 
     massageHandler.sendMessage(connection, stopLoss, takeProfit,
-                               marketPrice, p)
+                               marketPrice, contract, p)

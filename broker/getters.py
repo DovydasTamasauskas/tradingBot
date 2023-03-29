@@ -5,12 +5,15 @@ import shared.log as log
 position = 'position'
 pair = 'pair'
 time = 'time'
+size = 'size'
 alertPrice = 'alertPrice'
 alertTime = 'alertTime'
 stopLossCanldes = 'stopLossCanldes'
 maxStopLoss = 'maxStopLoss'
 takeProfitRatio = 'takeProfitRatio'
 historyDataInterval = 'historyDataInterval'
+stopLoss = 'stopLoss'
+takeProfit = 'takeProfit'
 
 
 def getPosition(params):
@@ -33,6 +36,14 @@ def getTime(params):
     except:
         log.warrning(consts.FAILED_TO_GET_TIME)
         return defaultProps.TIME
+
+
+def getSize(params):
+    try:
+        return params[size]
+    except:
+        log.warrning(consts.FAILED_TO_SIZE)
+        return defaultProps.SIZE
 
 
 def getAlertPrice(params):
@@ -81,3 +92,19 @@ def getHistoryDataInterval(params):
     except:
         log.warrning(consts.FAILED_TO_GET_HISTORY_DATA_INTERVAL)
         return defaultProps.HISTORY_DATA_INTERVAL
+
+
+def getStopLoss(params):
+    try:
+        return params[stopLoss]
+    except:
+        log.warrning(consts.FAILED_TO_GET_STOP_LOSS)
+        return 0
+
+
+def getTakeProfit(params):
+    try:
+        return params[takeProfit]
+    except:
+        log.warrning(consts.FAILED_TO_GET_TAKE_PROFIT)
+        return 0

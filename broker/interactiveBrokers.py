@@ -3,6 +3,7 @@ import shared.consts as consts
 import shared.log as log
 import ib_insync
 import credentials
+import broker.getters as getters
 
 
 def openIbConnection():
@@ -38,16 +39,19 @@ def getHistoricalData(ib, contract, timeInterval, historyInterval):
         return None
 
 
-def createOrder():
-    #  ib_insync.order.StopLimitOrder(action='BUY', totalQuantity=1, stopPrice=20000, lmtPrice=30000)
-    # ib_insync.order.MarketOrder(action='BUY', totalQuantity=10000)
-    ib = ib_insync.IB()
-    contract = ib_insync.Forex('EURUSD')
-    # ib.qualifyContracts(contract)
-
-    order = ib_insync.LimitOrder('SELL', 20000, 1.11)
-    trade = ib.placeOrder(contract, order)
-    print(trade)
+def createOrder(contract, params):
+    position = getters.getPosition(params)
+    size = getters.getSize(params)
+    if position == 'long':
+        position2 = "BUY"
+    if position == "short":
+        position2 = "SELL"
+    log.info("entered position "+position2 + " "+str(size))
+    log.info(str(params))
+    # ib = ib_insync.IB()
+    # order = ib_insync.LimitOrder(position2, size, 1.11)
+    # trade = ib.placeOrder(contract, order)
+    # print(trade)
 
 
 def setForexContract(pair):

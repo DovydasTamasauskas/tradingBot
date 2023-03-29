@@ -8,7 +8,7 @@ from datetime import datetime
 import broker.interactiveBrokers as interactiveBrokers
 
 
-def sendMessage(connection, stopLoss, takeProfit, entry, params):
+def sendMessage(connection, stopLoss, takeProfit, entry, contract, params):
     position = getters.getPosition(params)
     pair = getters.getPair(params)
     maxStopLoss = getters.getMaxStopLoss(params)
@@ -21,14 +21,11 @@ def sendMessage(connection, stopLoss, takeProfit, entry, params):
     if maxStopLoss > abs(stopLoss - entry):
         message = str(params)
         title = getSuccessPositionTitle(position, pair)
-        log.info(title)
-        log.info(message)
-        interactiveBrokers.createOrder()
+        interactiveBrokers.createOrder(contract, params)
     else:
         message = str(params)
         title = getFailedPositionTitle(position, pair)
         log.info(consts.EXCEEDED_STOPLOSS_LIMIT)
-        interactiveBrokers.createOrder()
     notify.sendMessage(connection, title, message)
 
 

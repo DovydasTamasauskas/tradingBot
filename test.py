@@ -17,8 +17,8 @@ def isTest():
 
 def runTests():
     if isTest():
-        TEST_JSON = {"position": "long", "pair": "BTC", "time": "15 mins", "time2": "15", "stopLossCanldes": 3,
-                     "maxStopLoss": 200, "takeProfitRatio": 1.5, "historyDataInterval": "1 D", "alertPrice": 1.5, "alertTime": "10:10:10"}
+        TEST_JSON = {"position": "long", "pair": "EURUSD", "size": 100, "time": "15 mins", "time2": "15", "stopLossCanldes": 3,
+                     "maxStopLoss": 0.02, "takeProfitRatio": 1.5, "historyDataInterval": "1 D", "alertPrice": 1.5, "alertTime": "10:10:10"}
 
         connection = notification.openConnection()
         log.info(consts.TEST_RUNNING_MESSAGE)
@@ -30,6 +30,8 @@ def runTests():
         for msg in msgs[0].split():
             subject = notification.fetchMessage(connection, msg)['body']
             testAlertTime = getters.getAlertTime(TEST_JSON)
+            # stopLoss = getters.getStopLoss(TEST_JSON)
+            # takeProfit = getters.getTakeProfit(TEST_JSON)
             if str(subject).find(testAlertTime) > 0:
                 log.success("test passed")
             else:
