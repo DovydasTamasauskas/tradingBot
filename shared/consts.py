@@ -16,6 +16,7 @@ FAILED_TO_GET_HISTORY_DATA_INTERVAL = "Failed to get history data interval"
 FAILED_TO_GET_CONTRACT_TYPE = "Failed to define contract type"
 FAILED_TO_GET_STOP_LOSS = "Failed to get stop loss"
 FAILED_TO_GET_TAKE_PROFIT = "Failed to get take profit"
+FAILED_TO_GET_MARKET_PRICE = "Failed to get market price"
 
 FAILED_TO_CALCULATE_LOW = "Failed to calculate canldes low"
 FAILED_TO_CALCULATE_HIGH = "Failed to calculte candles high"
@@ -24,6 +25,7 @@ FAILED_TO_SET_ENTER_PRICE = "Failed to set enter price"
 FAILED_TO_SET_STOP_LOSS = "Failed to set stop loss"
 FAILED_TO_SET_TAKE_PROFIT = "Failed to set take profit"
 FAILED_TO_SET_ENTER_TIME = "Failed to set enter time"
+FAILED_TO_SET_MARKET_PRICE = "Failed to set market price"
 
 
 FAILED_TO_SEND_EMAIL = "Failed to send email"

@@ -8,17 +8,18 @@ from datetime import datetime
 import brokers.interactiveBrokers.api as api
 
 
-def sendMessage(connection, stopLoss, takeProfit, entry, contract, params):
+def sendMessage(connection, stopLoss, takeProfit, contract, params):
     position = getters.getPosition(params)
     pair = getters.getPair(params)
     maxStopLoss = getters.getMaxStopLoss(params)
+    marketPrice = getters.getMarketPrice(params)
+
     params = setters.setTakeProfit(params, takeProfit)
-    params = setters.setEnterPrice(params, entry)
     params = setters.setStopLoss(params, stopLoss)
     enterTime = datetime.now().strftime("%H:%M:%S")
     params = setters.setEnterTime(params, enterTime)
 
-    if maxStopLoss > abs(stopLoss - entry):
+    if maxStopLoss > abs(stopLoss - marketPrice):
         message = str(params)
         title = getSuccessPositionTitle(position, pair)
         api.createOrder(contract, params)

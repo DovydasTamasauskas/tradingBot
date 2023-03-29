@@ -14,6 +14,8 @@ takeProfitRatio = 'takeProfitRatio'
 historyDataInterval = 'historyDataInterval'
 stopLoss = 'stopLoss'
 takeProfit = 'takeProfit'
+limitPrice = 'limitPrice'
+marketPrice = 'marketPrice'
 
 
 def getPosition(params):
@@ -107,4 +109,19 @@ def getTakeProfit(params):
         return params[takeProfit]
     except:
         log.warrning(consts.FAILED_TO_GET_TAKE_PROFIT)
+        return 0
+
+
+def getLimitPrice(params):
+    try:
+        return params[limitPrice]
+    except:
+        return 0
+
+
+def getMarketPrice(params):
+    try:
+        return params[marketPrice]
+    except:
+        log.warrning(consts.FAILED_TO_GET_MARKET_PRICE)
         return 0

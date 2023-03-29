@@ -1,5 +1,6 @@
 import brokers.interactiveBrokers.api as api
 import handlers.jsonHandler.getters as getters
+import handlers.jsonHandler.setters as setters
 import handlers.riskManagmentHandler as riskManagmentHandler
 import handlers.massageHandler as massageHandler
 import shared.contracts as contracts
@@ -22,9 +23,11 @@ def handlePosition(connection, p):
             print(consts.FAILED_TO_GET_CONTRACT_TYPE)
 
     marketPrice = api.getAskPrice(ib, contract)
+    p = setters.setMarketPrice(p, marketPrice)
 
     stopLoss = riskManagmentHandler.getStopLoss(ib, contract, p)
-    takeProfit = riskManagmentHandler.getTakeProfit(stopLoss, marketPrice, p)
+    p = setters.setStopLoss(p, stopLoss)
+    takeProfit = riskManagmentHandler.getTakeProfit(p)
 
     massageHandler.sendMessage(connection, stopLoss, takeProfit,
-                               marketPrice, contract, p)
+                               contract, p)

@@ -5,9 +5,10 @@ import shared.log as log
 
 
 enterPrice = 'enterPrice'
-stopLosss = 'stopLosss'
+stopLoss = 'stopLoss'
 takeProfit = 'takeProfit'
 enterTime = 'enterTime'
+marketPrice = 'marketPrice'
 
 
 def setEnterPrice(params, value):
@@ -21,7 +22,7 @@ def setEnterPrice(params, value):
 
 def setStopLoss(params, value):
     try:
-        params[stopLosss] = value
+        params[stopLoss] = value
         return params
     except:
         log.warrning(consts.FAILED_TO_SET_STOP_LOSS)
@@ -44,3 +45,12 @@ def setEnterTime(params, value):
     except:
         log.warrning(consts.FAILED_TO_SET_ENTER_TIME)
         return defaultProps.ENTER_TIME
+
+
+def setMarketPrice(params, value):
+    try:
+        params[marketPrice] = value
+        return params
+    except:
+        log.warrning(consts.FAILED_TO_SET_MARKET_PRICE)
+        return defaultProps.MARKET_PRICE
