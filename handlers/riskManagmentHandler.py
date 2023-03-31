@@ -27,7 +27,8 @@ def getTakeProfit(params):
     stopLossPercent = getters.getStopLossPercent(params)
 
     if stopLossPercent > 0:
-        takeProfit = entryPrice / 100 * (100 + stopLossPercent)
+        takeProfit = entryPrice / 100 * \
+            (100 + stopLossPercent * takeProfitRatio)
     else:
         if isLong(position):
             takeProfit = (entryPrice-stopLoss) * takeProfitRatio + entryPrice

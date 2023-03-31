@@ -1,6 +1,7 @@
 FAILED_TO_FETCH_MARKET_DATA = 'Failed to get market data'
 FAILED_TO_FETCH_HISTORICAL_DATA = 'Failed to get HISTORICAL data'
 FAILED_TO_LOGIN_INTO_BROKER_ACCOUNT = 'failed to loggin into broker'
+FAILED_TO_DISCONNECT_FROM_BROKER = 'failed to disconnect from broker'
 EXCEEDED_STOPLOSS_LIMIT = 'Exceded stopLoss limit'
 
 FAILED_TO_GET_POSITION = "Failed to get position"
@@ -38,6 +39,7 @@ FAILED_TO_OPEN_EMAIL_CONNECTION = "Failed to open email connection"
 MESSAGE_FOUND = "Message founded"
 BOT = "BOT"  # tradingView message indentification message
 FAILED_TO_READ_PROPS = "Failed to convert props to JSON"
+FAILED_TO_DECODE_JSON = "Failed to decode json"
 
 
 TEST = "test"  # sys props tu run test

@@ -21,26 +21,21 @@ def getHistoricalData(ib, contract, p):
     return historicalData
 
 
-def sendMessage(connection, stopLoss, takeProfit, contract, params):
+def sendMessage(connection, contract, params):
     position = getters.getPosition(params)
     pair = getters.getPair(params)
     maxStopLoss = getters.getMaxStopLoss(params)
-    marketPrice = getters.getMarketPrice(params)
+    stopLoss = getters.getStopLoss(params)
+    entryPrice = getters.getEnteryPrice(params)
 
-    params = setters.setTakeProfit(params, takeProfit)
-    params = setters.setStopLoss(params, stopLoss)
-    enterTime = datetime.now().strftime("%H:%M:%S")
-    params = setters.setEnterTime(params, enterTime)
-
-    if maxStopLoss > abs(stopLoss - marketPrice):
-        message = str(params)
-        title = getSuccessPositionTitle(position, pair)
-        api.createOrder(contract, params)
-    else:
-        message = str(params)
+    if maxStopLoss < abs(stopLoss - entryPrice):
         title = getFailedPositionTitle(position, pair)
         log.info(consts.EXCEEDED_STOPLOSS_LIMIT)
-    notify.sendMail(connection, title, message)
+    else:
+        title = getSuccessPositionTitle(position, pair)
+        api.createOrder(contract, params)
+
+    notify.sendMail(connection, title, str(params))
 
 
 def getPositionTitle(positionType: str, pair):
@@ -86,6 +81,14 @@ def handlePosition(connection, p):
     stopLoss = riskManagmentHandler.getStopLoss(historicalData, p)
     p = setters.setStopLoss(p, stopLoss)
     takeProfit = riskManagmentHandler.getTakeProfit(p)
+    p = setters.setTakeProfit(p, takeProfit)
+    p = setters.setStopLoss(p, stopLoss)
 
-    sendMessage(connection, stopLoss, takeProfit,
-                contract, p)
+    enterTime = datetime.now().strftime("%H:%M:%S")
+    p = setters.setEnterTime(p, enterTime)
+
+    sendMessage(connection, contract, p)
+
+    api.disconnect(ib)
+
+    return p

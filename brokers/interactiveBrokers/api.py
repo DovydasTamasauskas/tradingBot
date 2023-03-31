@@ -16,6 +16,13 @@ def openIbConnection():
         log.error(consts.FAILED_TO_LOGIN_INTO_BROKER_ACCOUNT)
 
 
+def disconnect(ib):
+    try:
+        ib.disconnect()
+    except:
+        log.error(consts.FAILED_TO_DISCONNECT_FROM_BROKER)
+
+
 def getAskPrice(ib, contract):
     try:
         market = ib.reqMktData(contract, '', False, False)
