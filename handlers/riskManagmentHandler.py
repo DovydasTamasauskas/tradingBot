@@ -7,6 +7,12 @@ import shared.log as log
 
 
 def getStopLoss(ib, contract, params):
+
+    stopLossPercent = getters.getStopLossPercent(params)
+    if stopLossPercent > 0:
+        entryPrice = getters.getEnteryPrice(params)
+        return entryPrice / 100 * (100 - stopLossPercent)
+
     stopLossCanldes = getters.getStopLossCanldes(params)
     time = getters.getTime(params)
     historicalDataInterval = getters.getHistoryDataInterval(params)

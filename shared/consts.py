@@ -18,6 +18,7 @@ FAILED_TO_GET_STOP_LOSS = "Failed to get stop loss"
 FAILED_TO_GET_TAKE_PROFIT = "Failed to get take profit"
 FAILED_TO_GET_MARKET_PRICE = "Failed to get market price"
 FAILED_TO_GET_ENTRY_PRICE = "Failed to get entry price"
+FAILED_TO_GET_STOP_LOSS_PERCENT = "Failed to get stop loss percent"
 
 FAILED_TO_CALCULATE_LOW = "Failed to calculate canldes low"
 FAILED_TO_CALCULATE_HIGH = "Failed to calculte candles high"

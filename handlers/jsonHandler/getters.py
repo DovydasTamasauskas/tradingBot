@@ -17,6 +17,7 @@ takeProfit = 'takeProfit'
 limitPrice = 'limitPrice'
 marketPrice = 'marketPrice'
 enteryPrice = 'enteryPrice'
+stopLossPercent = 'stopLossPercent'
 
 
 def getPosition(params):
@@ -133,4 +134,11 @@ def getEnteryPrice(params):
         return params[enteryPrice]
     except:
         log.error(consts.FAILED_TO_GET_ENTRY_PRICE)
+        return 0
+
+
+def getStopLossPercent(params):
+    try:
+        return params[stopLossPercent]
+    except:
         return 0
