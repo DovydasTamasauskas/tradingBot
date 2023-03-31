@@ -1,31 +1,20 @@
-
-import shared.functions as functions
 import shared.consts as consts
-import brokers.interactiveBrokers.api as api
 import handlers.jsonHandler.getters as getters
 import shared.log as log
 
 
-def getStopLoss(ib, contract, params):
-
+def getStopLoss(historicalData, params):
     stopLossPercent = getters.getStopLossPercent(params)
     if stopLossPercent > 0:
         entryPrice = getters.getEnteryPrice(params)
         return entryPrice / 100 * (100 - stopLossPercent)
 
-    stopLossCanldes = getters.getStopLossCanldes(params)
-    time = getters.getTime(params)
-    historicalDataInterval = getters.getHistoryDataInterval(params)
     position = getters.getPosition(params)
 
-    historicalData = api.getHistoricalData(
-        ib, contract, time, historicalDataInterval)
-    stopLossCandles = functions.slice(historicalData, -stopLossCanldes)
-
     if isLong(position):
-        stopLoss = getCandlesLow(stopLossCandles)
+        stopLoss = getCandlesLow(historicalData)
     if isShort(position):
-        stopLoss = getCandlesHigh(stopLossCandles)
+        stopLoss = getCandlesHigh(historicalData)
 
     return stopLoss
 
