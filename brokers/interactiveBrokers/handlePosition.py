@@ -25,6 +25,14 @@ def handlePosition(connection, p):
     marketPrice = api.getAskPrice(ib, contract)
     p = setters.setMarketPrice(p, marketPrice)
 
+    limitPrice = getters.getLimitPrice(p)
+
+    entryPrice = marketPrice
+    if limitPrice > 0:
+        entryPrice = limitPrice
+
+    p = setters.setEnteryPrice(p, entryPrice)
+
     stopLoss = riskManagmentHandler.getStopLoss(ib, contract, p)
     p = setters.setStopLoss(p, stopLoss)
     takeProfit = riskManagmentHandler.getTakeProfit(p)

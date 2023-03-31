@@ -4,16 +4,16 @@ from . import defaultProps
 import shared.log as log
 
 
-enterPrice = 'enterPrice'
+enteryPrice = 'enteryPrice'
 stopLoss = 'stopLoss'
 takeProfit = 'takeProfit'
 enterTime = 'enterTime'
 marketPrice = 'marketPrice'
 
 
-def setEnterPrice(params, value):
+def setEnteryPrice(params, value):
     try:
-        params[enterPrice] = value
+        params[enteryPrice] = value
         return params
     except:
         log.warrning(consts.FAILED_TO_SET_ENTER_PRICE)

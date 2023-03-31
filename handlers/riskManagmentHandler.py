@@ -27,13 +27,13 @@ def getStopLoss(ib, contract, params):
 def getTakeProfit(params):
     takeProfitRatio = getters.getTakeProfitRatio(params)
     position = getters.getPosition(params)
-    marketPrice = getters.getMarketPrice(params)
+    entryPrice = getters.getEnteryPrice(params)
     stopLoss = getters.getStopLoss(params)
 
     if isLong(position):
-        takeProfit = (marketPrice-stopLoss) * takeProfitRatio + marketPrice
+        takeProfit = (entryPrice-stopLoss) * takeProfitRatio + entryPrice
     if isShort(position):
-        takeProfit = marketPrice-(stopLoss-marketPrice) * takeProfitRatio
+        takeProfit = entryPrice-(stopLoss-entryPrice) * takeProfitRatio
 
     return round(takeProfit, 5)
 
