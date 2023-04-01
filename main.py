@@ -1,4 +1,4 @@
-import test
+import iTest.iTest as ITest
 import brokers.interactiveBrokers.handlePosition as interactiveBrokers
 import notification.notify as notification
 import shared.functions as functions
@@ -37,5 +37,5 @@ def main():
 
 
 if __name__ == "__main__":
-    test.runTests()  # run tests form sys props - $python3 main.py test
+    ITest.runIntegrationTests()  # run tests form sys props - $python3 main.py test
     main()
