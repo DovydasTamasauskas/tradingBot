@@ -18,6 +18,8 @@ limitPrice = 'limitPrice'
 marketPrice = 'marketPrice'
 enteryPrice = 'enteryPrice'
 stopLossPercent = 'stopLossPercent'
+sendResultEmail = 'sendResultEmail'
+logEnteredPosition = 'logEnteredPosition'
 
 
 def getPosition(params):
@@ -142,3 +144,17 @@ def getStopLossPercent(params):
         return params[stopLossPercent]
     except:
         return 0
+
+
+def getSendResultEmail(params):
+    try:
+        return params[sendResultEmail]
+    except:
+        return True
+
+
+def getLogEnteredPosition(params):
+    try:
+        return params[logEnteredPosition]
+    except:
+        return True

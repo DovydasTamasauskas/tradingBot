@@ -53,8 +53,11 @@ def createOrder(contract, params):
         position2 = "BUY"
     if position == "short":
         position2 = "SELL"
-    log.info("entered position "+position2 + " "+str(size))
-    log.info(str(params))
+
+    logEnteredPosition = getters.getLogEnteredPosition(params)
+    if logEnteredPosition == True:
+        log.info("entered position "+position2 + " "+str(size))
+        log.info(str(params))
     # ib = ib_insync.IB()
     # order = ib_insync.LimitOrder(position2, size, 1.11)
     # trade = ib.placeOrder(contract, order)

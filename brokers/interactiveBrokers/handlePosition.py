@@ -35,7 +35,9 @@ def sendMessage(contract, params):
         title = getSuccessPositionTitle(position, pair)
         api.createOrder(contract, params)
 
-    notify.sendMail(title, consts.RESULTS+str(params))
+    sendResult = getters.getSendResultEmail(params)
+    if sendResult == True:
+        notify.sendMail(title, consts.RESULTS+str(params))
 
 
 def getPositionTitle(positionType: str, pair):
