@@ -7,8 +7,9 @@ from time import time
 import credentials
 
 
-def sendMail(connection, title, message):
+def sendMail(title, message):
     try:
+        connection = openConnection()
         new_message = Message()
         new_message["From"] = credentials.BOT_EMAIL_ADDRESS
         new_message["Subject"] = title

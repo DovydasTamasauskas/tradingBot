@@ -8,16 +8,10 @@ import shared.consts as consts
 SLEEP_INTERVAL_SEC = 5
 
 
-def isBotMessage(subject):
-    prefix = consts.BOT
-    return subject[0:len(prefix)] == prefix
-
-
-def handleNewMessage(connection, subject):
-    if len(subject) > len(consts.BOT):
-        params = functions.toJson(subject)
+def handleNewMessage(subject):
+    if len(subject) > len(consts.RESULTS):
         log.info(consts.MESSAGE_FOUND)
-        interactiveBrokers.handlePosition(connection, params)
+        interactiveBrokers.handlePosition(subject)
     else:
         log.warrning(consts.FAILED_TO_READ_PROPS)
 
@@ -27,14 +21,19 @@ def main():
         connection = notification.openConnection()
         msgs = notification.searchUnseenMessages(connection)
 
+        messages = []
         for msg in msgs[0].split():
             subject = notification.fetchMessage(connection, msg)['subject']
+            if functions.isResultMessage(subject) == False:
+                subjectJSON = functions.toJson(subject)
+                messages.append(subjectJSON)
 
-            if isBotMessage(subject):
-                handleNewMessage(connection, subject)
+        connection.close()
+
+        for message in messages:
+            handleNewMessage(message)
 
         functions.sleep(SLEEP_INTERVAL_SEC)
-        connection.close()
 
 
 if __name__ == "__main__":

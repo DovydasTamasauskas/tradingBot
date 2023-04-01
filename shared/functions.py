@@ -18,16 +18,11 @@ def sleep(sleepTime):
 
 def toJson(subject):
     try:
-        return json.loads(slice(subject, len(consts.BOT)))
-    except:
-        log.error(consts.FAILED_TO_READ_PROPS)
-
-
-def toJson2(subject):
-    try:
         return json.loads(subject)
-    except:
-        log.error(consts.FAILED_TO_READ_PROPS)
+    except Exception as inst:
+        print(inst)
+        log.warrning(consts.FAILED_TO_READ_PROPS)
+        return None
 
 
 def decodeJson(encodedJson):
@@ -38,3 +33,8 @@ def decodeJson(encodedJson):
         # return json.dumps(data, indent=4, sort_keys=True)
     except:
         log.warrning(consts.FAILED_TO_DECODE_JSON)
+
+
+def isResultMessage(subject):
+    prefix = consts.RESULTS
+    return subject[0:len(prefix)] == prefix

@@ -21,7 +21,7 @@ def getHistoricalData(ib, contract, p):
     return historicalData
 
 
-def sendMessage(connection, contract, params):
+def sendMessage(contract, params):
     position = getters.getPosition(params)
     pair = getters.getPair(params)
     maxStopLoss = getters.getMaxStopLoss(params)
@@ -35,7 +35,7 @@ def sendMessage(connection, contract, params):
         title = getSuccessPositionTitle(position, pair)
         api.createOrder(contract, params)
 
-    notify.sendMail(connection, title, str(params))
+    notify.sendMail(title, consts.RESULTS+str(params))
 
 
 def getPositionTitle(positionType: str, pair):
@@ -43,14 +43,14 @@ def getPositionTitle(positionType: str, pair):
 
 
 def getSuccessPositionTitle(positionType: str, pair):
-    return "Entered " + getPositionTitle(positionType, pair)
+    return consts.RESULTS + ": Entered " + getPositionTitle(positionType, pair)
 
 
 def getFailedPositionTitle(positionType: str, pair):
-    return "Failed to enter " + getPositionTitle(positionType, pair)
+    return consts.RESULTS + ": Failed to enter " + getPositionTitle(positionType, pair)
 
 
-def handlePosition(connection, p):
+def handlePosition(p):
     ib = api.openIbConnection()
 
     pair = getters.getPair(p)
@@ -87,7 +87,7 @@ def handlePosition(connection, p):
     enterTime = datetime.now().strftime("%H:%M:%S")
     p = setters.setEnterTime(p, enterTime)
 
-    sendMessage(connection, contract, p)
+    sendMessage(contract, p)
 
     api.disconnect(ib)
 

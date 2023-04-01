@@ -37,7 +37,7 @@ FAILED_TO_FETCH_MESSAGES = "Failed to fetch messages"
 FAILED_TO_OPEN_EMAIL_CONNECTION = "Failed to open email connection"
 
 MESSAGE_FOUND = "Message founded"
-BOT = "BOT"  # tradingView message indentification message
+RESULTS = "RESULTS"  # tradingView message indentification message
 FAILED_TO_READ_PROPS = "Failed to convert props to JSON"
 FAILED_TO_DECODE_JSON = "Failed to decode json"
 
