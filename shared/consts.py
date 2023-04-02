@@ -40,6 +40,7 @@ MESSAGE_FOUND = "Message founded"
 RESULTS = "RESULTS"  # tradingView message indentification message
 FAILED_TO_READ_PROPS = "Failed to convert props to JSON"
 FAILED_TO_DECODE_JSON = "Failed to decode json"
+FAILED_TO_DECODE_EMAIL_MESSAGE = "Failed to decode email message"
 
 
 TEST = "test"  # sys props tu run test

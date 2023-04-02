@@ -25,14 +25,11 @@ def toJson(subject):
         return None
 
 
-def decodeJson(encodedJson):
+def decode(value):
     try:
-        decodedJson = encodedJson.decode('utf8').replace("'", '"')
-
-        return json.loads(decodedJson)
-        # return json.dumps(data, indent=4, sort_keys=True)
+        return value.decode('utf8').replace("'", '"')
     except:
-        log.warrning(consts.FAILED_TO_DECODE_JSON)
+        log.warrning(consts.FAILED_TO_DECODE_EMAIL_MESSAGE)
 
 
 def isResultMessage(subject):

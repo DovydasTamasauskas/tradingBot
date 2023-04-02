@@ -10,6 +10,7 @@ stock = 'stock'
 contractList = {
     'BTC': crypto,
     'EURUSD': fiat,
+    'AUDUSD': fiat,
     'TSLA': stock,
     'SAB1L': stock,
 }
