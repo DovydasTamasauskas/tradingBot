@@ -35,3 +35,13 @@ def decode(value):
 def isResultMessage(subject):
     prefix = consts.RESULTS
     return subject[0:len(prefix)] == prefix
+
+
+def isRequiredParamsDefined(json):
+    required = ["position", "size", "pair", "time"]
+    for param in required:
+        try:
+            json[param]
+        except:
+            return False
+    return True

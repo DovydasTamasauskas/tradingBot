@@ -26,7 +26,7 @@ def main():
             subject = notification.fetchMessage(connection, msg)['subject']
             if functions.isResultMessage(subject) == False:
                 subjectJSON = functions.toJson(subject)
-                if subjectJSON != None:
+                if subjectJSON != None and functions.isRequiredParamsDefined(subjectJSON):
                     messages.append(subjectJSON)
 
         connection.close()

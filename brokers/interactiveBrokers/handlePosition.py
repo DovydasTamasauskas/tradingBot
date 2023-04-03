@@ -67,14 +67,15 @@ def handlePosition(p):
         case _:
             print(consts.FAILED_TO_GET_CONTRACT_TYPE)
 
-    marketPrice = api.getAskPrice(ib, contract)
-    p = setters.setMarketPrice(p, marketPrice)
-
     limitPrice = getters.getLimitPrice(p)
 
-    entryPrice = marketPrice
+    entryPrice = 0
     if limitPrice > 0:
         entryPrice = limitPrice
+    else:
+        marketPrice = api.getAskPrice(ib, contract)
+        entryPrice = marketPrice
+        p = setters.setMarketPrice(p, marketPrice)
 
     p = setters.setEnteryPrice(p, entryPrice)
 
