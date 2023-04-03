@@ -43,5 +43,6 @@ def isRequiredParamsDefined(json):
         try:
             json[param]
         except:
+            log.warrning(consts.FAILED_TO_GET_REQUIRED_PARAMS)
             return False
     return True

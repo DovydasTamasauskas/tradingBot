@@ -41,6 +41,7 @@ RESULTS = "RESULTS"  # tradingView message indentification message
 FAILED_TO_READ_PROPS = "Failed to convert props to JSON"
 FAILED_TO_DECODE_JSON = "Failed to decode json"
 FAILED_TO_DECODE_EMAIL_MESSAGE = "Failed to decode email message"
+FAILED_TO_GET_REQUIRED_PARAMS = "Failed to get required params"
 
 
 TEST = "test"  # sys props tu run test
