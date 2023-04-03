@@ -1,6 +1,8 @@
 
 import sys
 
+PRINT_WARNINGS = True
+
 
 class bcolors:
     HEADER = '\033[95m'
@@ -23,7 +25,8 @@ def success(message):
 
 
 def warrning(message):
-    print(bcolors.WARNING + message + bcolors.ENDC)
+    if PRINT_WARNINGS == True:
+        print(bcolors.WARNING + message + bcolors.ENDC)
 
 
 def error(message):

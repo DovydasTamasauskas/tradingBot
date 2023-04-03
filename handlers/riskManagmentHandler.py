@@ -5,11 +5,13 @@ import shared.log as log
 
 def getStopLoss(historicalData, params):
     stopLossPercent = getters.getStopLossPercent(params)
+    position = getters.getPosition(params)
     if stopLossPercent > 0:
         entryPrice = getters.getEnteryPrice(params)
-        return entryPrice / 100 * (100 - stopLossPercent)
-
-    position = getters.getPosition(params)
+        if isLong(position):
+            return entryPrice / 100 * (100 - stopLossPercent)
+        if isShort(position):
+            return entryPrice / 100 * (100 + stopLossPercent)
 
     if isLong(position):
         stopLoss = getCandlesLow(historicalData)
@@ -43,7 +45,8 @@ def getCandlesLow(array):
     try:
         return min(list(map(lambda x: x.low, array)))
     except:
-        log.error(consts.FAILED_TO_CALCULATE_LOW)
+        pass
+        # log.error(consts.FAILED_TO_CALCULATE_LOW)
 
 
 def getCandlesHigh(array):
