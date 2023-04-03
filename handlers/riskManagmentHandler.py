@@ -21,15 +21,15 @@ def getStopLoss(historicalData, params):
 
 def getTakeProfit(params):
     takeProfitRatio = getters.getTakeProfitRatio(params)
-    position = getters.getPosition(params)
     entryPrice = getters.getEnteryPrice(params)
-    stopLoss = getters.getStopLoss(params)
     stopLossPercent = getters.getStopLossPercent(params)
 
     if stopLossPercent > 0:
         takeProfit = entryPrice / 100 * \
             (100 + stopLossPercent * takeProfitRatio)
     else:
+        stopLoss = getters.getStopLoss(params)
+        position = getters.getPosition(params)
         if isLong(position):
             takeProfit = (entryPrice-stopLoss) * takeProfitRatio + entryPrice
         else:

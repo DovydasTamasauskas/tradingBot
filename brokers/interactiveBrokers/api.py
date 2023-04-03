@@ -4,6 +4,7 @@ import shared.log as log
 import ib_insync
 import credentials
 import handlers.jsonHandler.getters as getters
+import json
 
 
 def openIbConnection():
@@ -56,8 +57,10 @@ def createOrder(contract, params):
 
     logEnteredPosition = getters.getLogEnteredPosition(params)
     if logEnteredPosition == True:
+
+        json_formatted_str = json.dumps(params, indent=2)
         log.info("entered position "+position2 + " "+str(size))
-        log.info(str(params))
+        log.info(json_formatted_str)
     # ib = ib_insync.IB()
     # order = ib_insync.LimitOrder(position2, size, 1.11)
     # trade = ib.placeOrder(contract, order)

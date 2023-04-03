@@ -56,39 +56,39 @@ def getAlertPrice(params):
     try:
         return params[alertPrice]
     except:
-        log.warrning(consts.FAILED_TO_GET_ALERT_PRICE)
-        return defaultProps.ALERT_PRICE
+        # log.warrning(consts.FAILED_TO_GET_ALERT_PRICE)
+        return None
 
 
 def getAlertTime(params):
     try:
         return params[alertTime]
     except:
-        log.warrning(consts.FAILED_TO_GET_ALERT_TIME)
-        return defaultProps.ALERT_TIME
+        # log.warrning(consts.FAILED_TO_GET_ALERT_TIME)
+        return None
 
 
 def getStopLossCanldes(params):
     try:
         return params[stopLossCanldes]
     except:
-        log.warrning(consts.FAILED_TO_GET_STOPLOSS_CANDLES)
-        return defaultProps.STOP_CANDLES_COUNT
+        # log.warrning(consts.FAILED_TO_GET_STOPLOSS_CANDLES)
+        return None
 
 
 def getMaxStopLoss(params):
     try:
         return params[maxStopLoss]
     except:
-        log.warrning(consts.FAILED_TO_GET_MAX_STOPLOSS)
-        return defaultProps.MAX_STOP_LOSS
+        # log.warrning(consts.FAILED_TO_GET_MAX_STOPLOSS)
+        return None
 
 
 def getTakeProfitRatio(params):
     try:
         return params[takeProfitRatio]
     except:
-        log.warrning(consts.FAILED_TO_GET_TAKE_PROFIT_RATIO)
+        # log.warrning(consts.FAILED_TO_GET_TAKE_PROFIT_RATIO)
         return defaultProps.TAKE_PROFIT_RATIO
 
 

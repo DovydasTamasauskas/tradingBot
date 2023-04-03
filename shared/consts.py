@@ -29,6 +29,7 @@ FAILED_TO_SET_STOP_LOSS = "Failed to set stop loss"
 FAILED_TO_SET_TAKE_PROFIT = "Failed to set take profit"
 FAILED_TO_SET_ENTER_TIME = "Failed to set enter time"
 FAILED_TO_SET_MARKET_PRICE = "Failed to set market price"
+FAILED_TO_SET_STOP_LOSS_PERCENT = "Failed to set stop loss percent"
 
 
 FAILED_TO_SEND_EMAIL = "Failed to send email"

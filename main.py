@@ -8,14 +8,6 @@ import shared.consts as consts
 SLEEP_INTERVAL_SEC = 5
 
 
-def handleNewMessage(subject):
-    if len(subject) > len(consts.RESULTS):
-        log.info(consts.MESSAGE_FOUND)
-        interactiveBrokers.handlePosition(subject)
-    else:
-        log.warrning(consts.FAILED_TO_READ_PROPS)
-
-
 def main():
     while True == True:
         connection = notification.openConnection()
@@ -32,7 +24,7 @@ def main():
         connection.close()
 
         for message in messages:
-            handleNewMessage(message)
+            interactiveBrokers.handlePosition(message)
 
         functions.sleep(SLEEP_INTERVAL_SEC)
 

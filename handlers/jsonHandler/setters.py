@@ -9,6 +9,7 @@ stopLoss = 'stopLoss'
 takeProfit = 'takeProfit'
 enterTime = 'enterTime'
 marketPrice = 'marketPrice'
+stopLossPercent = 'stopLossPercent'
 
 
 def setEnteryPrice(params, value):
@@ -54,3 +55,12 @@ def setMarketPrice(params, value):
     except:
         log.warrning(consts.FAILED_TO_SET_MARKET_PRICE)
         return defaultProps.MARKET_PRICE
+
+
+def setStopLossPercent(params, value):
+    try:
+        params[stopLossPercent] = value
+        return params
+    except:
+        log.warrning(consts.FAILED_TO_SET_STOP_LOSS_PERCENT)
+        return 1

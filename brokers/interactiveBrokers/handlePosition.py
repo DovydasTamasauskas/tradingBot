@@ -53,6 +53,8 @@ def getFailedPositionTitle(positionType: str, pair):
 
 
 def handlePosition(p):
+    timeNow = datetime.now().strftime("%H:%M:%S")
+    log.info(consts.MESSAGE_FOUND + " " + timeNow)
     ib = api.openIbConnection()
 
     pair = getters.getPair(p)
@@ -79,7 +81,12 @@ def handlePosition(p):
 
     p = setters.setEnteryPrice(p, entryPrice)
 
-    historicalData = getHistoricalData(ib, contract, p)
+    stopLossCanldes = getters.getStopLossCanldes(p)
+    historicalData = []
+    if stopLossCanldes == None:
+        p = setters.setStopLossPercent(p, 1)
+    else:
+        historicalData = getHistoricalData(ib, contract, p)
 
     stopLoss = riskManagmentHandler.getStopLoss(historicalData, p)
     p = setters.setStopLoss(p, stopLoss)
@@ -87,8 +94,7 @@ def handlePosition(p):
     p = setters.setTakeProfit(p, takeProfit)
     p = setters.setStopLoss(p, stopLoss)
 
-    enterTime = datetime.now().strftime("%H:%M:%S")
-    p = setters.setEnterTime(p, enterTime)
+    p = setters.setEnterTime(p, timeNow)
 
     sendMessage(contract, p)
 
