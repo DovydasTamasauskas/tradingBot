@@ -10,6 +10,13 @@ def isTest():
     return False
 
 
+def isSendEmail():
+    arg = sys.argv
+    if len(arg) > 1:
+        return sys.argv[1] == consts.SEND_EMAIL
+    return False
+
+
 def testTitle(title):
     print('- ' * 20)
     log.info(consts.TEST_RUNNING_MESSAGE)

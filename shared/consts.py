@@ -45,6 +45,7 @@ FAILED_TO_GET_REQUIRED_PARAMS = "Failed to get required params"
 
 
 TEST = "test"  # sys props tu run test
+SEND_EMAIL = "sendEmail"  # sys props tu run test
 TEST_RUNNING_MESSAGE = "Test running ..."
 
 SHORT = 'short'
