@@ -73,14 +73,14 @@ def getStopLossCanldes(params):
         return params[stopLossCanldes]
     except:
         # log.warrning(consts.FAILED_TO_GET_STOPLOSS_CANDLES)
-        return None
+        return defaultProps.STOP_CANDLES_COUNT
 
 
 def getMaxStopLoss(params):
     try:
         return params[maxStopLoss]
     except:
-        log.warrning(consts.FAILED_TO_GET_MAX_STOPLOSS)
+        # log.warrning(consts.FAILED_TO_GET_MAX_STOPLOSS)
         return defaultProps.MAX_STOP_LOSS
 
 
@@ -96,7 +96,7 @@ def getHistoryDataInterval(params):
     try:
         return params[historyDataInterval]
     except:
-        log.warrning(consts.FAILED_TO_GET_HISTORY_DATA_INTERVAL)
+        # log.warrning(consts.FAILED_TO_GET_HISTORY_DATA_INTERVAL)
         return defaultProps.HISTORY_DATA_INTERVAL
 
 

@@ -1,9 +1,7 @@
-import iTest.iTest as ITest
 import brokers.interactiveBrokers.handlePosition as interactiveBrokers
 import notification.notify as notification
 import shared.functions as functions
-import shared.log as log
-import shared.consts as consts
+import scripts
 
 SLEEP_INTERVAL_SEC = 5
 
@@ -30,5 +28,5 @@ def main():
 
 
 if __name__ == "__main__":
-    ITest.runIntegrationTests()  # run tests form sys props - $python3 main.py test
+    scripts.scripts()
     main()

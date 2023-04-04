@@ -3,7 +3,7 @@ import shared.functions as functions
 import shared.log as log
 
 
-class TestSequenceFunctions(unittest.TestCase):
+class TestSliceFunction(unittest.TestCase):
 
     def setUp(self) -> None:
         log.PRINT_WARNINGS = False
