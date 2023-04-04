@@ -3,7 +3,18 @@ import handlers.jsonHandler.getters as getters
 import shared.log as log
 
 
-def getStopLoss(historicalData, params):
+def getStopLossHistorical(historicalData, params):
+    position = getters.getPosition(params)
+
+    if isLong(position):
+        stopLoss = getCandlesLow(historicalData)
+    if isShort(position):
+        stopLoss = getCandlesHigh(historicalData)
+
+    return round(stopLoss, 5)
+
+
+def getStopLossPercent(params):
     stopLossPercent = getters.getStopLossPercent(params)
     position = getters.getPosition(params)
     if stopLossPercent > 0:
@@ -13,37 +24,30 @@ def getStopLoss(historicalData, params):
         if isShort(position):
             return entryPrice / 100 * (100 + stopLossPercent)
 
-    if isLong(position):
-        stopLoss = getCandlesLow(historicalData)
-    if isShort(position):
-        stopLoss = getCandlesHigh(historicalData)
-
-    return stopLoss
+    log.warrning(consts.FAILED_TO_SET_STOP_LOSS_PERCENT)
+    return 0
 
 
 def getTakeProfit(params):
     takeProfitRatio = getters.getTakeProfitRatio(params)
     entryPrice = getters.getEnteryPrice(params)
-    stopLossPercent = getters.getStopLossPercent(params)
+    stopLoss = getters.getStopLoss(params)
 
-    if stopLossPercent > 0:
-        takeProfit = entryPrice / 100 * \
-            (100 + stopLossPercent * takeProfitRatio)
-    else:
-        stopLoss = getters.getStopLoss(params)
-        position = getters.getPosition(params)
-        if isLong(position):
-            takeProfit = (entryPrice-stopLoss) * takeProfitRatio + entryPrice
-        else:
-            if isShort(position):
-                takeProfit = entryPrice-(stopLoss-entryPrice) * takeProfitRatio
+    if entryPrice > stopLoss:
+        takeProfit = (entryPrice-stopLoss) * takeProfitRatio + entryPrice
+    if entryPrice < stopLoss:
+        takeProfit = entryPrice-(stopLoss-entryPrice) * takeProfitRatio
 
     return round(takeProfit, 5)
 
 
 def getCandlesLow(array):
     try:
-        return min(list(map(lambda x: x.low, array)))
+        low = 100000
+        for x in array:
+            if low > x['low']:
+                low = x['low']
+        return low
     except:
         pass
         # log.error(consts.FAILED_TO_CALCULATE_LOW)
@@ -51,7 +55,11 @@ def getCandlesLow(array):
 
 def getCandlesHigh(array):
     try:
-        return max(list(map(lambda x: x.high, array)))
+        high = 0
+        for x in array:
+            if high < x['high']:
+                high = x['high']
+        return high
     except:
         log.error(consts.FAILED_TO_CALCULATE_HIGH)
 

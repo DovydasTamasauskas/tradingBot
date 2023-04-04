@@ -41,7 +41,10 @@ def getHistoricalData(ib, contract, timeInterval, historyInterval):
             barSizeSetting=timeInterval, whatToShow='MIDPOINT', useRTH=True)
         if len(historicalData) == 0:
             log.error(consts.FAILED_TO_FETCH_HISTORICAL_DATA)
-        return historicalData
+        returnArray = []
+        for x in historicalData:
+            returnArray.append({'low': x.low, 'high': x.high})
+        return returnArray
     except:
         log.error(consts.FAILED_TO_FETCH_HISTORICAL_DATA)
         return None

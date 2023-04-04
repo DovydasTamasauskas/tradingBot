@@ -13,7 +13,7 @@ def stopLossITest():
     if stopLoss == 98:
         log.success("test passed")
     else:
-        log.error("test failed")
+        log.error("test failed. Got:" + str(stopLoss) + " Expected: 98")
 
 
 def takeProfitITest():
@@ -24,7 +24,7 @@ def takeProfitITest():
     if takeProfit == 103:
         log.success("test passed")
     else:
-        log.error("test failed")
+        log.error("test failed. Got:" + str(takeProfit) + " Expected: 103")
 
 
 def takeProfitStopLossITest():
@@ -36,7 +36,8 @@ def takeProfitStopLossITest():
     if stopLoss == 98 and takeProfit == 103:
         log.success("test passed")
     else:
-        log.error("test failed")
+        log.error("test failed. Got:" + str(takeProfit) +
+                  ", " + str(stopLoss) + " Expected: 103, 98")
 
 
 def runTests():

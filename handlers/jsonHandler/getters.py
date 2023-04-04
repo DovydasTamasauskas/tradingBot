@@ -80,8 +80,8 @@ def getMaxStopLoss(params):
     try:
         return params[maxStopLoss]
     except:
-        # log.warrning(consts.FAILED_TO_GET_MAX_STOPLOSS)
-        return None
+        log.warrning(consts.FAILED_TO_GET_MAX_STOPLOSS)
+        return defaultProps.MAX_STOP_LOSS
 
 
 def getTakeProfitRatio(params):

@@ -81,18 +81,20 @@ def handlePosition(p):
 
     p = setters.setEnteryPrice(p, entryPrice)
 
-    stopLossCanldes = getters.getStopLossCanldes(p)
+    stopLossPercent = getters.getStopLossPercent(p)
     historicalData = []
-    if stopLossCanldes == None:
-        p = setters.setStopLossPercent(p, 1)
+    stopLoss = 0
+    if stopLossPercent > 0:
+        p = setters.setStopLossPercent(p, stopLossPercent)
+        stopLoss = riskManagmentHandler.getStopLossPercent(p)
     else:
         historicalData = getHistoricalData(ib, contract, p)
+        stopLoss = riskManagmentHandler.getStopLossHistorical(
+            historicalData, p)
 
-    stopLoss = riskManagmentHandler.getStopLoss(historicalData, p)
     p = setters.setStopLoss(p, stopLoss)
     takeProfit = riskManagmentHandler.getTakeProfit(p)
     p = setters.setTakeProfit(p, takeProfit)
-    p = setters.setStopLoss(p, stopLoss)
 
     p = setters.setEnterTime(p, timeNow)
 
