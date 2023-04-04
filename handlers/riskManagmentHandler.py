@@ -6,10 +6,14 @@ import shared.log as log
 def getStopLossHistorical(historicalData, params):
     position = getters.getPosition(params)
 
-    if isLong(position):
-        stopLoss = getCandlesLow(historicalData)
-    if isShort(position):
-        stopLoss = getCandlesHigh(historicalData)
+    match position:
+        case consts.LONG:
+            stopLoss = getCandlesLow(historicalData)
+        case consts.SHORT:
+            stopLoss = getCandlesHigh(historicalData)
+        case _:
+            log.warrning(consts.FAILED_TO_SET_STOP_LOSS_HISTORICAL)
+            return 0
 
     return round(stopLoss, 5)
 
@@ -17,15 +21,18 @@ def getStopLossHistorical(historicalData, params):
 def getStopLossPercent(params):
     stopLossPercent = getters.getStopLossPercent(params)
     position = getters.getPosition(params)
-    if stopLossPercent > 0:
-        entryPrice = getters.getEnteryPrice(params)
-        if isLong(position):
-            return entryPrice / 100 * (100 - stopLossPercent)
-        if isShort(position):
-            return entryPrice / 100 * (100 + stopLossPercent)
+    entryPrice = getters.getEnteryPrice(params)
 
-    log.warrning(consts.FAILED_TO_SET_STOP_LOSS_PERCENT)
-    return 0
+    match position:
+        case consts.LONG:
+            stopLoss = entryPrice / 100 * (100 - stopLossPercent)
+        case consts.SHORT:
+            stopLoss = entryPrice / 100 * (100 + stopLossPercent)
+        case _:
+            log.warrning(consts.FAILED_TO_SET_STOP_LOSS_PERCENT)
+            return 0
+
+    return round(stopLoss, 5)
 
 
 def getTakeProfit(params):
@@ -35,8 +42,9 @@ def getTakeProfit(params):
 
     if entryPrice > stopLoss:
         takeProfit = (entryPrice-stopLoss) * takeProfitRatio + entryPrice
-    if entryPrice < stopLoss:
-        takeProfit = entryPrice-(stopLoss-entryPrice) * takeProfitRatio
+    else:
+        if entryPrice < stopLoss:
+            takeProfit = entryPrice-(stopLoss-entryPrice) * takeProfitRatio
 
     return round(takeProfit, 5)
 
@@ -49,8 +57,7 @@ def getCandlesLow(array):
                 low = x['low']
         return low
     except:
-        pass
-        # log.error(consts.FAILED_TO_CALCULATE_LOW)
+        log.warrning(consts.FAILED_TO_CALCULATE_LOW)
 
 
 def getCandlesHigh(array):
@@ -61,12 +68,4 @@ def getCandlesHigh(array):
                 high = x['high']
         return high
     except:
-        log.error(consts.FAILED_TO_CALCULATE_HIGH)
-
-
-def isLong(param):
-    return param.lower() == consts.LONG
-
-
-def isShort(param):
-    return param.lower() == consts.SHORT
+        log.warrning(consts.FAILED_TO_CALCULATE_HIGH)

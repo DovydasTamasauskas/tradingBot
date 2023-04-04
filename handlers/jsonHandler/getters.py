@@ -143,7 +143,7 @@ def getStopLossPercent(params):
     try:
         return params[stopLossPercent]
     except:
-        return 0
+        return defaultProps.STOP_LOSS_PERCENT
 
 
 def getSendResultEmail(params):
