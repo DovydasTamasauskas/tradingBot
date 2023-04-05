@@ -10,13 +10,11 @@ class TestisRequiredParamsDefinedFunction(unittest.TestCase):
 
     def test_emply(self):
         json = functions.isRequiredParamsDefined({})
-
-        self.assertEqual(json, False)
+        self.assertFalse(json)
 
     def test_notAJson(self):
         json = functions.isRequiredParamsDefined(5)
-
-        self.assertEqual(json, False)
+        self.assertFalse(json)
 
     def test_noPosition(self):
         json = functions.isRequiredParamsDefined({
@@ -24,8 +22,7 @@ class TestisRequiredParamsDefinedFunction(unittest.TestCase):
             "size": 100,
             "time": "10:10:10"
         })
-
-        self.assertEqual(json, False)
+        self.assertFalse(json)
 
     def test_noPair(self):
         json = functions.isRequiredParamsDefined({
@@ -33,8 +30,7 @@ class TestisRequiredParamsDefinedFunction(unittest.TestCase):
             "size": 100,
             "time": "10:10:10"
         })
-
-        self.assertEqual(json, False)
+        self.assertFalse(json)
 
     def test_noSize(self):
         json = functions.isRequiredParamsDefined({
@@ -42,8 +38,7 @@ class TestisRequiredParamsDefinedFunction(unittest.TestCase):
             "pair": "EURUSD",
             "time": "10:10:10"
         })
-
-        self.assertEqual(json, False)
+        self.assertFalse(json)
 
     def test_noTime(self):
         json = functions.isRequiredParamsDefined({
@@ -51,8 +46,7 @@ class TestisRequiredParamsDefinedFunction(unittest.TestCase):
             "pair": "EURUSD",
             "size": 100
         })
-
-        self.assertEqual(json, False)
+        self.assertFalse(json)
 
     def test_onlyRequired(self):
         json = functions.isRequiredParamsDefined({
@@ -61,7 +55,7 @@ class TestisRequiredParamsDefinedFunction(unittest.TestCase):
             "size": 100,
             "time": "10:10:10"
         })
-        self.assertEqual(json, True)
+        self.assertTrue(json)
 
     def test_moreThenRequired(self):
         json = functions.isRequiredParamsDefined({
@@ -72,7 +66,7 @@ class TestisRequiredParamsDefinedFunction(unittest.TestCase):
             "stopLossCanldes": 3,
             "maxStopLoss": "0.2",
         })
-        self.assertEqual(json, True)
+        self.assertTrue(json)
 
 
 if __name__ == '__main__':

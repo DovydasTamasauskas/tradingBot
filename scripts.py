@@ -30,7 +30,8 @@ TEST_PATHS = [
     "handlers/test/test_getStopLossPercent.py",
     "handlers/test/test_getStopLossHistorical.py",
     "handlers/test/test_getTakeProfit.py",
-    "handlers/test/test_isStopLossExceeded.py"
+    "handlers/test/test_isStopLossExceeded.py",
+    "handlers/test/test_getCandles.py"
 ]
 
 
