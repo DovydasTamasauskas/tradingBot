@@ -15,21 +15,30 @@ def getSysArg(argNumber):
     return None
 
 
-SLEEP_TIME = 3
+def runCmdProcess(path):
+    log.info("Running " + path + " tests")
+    cmd_str = "python3 -m unittest " + path
+    subprocess.run(cmd_str, shell=True)
+    functions.sleep(SLEEP_TIME)
+
+
+SLEEP_TIME = 1
+
+TEST_PATHS = [
+    "shared/test/test_isRequiredParamsDefined.py",
+    "shared/test/test_slice.py",
+    "handlers/test/test_getStopLossPercent.py",
+    "handlers/test/test_getStopLossHistorical.py",
+    "handlers/test/test_getTakeProfit.py",
+    "handlers/test/test_isStopLossExceeded.py"
+]
 
 
 def scripts():
     arg = getSysArg(1)
     if arg == consts.TEST:
-        log.info("Running handlers folder unit tests")
-        cmd_str = "python3 -m unittest discover handlers"
-        subprocess.run(cmd_str, shell=True)
-        functions.sleep(SLEEP_TIME)
-
-        log.info("Running shared folder unit tests")
-        cmd_str = "python3 -m unittest discover shared"
-        subprocess.run(cmd_str, shell=True)
-        functions.sleep(SLEEP_TIME)
+        for path in TEST_PATHS:
+            runCmdProcess(path)
 
         log.info("Running integration tests")
         riskManagmentITest.runTests()

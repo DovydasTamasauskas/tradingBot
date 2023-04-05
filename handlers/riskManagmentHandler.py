@@ -41,8 +41,9 @@ def getStopLossHistorical(historicalData, params):
 
 def getStopLossPercent(params):
     stopLossPercent = getters.getStopLossPercent(params)
-    # if stopLossPercent > 2:
-    #     stopLossPercent = 2
+    maxStopLoss = getters.getMaxStopLoss(params)
+    if stopLossPercent > maxStopLoss:
+        stopLossPercent = maxStopLoss
     position = getters.getPosition(params)
     entryPrice = getters.getEnteryPrice(params)
 
