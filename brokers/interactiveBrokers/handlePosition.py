@@ -4,7 +4,6 @@ import handlers.jsonHandler.setters as setters
 import handlers.riskManagmentHandler as riskManagmentHandler
 import shared.contracts as contracts
 import shared.consts as consts
-import shared.functions as functions
 import notification.notify as notify
 from datetime import datetime
 import shared.log as log
@@ -12,13 +11,10 @@ import shared.log as log
 
 def getHistoricalData(ib, contract, p):
     historicalDataInterval = getters.getHistoryDataInterval(p)
-
-    stopLossCanldes = getters.getStopLossCanldes(p)
     time = getters.getTime(p)
-    historicalData = api.getHistoricalData(
+
+    return api.getHistoricalData(
         ib, contract, time, historicalDataInterval)
-    historicalData = functions.slice(historicalData, -stopLossCanldes)
-    return historicalData
 
 
 def sendMessage(contract, params):
@@ -52,11 +48,7 @@ def getFailedPositionTitle(positionType: str, pair):
     return consts.RESULTS + ": Failed to enter " + getPositionTitle(positionType, pair)
 
 
-def handlePosition(p):
-    timeNow = datetime.now().strftime("%H:%M:%S")
-    log.info(consts.MESSAGE_FOUND + " " + timeNow)
-    ib = api.openIbConnection()
-
+def getContract(p):
     pair = getters.getPair(p)
 
     match contracts.getMarket(pair):
@@ -67,7 +59,18 @@ def handlePosition(p):
         case contracts.stock:
             contract = api.setStockContract(pair)
         case _:
-            print(consts.FAILED_TO_GET_CONTRACT_TYPE)
+            log.error(consts.FAILED_TO_GET_CONTRACT_TYPE)
+            return None
+
+    return contract
+
+
+def handlePosition(p):
+    timeNow = datetime.now().strftime("%H:%M:%S")
+    log.info(consts.MESSAGE_FOUND + " " + timeNow)
+    ib = api.openIbConnection()
+
+    contract = getContract(p)
 
     limitPrice = getters.getLimitPrice(p)
 
@@ -82,7 +85,6 @@ def handlePosition(p):
     p = setters.setEnteryPrice(p, entryPrice)
 
     stopLossPercent = getters.getStopLossPercent(p)
-    historicalData = []
     stopLoss = 0
     if stopLossPercent > 0:
         p = setters.setStopLossPercent(p, stopLossPercent)

@@ -1,16 +1,37 @@
 import shared.consts as consts
 import handlers.jsonHandler.getters as getters
 import shared.log as log
+import shared.functions as functions
+
+
+def isStopLossExceeded(params, stopLoss):
+    maxStopLoss = getters.getMaxStopLoss(params)
+    entryPrice = getters.getEnteryPrice(params)
+
+    stopLossOnPrice = (100 * stopLoss / entryPrice) - 100
+
+    if maxStopLoss < round(abs(stopLossOnPrice), 1):
+        return True
+    else:
+        return False
 
 
 def getStopLossHistorical(historicalData, params):
     position = getters.getPosition(params)
+    stopLossCanldes = getters.getStopLossCanldes(params)
+    maxStopLoss = getters.getMaxStopLoss(params)
+    entryPrice = getters.getEnteryPrice(params)
+    historicalData = functions.slice(historicalData, -stopLossCanldes)
 
     match position:
         case consts.LONG:
             stopLoss = getCandlesLow(historicalData)
+            if isStopLossExceeded(params, stopLoss):
+                stopLoss = 100 * (100 - maxStopLoss) / entryPrice
         case consts.SHORT:
             stopLoss = getCandlesHigh(historicalData)
+            if isStopLossExceeded(params, stopLoss):
+                stopLoss = 100 * (100 + maxStopLoss) / entryPrice
         case _:
             log.warrning(consts.FAILED_TO_SET_STOP_LOSS_HISTORICAL)
             return 0
@@ -20,6 +41,8 @@ def getStopLossHistorical(historicalData, params):
 
 def getStopLossPercent(params):
     stopLossPercent = getters.getStopLossPercent(params)
+    # if stopLossPercent > 2:
+    #     stopLossPercent = 2
     position = getters.getPosition(params)
     entryPrice = getters.getEnteryPrice(params)
 
