@@ -2,6 +2,7 @@
 import sys
 
 PRINT_WARNINGS = True
+PRINT_ERRORS = True
 
 
 class bcolors:
@@ -30,5 +31,6 @@ def warrning(message):
 
 
 def error(message):
-    print(bcolors.FAIL + message + bcolors.ENDC)
-    sys.exit()
+    if PRINT_ERRORS == True:
+        print(bcolors.FAIL + message + bcolors.ENDC)
+        # sys.exit()
