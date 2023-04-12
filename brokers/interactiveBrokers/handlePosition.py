@@ -4,7 +4,7 @@ import handlers.jsonHandler.setters as setters
 import handlers.riskManagmentHandler as riskManagmentHandler
 import shared.contracts as contracts
 import shared.consts as consts
-import notification.gmail as gmail
+import notification.helpers.sendMessage as notifyHelper
 from datetime import datetime
 import shared.log as log
 
@@ -15,38 +15,6 @@ def getHistoricalData(ib, contract, p):
 
     return api.getHistoricalData(
         ib, contract, time, historicalDataInterval)
-
-
-def sendMessage(params):
-    position = getters.getPosition(params)
-    pair = getters.getPair(params)
-    maxStopLoss = getters.getMaxStopLoss(params)
-    stopLoss = getters.getStopLoss(params)
-    entryPrice = getters.getEnteryPrice(params)
-    contract = getContract(params)
-
-    if maxStopLoss < abs(stopLoss - entryPrice):
-        title = getFailedPositionTitle(position, pair)
-        log.info(consts.EXCEEDED_STOPLOSS_LIMIT)
-    else:
-        title = getSuccessPositionTitle(position, pair)
-        api.createOrder(contract, params)
-
-    sendResult = getters.getSendResultEmail(params)
-    if sendResult == True:
-        gmail.sendMail(title, consts.RESULTS+str(params))
-
-
-def getPositionTitle(positionType: str, pair):
-    return positionType + " " + pair
-
-
-def getSuccessPositionTitle(positionType: str, pair):
-    return consts.RESULTS + ": Entered " + getPositionTitle(positionType, pair)
-
-
-def getFailedPositionTitle(positionType: str, pair):
-    return consts.RESULTS + ": Failed to enter " + getPositionTitle(positionType, pair)
 
 
 def getContract(p):
@@ -68,9 +36,9 @@ def getContract(p):
 
 def getStopLoss(ib, p):
     contract = getContract(p)
-    stopLossPercent = getters.getStopLossPercent(p)
+    realStopLossCanldes = getters.getRealStopLossCanldes(p)
 
-    if stopLossPercent > 0:
+    if realStopLossCanldes == 0:
         stopLoss = riskManagmentHandler.getStopLossPercent(p)
     else:
         historicalData = getHistoricalData(ib, contract, p)
@@ -107,8 +75,8 @@ def handlePosition(p):
     takeProfit = riskManagmentHandler.getTakeProfit(p)
     p = setters.setTakeProfit(p, takeProfit)
 
-    sendMessage(p)
-
+    notifyHelper.sendMessage(p)
+    api.createOrder(p)
     api.disconnect(ib)
 
     return p

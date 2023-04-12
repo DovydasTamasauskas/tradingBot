@@ -52,7 +52,8 @@ def getHistoricalData(ib, contract, timeInterval, historyInterval):
         return None
 
 
-def createOrder(contract, params):
+def createOrder(params):
+    contract = handlePosition.getContract(params)
     position = getters.getPosition(params)
     size = getters.getSize(params)
     if position == 'long':

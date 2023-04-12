@@ -76,6 +76,13 @@ def getStopLossCanldes(params):
         return defaultProps.STOP_CANDLES_COUNT
 
 
+def getRealStopLossCanldes(params):
+    try:
+        return params[stopLossCanldes]
+    except:
+        return 0
+
+
 def getMaxStopLoss(params):
     try:
         return params[maxStopLoss]
@@ -144,6 +151,13 @@ def getStopLossPercent(params):
         return params[stopLossPercent]
     except:
         return defaultProps.STOP_LOSS_PERCENT
+
+
+def getRealStopLossPercent(params):
+    try:
+        return params[stopLossPercent]
+    except:
+        return 0
 
 
 def getSendResultEmail(params):
