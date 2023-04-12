@@ -4,7 +4,7 @@ import handlers.jsonHandler.setters as setters
 import handlers.riskManagmentHandler as riskManagmentHandler
 import shared.contracts as contracts
 import shared.consts as consts
-import notification.notify as notify
+import notification.gmail as gmail
 from datetime import datetime
 import shared.log as log
 
@@ -34,7 +34,7 @@ def sendMessage(params):
 
     sendResult = getters.getSendResultEmail(params)
     if sendResult == True:
-        notify.sendMail(title, consts.RESULTS+str(params))
+        gmail.sendMail(title, consts.RESULTS+str(params))
 
 
 def getPositionTitle(positionType: str, pair):

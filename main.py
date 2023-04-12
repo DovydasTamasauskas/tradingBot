@@ -1,5 +1,5 @@
 import brokers.interactiveBrokers.handlePosition as interactiveBrokers
-import notification.notify as notification
+import notification.gmail as notification
 import shared.functions as functions
 import scripts
 

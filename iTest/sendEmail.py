@@ -1,5 +1,5 @@
 import shared.log as log
-import notification.notify as notification
+import notification.gmail as notification
 import brokers.interactiveBrokers.handlePosition as interactiveBrokers
 import shared.functions as functions
 import iTest.heplers as heplers
