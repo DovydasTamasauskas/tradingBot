@@ -15,7 +15,7 @@ def openConnection():
         log.error(consts.FAILED_TO_LOGIN_INTO_BROKER_ACCOUNT)
 
 
-def getAskPrice(client, symbol):
+def getMarketPrice(client, symbol):
     try:
         return client.ticker_price(symbol)
     except:

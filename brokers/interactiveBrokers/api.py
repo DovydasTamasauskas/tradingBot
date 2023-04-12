@@ -5,6 +5,7 @@ import ib_insync
 import credentials
 import handlers.jsonHandler.getters as getters
 import json
+import brokers.interactiveBrokers.handlePosition as handlePosition
 
 
 def openIbConnection():
@@ -24,8 +25,9 @@ def disconnect(ib):
         log.error(consts.FAILED_TO_DISCONNECT_FROM_BROKER)
 
 
-def getAskPrice(ib, contract):
+def getMarketPrice(ib, p):
     try:
+        contract = handlePosition.getContract(p)
         market = ib.reqMktData(contract, '', False, False)
         ib.sleep(2)
         return market.ask

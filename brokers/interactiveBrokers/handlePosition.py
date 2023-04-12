@@ -17,12 +17,13 @@ def getHistoricalData(ib, contract, p):
         ib, contract, time, historicalDataInterval)
 
 
-def sendMessage(contract, params):
+def sendMessage(params):
     position = getters.getPosition(params)
     pair = getters.getPair(params)
     maxStopLoss = getters.getMaxStopLoss(params)
     stopLoss = getters.getStopLoss(params)
     entryPrice = getters.getEnteryPrice(params)
+    contract = getContract(params)
 
     if maxStopLoss < abs(stopLoss - entryPrice):
         title = getFailedPositionTitle(position, pair)
@@ -65,42 +66,48 @@ def getContract(p):
     return contract
 
 
-def handlePosition(p):
-    timeNow = datetime.now().strftime("%H:%M:%S")
-    log.info(consts.MESSAGE_FOUND + " " + timeNow)
-    ib = api.openIbConnection()
-
+def getStopLoss(ib, p):
     contract = getContract(p)
-
-    limitPrice = getters.getLimitPrice(p)
-
-    entryPrice = 0
-    if limitPrice > 0:
-        entryPrice = limitPrice
-    else:
-        marketPrice = api.getAskPrice(ib, contract)
-        entryPrice = marketPrice
-        p = setters.setMarketPrice(p, marketPrice)
-
-    p = setters.setEnteryPrice(p, entryPrice)
-
     stopLossPercent = getters.getStopLossPercent(p)
-    stopLoss = 0
+
     if stopLossPercent > 0:
-        p = setters.setStopLossPercent(p, stopLossPercent)
         stopLoss = riskManagmentHandler.getStopLossPercent(p)
     else:
         historicalData = getHistoricalData(ib, contract, p)
         stopLoss = riskManagmentHandler.getStopLossHistorical(
             historicalData, p)
+    return stopLoss
 
+
+def getEntryPrice(ib, p):
+    limitPrice = getters.getLimitPrice(p)
+    entryPrice = 0
+    if limitPrice > 0:
+        entryPrice = limitPrice
+    else:
+        marketPrice = api.getMarketPrice(ib, p)
+        entryPrice = marketPrice
+
+    return entryPrice
+
+
+def handlePosition(p):
+    timeNow = datetime.now().strftime("%H:%M:%S")
+    log.info(consts.MESSAGE_FOUND + " " + timeNow)
+    p = setters.setEnterTime(p, timeNow)
+
+    ib = api.openIbConnection()
+
+    entryPrice = getEntryPrice(ib, p)
+    p = setters.setEnteryPrice(p, entryPrice)
+
+    stopLoss = getStopLoss(ib, p)
     p = setters.setStopLoss(p, stopLoss)
+
     takeProfit = riskManagmentHandler.getTakeProfit(p)
     p = setters.setTakeProfit(p, takeProfit)
 
-    p = setters.setEnterTime(p, timeNow)
-
-    sendMessage(contract, p)
+    sendMessage(p)
 
     api.disconnect(ib)
 
