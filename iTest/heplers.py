@@ -42,3 +42,33 @@ def createJson(position="long", pair="EURUSD", size=100, time="15 mins",
         "sendResultEmail": sendResultEmail,
         "logEnteredPosition": logEnteredPosition
     }
+
+
+def createJson2(position="long",
+                pair="EURUSD", size=100, time="15 mins", stopLossCanldes=None, maxStopLoss=None, takeProfitRatio=None,
+                limitPrice=None, stopLossPercent=None):
+    results = {
+        "position": position,
+        "pair": pair,
+        "size": size,
+        "time": time,
+        "sendResultEmail": False,
+        "logEnteredPosition": False
+    }
+
+    if stopLossCanldes != None and stopLossCanldes > 0:
+        results = {**results, **{"stopLossCanldes": stopLossCanldes}}
+
+    if maxStopLoss != None and maxStopLoss > 0:
+        results = {**results, **{"maxStopLoss": maxStopLoss}}
+
+    if takeProfitRatio != None and takeProfitRatio > 0:
+        results = {**results, **{"takeProfitRatio": takeProfitRatio}}
+
+    if limitPrice != None and limitPrice > 0:
+        results = {**results, **{"limitPrice": limitPrice}}
+
+    if stopLossPercent != None and stopLossPercent > 0:
+        results = {**results, **{"stopLossPercent": stopLossPercent}}
+
+    return results
