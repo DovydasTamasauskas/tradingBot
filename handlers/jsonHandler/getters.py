@@ -40,7 +40,7 @@ def getTime(params):
     try:
         return params[time]
     except:
-        log.warrning(consts.FAILED_TO_GET_TIME)
+        # log.warrning(consts.FAILED_TO_GET_TIME)
         return defaultProps.TIME
 
 

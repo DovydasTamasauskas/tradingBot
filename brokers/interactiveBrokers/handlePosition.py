@@ -9,14 +9,6 @@ from datetime import datetime
 import shared.log as log
 
 
-def getHistoricalData(ib, contract, p):
-    historicalDataInterval = getters.getHistoryDataInterval(p)
-    time = getters.getTime(p)
-
-    return api.getHistoricalData(
-        ib, contract, time, historicalDataInterval)
-
-
 def getContract(p):
     pair = getters.getPair(p)
 
@@ -41,9 +33,14 @@ def getStopLoss(ib, p):
     if realStopLossCanldes == 0:
         stopLoss = riskManagmentHandler.getStopLossPercent(p)
     else:
-        historicalData = getHistoricalData(ib, contract, p)
+        historicalDataInterval = getters.getHistoryDataInterval(p)
+        time = getters.getTime(p)
+
+        historicalData = api.getHistoricalData(
+            ib, contract, time, historicalDataInterval)
         stopLoss = riskManagmentHandler.getStopLossHistorical(
             historicalData, p)
+
     return stopLoss
 
 
