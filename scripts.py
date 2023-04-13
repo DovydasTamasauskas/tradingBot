@@ -33,7 +33,8 @@ TEST_PATHS = [
     "handlers/test/test_isStopLossExceeded.py",
     "handlers/test/test_getCandles.py",
     "brokers/interactiveBrokers/test/test_getContract.py",
-    "brokers/interactiveBrokers/test/test_getStopLoss.py"
+    "brokers/interactiveBrokers/test/test_getStopLoss.py",
+    "brokers/interactiveBrokers/test/test_getEnterPrice.py"
 ]
 
 
