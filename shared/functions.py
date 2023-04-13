@@ -4,6 +4,7 @@ import time
 import json
 import shared.consts as consts
 import shared.log as log
+from datetime import datetime
 
 
 def slice(val: str, start=0, end=None):
@@ -46,3 +47,7 @@ def isRequiredParamsDefined(json):
             log.warrning(consts.FAILED_TO_GET_REQUIRED_PARAMS)
             return False
     return True
+
+
+def getTimeNow():
+    return datetime.now().strftime("%H:%M:%S")

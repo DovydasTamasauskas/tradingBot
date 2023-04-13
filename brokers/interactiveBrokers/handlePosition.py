@@ -5,8 +5,8 @@ import handlers.riskManagmentHandler as riskManagmentHandler
 import shared.contracts as contracts
 import shared.consts as consts
 import notification.helpers.sendMessage as notifyHelper
-from datetime import datetime
 import shared.log as log
+import shared.functions as functions
 
 
 def getContract(p):
@@ -57,7 +57,7 @@ def getEntryPrice(ib, p):
 
 
 def handlePosition(p):
-    timeNow = datetime.now().strftime("%H:%M:%S")
+    timeNow = functions.getTimeNow()
     log.info(consts.MESSAGE_FOUND + " " + timeNow)
     p = setters.setEnterTime(p, timeNow)
 
