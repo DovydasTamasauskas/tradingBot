@@ -1,7 +1,4 @@
-import shared.log as log
 import notification.gmail as notification
-import brokers.interactiveBrokers.handlePosition as interactiveBrokers
-import shared.functions as functions
 import iTest.heplers as heplers
 import json
 
