@@ -8,7 +8,7 @@ import iTest.heplers as heplers
 def riskManagmentITest1():
     heplers.testTitle("limit order long should be calculated correctly")
 
-    TEST_JSON = heplers.createJson2(
+    TEST_JSON = heplers.createJson(
         stopLossPercent=2, maxStopLoss=2, limitPrice=100)
     results = interactiveBrokers.handlePosition(TEST_JSON)
 
@@ -24,7 +24,7 @@ def riskManagmentITest1():
 def riskManagmentITest2():
     heplers.testTitle("limit short long should be calculated correctly")
 
-    TEST_JSON = heplers.createJson2(
+    TEST_JSON = heplers.createJson(
         position="short", stopLossPercent=2, maxStopLoss=2, limitPrice=100)
     results = interactiveBrokers.handlePosition(TEST_JSON)
 
@@ -41,7 +41,7 @@ def riskManagmentITest3():
     heplers.testTitle(
         "maxStopLossPercent should override stopLossPercent long position")
 
-    TEST_JSON = heplers.createJson2(stopLossPercent=2)
+    TEST_JSON = heplers.createJson(stopLossPercent=2)
     results = interactiveBrokers.handlePosition(TEST_JSON)
 
     enterPrice = getters.getEnteryPrice(results)
@@ -59,7 +59,7 @@ def riskManagmentITest4():
     heplers.testTitle(
         "maxStopLossPercent should override stopLossPercent short position")
 
-    TEST_JSON = heplers.createJson2(position="short", stopLossPercent=2)
+    TEST_JSON = heplers.createJson(position="short", stopLossPercent=2)
     results = interactiveBrokers.handlePosition(TEST_JSON)
 
     enterPrice = getters.getEnteryPrice(results)
@@ -76,7 +76,7 @@ def riskManagmentITest4():
 def riskManagmentITest5():
     heplers.testTitle("market order stopLoss and takeProfit long position")
 
-    TEST_JSON = heplers.createJson2()
+    TEST_JSON = heplers.createJson()
     results = interactiveBrokers.handlePosition(TEST_JSON)
 
     enterPrice = getters.getEnteryPrice(results)
@@ -93,7 +93,7 @@ def riskManagmentITest5():
 def riskManagmentITest6():
     heplers.testTitle("market order stopLoss and takeProfit short position")
 
-    TEST_JSON = heplers.createJson2(position="short")
+    TEST_JSON = heplers.createJson(position="short")
     results = interactiveBrokers.handlePosition(TEST_JSON)
 
     enterPrice = getters.getEnteryPrice(results)
@@ -111,7 +111,7 @@ def riskManagmentITest7():
     heplers.testTitle(
         "profitRatio should override default value long position")
 
-    TEST_JSON = heplers.createJson2(takeProfitRatio=3)
+    TEST_JSON = heplers.createJson(takeProfitRatio=3)
     results = interactiveBrokers.handlePosition(TEST_JSON)
 
     enterPrice = getters.getEnteryPrice(results)
@@ -129,7 +129,7 @@ def riskManagmentITest8():
     heplers.testTitle(
         "profitRatio should override default value short position")
 
-    TEST_JSON = heplers.createJson2(position="short", takeProfitRatio=3)
+    TEST_JSON = heplers.createJson(position="short", takeProfitRatio=3)
     results = interactiveBrokers.handlePosition(TEST_JSON)
 
     enterPrice = getters.getEnteryPrice(results)

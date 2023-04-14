@@ -23,37 +23,14 @@ def testTitle(title):
     log.info(title)
 
 
-def createJson(position="long", pair="EURUSD", size=100, time="15 mins",
-               stopLossCanldes=3, maxStopLoss=100, takeProfitRatio=1.5, historyDataInterval="1 D", alertPrice=1.5,
-               alertTime="10:10:10", limitPrice=100.0, stopLossPercent=2, sendResultEmail=False, logEnteredPosition=False):
-    return {
-        "position": position,
-        "pair": pair,
-        "size": size,
-        "time": time,
-        "stopLossCanldes": stopLossCanldes,
-        "maxStopLoss": maxStopLoss,
-        "takeProfitRatio": takeProfitRatio,
-        "historyDataInterval": historyDataInterval,
-        "alertPrice": alertPrice,
-        "alertTime": alertTime,
-        "limitPrice": limitPrice,
-        "stopLossPercent": stopLossPercent,
-        "sendResultEmail": sendResultEmail,
-        "logEnteredPosition": logEnteredPosition
-    }
-
-
-def createJson2(position="long",
-                pair="EURUSD", size=100, time="15 mins", stopLossCanldes=None, maxStopLoss=None, takeProfitRatio=None,
-                limitPrice=None, stopLossPercent=None):
+def createJson(position="long",
+               pair="EURUSD", size=100, time="15 mins", stopLossCanldes=None, maxStopLoss=None, takeProfitRatio=None,
+               limitPrice=None, stopLossPercent=None, sendResultEmail=None, logEnteredPosition=None):
     results = {
         "position": position,
         "pair": pair,
         "size": size,
-        "time": time,
-        "sendResultEmail": False,
-        "logEnteredPosition": False
+        "time": time
     }
 
     if stopLossCanldes != None and stopLossCanldes > 0:
@@ -70,5 +47,15 @@ def createJson2(position="long",
 
     if stopLossPercent != None and stopLossPercent > 0:
         results = {**results, **{"stopLossPercent": stopLossPercent}}
+
+    if sendResultEmail != None and sendResultEmail > 0:
+        results = {**results, **{"sendResultEmail": sendResultEmail}}
+    else:
+        results = {**results, **{"sendResultEmail": False}}
+
+    if logEnteredPosition != None and logEnteredPosition > 0:
+        results = {**results, **{"logEnteredPosition": logEnteredPosition}}
+    else:
+        results = {**results, **{"logEnteredPosition": False}}
 
     return results
