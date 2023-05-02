@@ -1,4 +1,4 @@
-# tradingBot
+# tradingBot v1.0
 
 ## Instalation
 
