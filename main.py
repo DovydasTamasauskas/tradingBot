@@ -2,6 +2,7 @@ import brokers.interactiveBrokers.handlePosition as interactiveBrokers
 import notification.gmail as notification
 import shared.functions as functions
 import scripts
+import brokers.kraken.handlePosition as krakenHandler
 
 SLEEP_INTERVAL_SEC = 5
 
@@ -28,5 +29,6 @@ def main():
 
 
 if __name__ == "__main__":
-    scripts.scripts()
-    main()
+    krakenHandler.main()
+    # scripts.scripts()
+    # main()
