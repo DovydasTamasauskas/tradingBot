@@ -44,7 +44,7 @@ def sendPrivateRequest(path, pair=None, type=None, volume=None, leverage=None, o
         api_response = urllib.request.urlopen(
             api_request).read().decode()
         api_data = json.loads(api_response)
-        print(api_data)
+        return api_data
 
     except Exception as error:
         print('Failed (%s)' % error)

@@ -23,7 +23,8 @@ def main():
         connection.close()
 
         for message in messages:
-            interactiveBrokers.handlePosition(message)
+            # interactiveBrokers.handlePosition(message)
+            krakenHandler.handlePosition(message)
 
         functions.sleep(SLEEP_INTERVAL_SEC)
 
