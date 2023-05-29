@@ -44,27 +44,32 @@ def sendPrivateRequest(path, pair=None, type=None, volume=None, leverage=None, o
         api_response = urllib.request.urlopen(
             api_request).read().decode()
         api_data = json.loads(api_response)
-        return api_data
+        return api_data['result']
 
     except Exception as error:
         print('Failed (%s)' % error)
 
 
-# def getOHLC(pair, interval):
-#     try:
-#         dayts = 864
-#         nowts = int(round(time.time()))
-#         endts = nowts - dayts
-#         print(nowts)
-#         api_request = urllib.request.Request('https://api.kraken.com/0/public/OHLC?pair=%(pair)s&interval=%(interval)d&since=%(since)d' % {
-#             'pair': pair, 'interval': interval, 'since': endts})
-#         api_request.add_header('User-Agent', 'Kraken trading bot example')
-#         api_response = urllib.request.urlopen(api_request).read().decode()
-#         api_data = json.loads(api_response)
-#         return api_data
-#     except Exception as error:
-#         print('Failed (%s)' % error)
-#     return 0
+def sendPublicRequest(path, pair=None, interval=None, since=None):
+    try:
+        api_post = ''
+        if (pair != None):
+            api_post = api_post + '&pair=' + pair
+        if (interval != None):
+            api_post = api_post + '&interval=' + str(interval)
+        if (since != None):
+            api_post = api_post + '&since=' + str(since)
+
+        api_path = '/0/public/' + path + '?' + api_post
+        api_request = urllib.request.Request(
+            'https://api.kraken.com' + api_path)
+        api_request.add_header('User-Agent', 'Kraken trading bot example')
+        api_response = urllib.request.urlopen(api_request).read().decode()
+        api_data = json.loads(api_response)
+        return api_data['result']
+    except Exception as error:
+        print('Failed (%s)' % error)
+    return 0
 
 
 # def getTickerInfo(pair):
