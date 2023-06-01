@@ -3,6 +3,7 @@ import time
 import handlers.jsonHandler.getters as getters
 import handlers.jsonHandler.setters as setters
 import handlers.riskManagmentHandler as riskManagmentHandler
+import notification.helpers.sendMessage as notifyHelper
 import shared.consts as consts
 import shared.log as log
 import shared.functions as functions
@@ -71,7 +72,9 @@ def getCandlesHight(pair, interval, candlesRange):
     return sorted(highs, reverse=True)[0]
 
 
-def main(p):
+def handlePosition(p):
+    p = functions.setEnterTimeNow(p)
+
     entryPrice = float(getMarketPrice(DEFAULT_PAIR))
     p = setters.setEnteryPrice(p, entryPrice)
 
@@ -81,8 +84,10 @@ def main(p):
     takeProfit = riskManagmentHandler.getTakeProfit(p)
     p = setters.setTakeProfit(p, takeProfit)
 
-    # notifyHelper.sendMessage(p)
+    notifyHelper.sendMessage(p)
     api.createOrder(p)
+
+    return p
 
 
 def getStopLoss(p):
@@ -102,13 +107,7 @@ def getStopLoss(p):
                 return 0
     return stopLoss
 
-
-def handlePosition(p):
-    timeNow = functions.getTimeNow()
-    log.info(consts.MESSAGE_FOUND + " " + timeNow)
-    p = setters.setEnterTime(p, timeNow)
-    # TODO handle position
-    # openPosition(DEFAULT_PAIR, 'buy', 'limit', '26600')
-    # openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', '30000')
-    # openPosition(DEFAULT_PAIR, 'sell', 'market')
-    return 0
+# TODO handle position
+# openPosition(DEFAULT_PAIR, 'buy', 'limit', '26600')
+# openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', '30000')
+# openPosition(DEFAULT_PAIR, 'sell', 'market')

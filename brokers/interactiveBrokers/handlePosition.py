@@ -57,9 +57,7 @@ def getEntryPrice(ib, p):
 
 
 def handlePosition(p):
-    timeNow = functions.getTimeNow()
-    log.info(consts.MESSAGE_FOUND + " " + timeNow)
-    p = setters.setEnterTime(p, timeNow)
+    p = functions.setEnterTimeNow(p)
 
     ib = api.openIbConnection()
 

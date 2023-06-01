@@ -24,20 +24,20 @@ def main():
         connection.close()
 
         for message in messages:
-            # interactiveBrokers.handlePosition(message)
-            krakenHandler.handlePosition(message)
+            interactiveBrokers.handlePosition(message)
+            # krakenHandler.handlePosition(message)
 
         functions.sleep(SLEEP_INTERVAL_SEC)
 
 
 if __name__ == "__main__":
-    json = heplers.createJson(
-        position="short",
-        # stopLossPercent=1,
-        stopLossCanldes=3,
-        limitPrice=100,
-        logEnteredPosition=True
-    )
-    krakenHandler.main(json)
-    # scripts.scripts()
-    # main()
+    # json = heplers.createJson(
+    #     position="short",
+    #     # stopLossPercent=1,
+    #     stopLossCanldes=3,
+    #     limitPrice=100,
+    #     logEnteredPosition=True
+    # )
+    # krakenHandler.handlePosition(json)
+    scripts.scripts()
+    main()

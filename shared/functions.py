@@ -5,6 +5,8 @@ import json
 import shared.consts as consts
 import shared.log as log
 from datetime import datetime
+import shared.functions as functions
+import handlers.jsonHandler.setters as setters
 
 
 def slice(val: str, start=0, end=None):
@@ -51,3 +53,10 @@ def isRequiredParamsDefined(json):
 
 def getTimeNow():
     return datetime.now().strftime("%H:%M:%S")
+
+
+def setEnterTimeNow(p):
+    timeNow = functions.getTimeNow()
+    log.info(consts.MESSAGE_FOUND + " " + timeNow)
+    p = setters.setEnterTime(p, timeNow)
+    return p
