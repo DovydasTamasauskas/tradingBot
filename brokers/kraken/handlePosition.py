@@ -72,24 +72,6 @@ def getCandlesHight(pair, interval, candlesRange):
     return sorted(highs, reverse=True)[0]
 
 
-def handlePosition(p):
-    p = functions.setEnterTimeNow(p)
-
-    entryPrice = float(getMarketPrice(DEFAULT_PAIR))
-    p = setters.setEnteryPrice(p, entryPrice)
-
-    stopLoss = getStopLoss(p)
-    p = setters.setStopLoss(p, stopLoss)
-
-    takeProfit = riskManagmentHandler.getTakeProfit(p)
-    p = setters.setTakeProfit(p, takeProfit)
-
-    notifyHelper.sendMessage(p)
-    api.createOrder(p)
-
-    return p
-
-
 def getStopLoss(p):
     realStopLossCanldes = getters.getRealStopLossCanldes(p)
     position = getters.getPosition(p)
@@ -106,6 +88,25 @@ def getStopLoss(p):
                 log.warrning(consts.FAILED_TO_SET_STOP_LOSS_PERCENT)
                 return 0
     return stopLoss
+
+
+def handlePosition(p):
+    p = functions.setEnterTimeNow(p)
+
+    marketPrice = getMarketPrice(DEFAULT_PAIR)
+    p = functions.setEntryPrice(p, marketPrice)
+
+    stopLoss = getStopLoss(p)
+    p = setters.setStopLoss(p, stopLoss)
+
+    takeProfit = riskManagmentHandler.getTakeProfit(p)
+    p = setters.setTakeProfit(p, takeProfit)
+
+    notifyHelper.sendMessage(p)
+    api.createOrder(p)
+
+    return p
+
 
 # TODO handle position
 # openPosition(DEFAULT_PAIR, 'buy', 'limit', '26600')

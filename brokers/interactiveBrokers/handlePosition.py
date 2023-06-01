@@ -44,25 +44,13 @@ def getStopLoss(ib, p):
     return stopLoss
 
 
-def getEntryPrice(ib, p):
-    limitPrice = getters.getLimitPrice(p)
-    entryPrice = 0
-    if limitPrice > 0:
-        entryPrice = limitPrice
-    else:
-        marketPrice = api.getMarketPrice(ib, p)
-        entryPrice = marketPrice
-
-    return entryPrice
-
-
 def handlePosition(p):
     p = functions.setEnterTimeNow(p)
 
     ib = api.openIbConnection()
 
-    entryPrice = getEntryPrice(ib, p)
-    p = setters.setEnteryPrice(p, entryPrice)
+    marketPrice = api.getMarketPrice(ib, p)
+    p = functions.setEntryPrice(p, marketPrice)
 
     stopLoss = getStopLoss(ib, p)
     p = setters.setStopLoss(p, stopLoss)
