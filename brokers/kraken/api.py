@@ -6,6 +6,8 @@ import hmac
 import urllib.request
 import time
 import credentials
+import handlers.jsonHandler.getters as getters
+import shared.log as log
 
 api_key_public = credentials.KRAKEN_API_KEY
 api_key_private = credentials.KRAKEN_PRIVETE_KEY
@@ -72,14 +74,9 @@ def sendPublicRequest(path, pair=None, interval=None, since=None):
     return 0
 
 
-# def getTickerInfo(pair):
-#     try:
-#         api_request = urllib.request.Request('https://api.kraken.com/0/public/Ticker?pair=%(pair)s' % {
-#             'pair': pair})
-#         api_request.add_header('User-Agent', 'Kraken trading bot example')
-#         api_response = urllib.request.urlopen(api_request).read().decode()
-#         api_data = json.loads(api_response)
-#         return api_data
-#     except Exception as error:
-#         print('Failed (%s)' % error)
-#     return 0
+def createOrder(params):
+    logEnteredPosition = getters.getLogEnteredPosition(params)
+    if logEnteredPosition == True:
+        json_formatted_str = json.dumps(params, indent=2)
+        log.info("entered position ")
+        log.info(json_formatted_str)

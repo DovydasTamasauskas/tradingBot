@@ -1,5 +1,12 @@
 import brokers.kraken.api as api
 import time
+import handlers.jsonHandler.getters as getters
+import handlers.jsonHandler.setters as setters
+import handlers.riskManagmentHandler as riskManagmentHandler
+import shared.consts as consts
+import shared.log as log
+import shared.functions as functions
+
 
 DEFAULT_PAIR = 'XXBTZUSD'
 DEFAULT_VOLUME = 0.0001
@@ -10,10 +17,20 @@ def openPosition(pair, type, ordertype, price=None, volume=DEFAULT_VOLUME, lever
                            volume, leverage, ordertype, price)
 
 
-def getTicks(pair, interval, candlesRange):
+def getHistoricalTicks(pair, interval, candlesRange):
     nowts = int(round(time.time()))
     since = nowts - interval*60*candlesRange
     return api.sendPublicRequest('OHLC', pair,  interval, since)[pair]
+
+
+def getMarketPrice(pair):
+    ticker = api.sendPublicRequest('Ticker', pair)[pair]
+    # ticker = api.getTickerInfo(pair)[pair]
+    # for x in ticker:
+    #     print(ticker[x])
+
+    # documentation - https://docs.kraken.com/rest/#tag/Market-Data/operation/getTickerInformation
+    return ticker['c'][0]
 
 
 def getBalance():
@@ -39,7 +56,7 @@ def printBalance():
 
 
 def getCandlesLow(pair, interval, candlesRange):
-    ohlc = getTicks(pair, interval, candlesRange)
+    ohlc = getHistoricalTicks(pair, interval, candlesRange)
     lows = []
     for tick in ohlc:
         lows.append(float(tick[3]))
@@ -47,20 +64,49 @@ def getCandlesLow(pair, interval, candlesRange):
 
 
 def getCandlesHight(pair, interval, candlesRange):
-    ohlc = getTicks(pair, interval, candlesRange)
+    ohlc = getHistoricalTicks(pair, interval, candlesRange)
     highs = []
     for tick in ohlc:
         highs.append(float(tick[2]))
     return sorted(highs, reverse=True)[0]
 
 
-def main():
-    printBalance()
-    print('low   - ', getCandlesLow(DEFAULT_PAIR, 15, 4))
-    print('hight - ', getCandlesHight(DEFAULT_PAIR, 15, 4))
+def main(p):
+    entryPrice = float(getMarketPrice(DEFAULT_PAIR))
+    p = setters.setEnteryPrice(p, entryPrice)
+
+    stopLoss = getStopLoss(p)
+    p = setters.setStopLoss(p, stopLoss)
+
+    takeProfit = riskManagmentHandler.getTakeProfit(p)
+    p = setters.setTakeProfit(p, takeProfit)
+
+    # notifyHelper.sendMessage(p)
+    api.createOrder(p)
+
+
+def getStopLoss(p):
+    realStopLossCanldes = getters.getRealStopLossCanldes(p)
+    position = getters.getPosition(p)
+
+    if realStopLossCanldes == 0:
+        stopLoss = riskManagmentHandler.getStopLossPercent(p)
+    else:
+        match position:
+            case consts.LONG:
+                stopLoss = getCandlesLow(DEFAULT_PAIR, 15, 4)
+            case consts.SHORT:
+                stopLoss = getCandlesHight(DEFAULT_PAIR, 15, 4)
+            case _:
+                log.warrning(consts.FAILED_TO_SET_STOP_LOSS_PERCENT)
+                return 0
+    return stopLoss
 
 
 def handlePosition(p):
+    timeNow = functions.getTimeNow()
+    log.info(consts.MESSAGE_FOUND + " " + timeNow)
+    p = setters.setEnterTime(p, timeNow)
     # TODO handle position
     # openPosition(DEFAULT_PAIR, 'buy', 'limit', '26600')
     # openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', '30000')
