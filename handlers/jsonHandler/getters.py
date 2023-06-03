@@ -146,6 +146,13 @@ def getEnteryPrice(params):
         return 0
 
 
+def getEnteryPriceNO_ERROR(params):  # for testing only
+    try:
+        return params[enteryPrice]
+    except:
+        return 0
+
+
 def getStopLossPercent(params):
     try:
         return params[stopLossPercent]

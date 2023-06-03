@@ -24,7 +24,7 @@ def testTitle(title):
 
 
 def createJson(position="long",
-               pair="EURUSD", size=100, time="15 mins", stopLossCanldes=None, maxStopLoss=None, takeProfitRatio=None,
+               pair="EURUSD", size=100, time="15 mins", enteryPrice=0, stopLossCanldes=None, maxStopLoss=None, takeProfitRatio=None,
                limitPrice=None, stopLossPercent=None, sendResultEmail=None, logEnteredPosition=None):
     results = {
         "position": position,
@@ -32,6 +32,9 @@ def createJson(position="long",
         "size": size,
         "time": time
     }
+
+    if enteryPrice != None and enteryPrice > 0:
+        results = {**results, **{"enteryPrice": enteryPrice}}
 
     if stopLossCanldes != None and stopLossCanldes > 0:
         results = {**results, **{"stopLossCanldes": stopLossCanldes}}

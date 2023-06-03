@@ -9,7 +9,7 @@ def riskManagmentITest1():
     heplers.testTitle("limit order long should be calculated correctly")
 
     TEST_JSON = heplers.createJson(
-        stopLossPercent=2, maxStopLoss=2, limitPrice=100)
+        stopLossPercent=2, maxStopLoss=2, enteryPrice=100)
     results = interactiveBrokers.handlePosition(TEST_JSON)
 
     stopLoss = getters.getStopLoss(results)
@@ -25,7 +25,7 @@ def riskManagmentITest2():
     heplers.testTitle("limit short long should be calculated correctly")
 
     TEST_JSON = heplers.createJson(
-        position="short", stopLossPercent=2, maxStopLoss=2, limitPrice=100)
+        position="short", stopLossPercent=2, maxStopLoss=2, enteryPrice=100)
     results = interactiveBrokers.handlePosition(TEST_JSON)
 
     stopLoss = getters.getStopLoss(results)

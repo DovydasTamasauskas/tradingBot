@@ -16,10 +16,9 @@ def isStopLossExceeded(params, stopLoss):
         return False
 
 
-def getMaxStopLossByPercent(params):
+def getMaxStopLossByPercent(params, entryPrice):
     stopLossPercent = getters.getStopLossPercent(params)
     position = getters.getPosition(params)
-    entryPrice = getters.getEnteryPrice(params)
 
     match position:
         case consts.LONG:
@@ -33,10 +32,8 @@ def getMaxStopLossByPercent(params):
     return round(stopLoss, 5)
 
 
-def getTakeProfit(params):
+def getTakeProfit(params, entryPrice, stopLoss):
     takeProfitRatio = getters.getTakeProfitRatio(params)
-    entryPrice = getters.getEnteryPrice(params)
-    stopLoss = getters.getStopLoss(params)
 
     if entryPrice > stopLoss:
         takeProfit = (entryPrice-stopLoss) * takeProfitRatio + entryPrice
@@ -47,14 +44,14 @@ def getTakeProfit(params):
     return round(takeProfit, 5)
 
 
-def getStopLoss(p, stopLossByCandle):
+def getStopLoss(p, stopLossByCandle, entryPrice):
     realStopLossCanldes = getters.getRealStopLossCanldes(p)
 
     if realStopLossCanldes == 0:
-        stopLoss = getMaxStopLossByPercent(p)
+        stopLoss = getMaxStopLossByPercent(p, entryPrice)
     else:
         stopLoss = stopLossByCandle
         if isStopLossExceeded(p, stopLoss):
-            stopLoss = getMaxStopLossByPercent(p)
+            stopLoss = getMaxStopLossByPercent(p, entryPrice)
 
     return stopLoss

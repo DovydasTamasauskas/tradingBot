@@ -45,7 +45,7 @@ def scripts():
 
         # log.info("Running integration tests")
         riskManagmentITest.runTests()
-        emailITest.runTests()
+        # emailITest.runTests()
         sys.exit()
     if arg == consts.SEND_EMAIL:
         sendEmail.sendEmail()

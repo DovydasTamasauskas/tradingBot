@@ -79,22 +79,22 @@ def getCandlesHigh(array):
 
 
 def handlePosition(p):
-    p = functions.setEnterTimeNow(p)
-
     ib = api.openIbConnection()
 
     marketPrice = api.getMarketPrice(ib, p)
-    p = functions.setEntryPrice(p, marketPrice)
 
     stopLossByCandles = getStopLossByCandles(ib, p)
-    stopLoss = riskManagmentHandler.getStopLoss(p, stopLossByCandles)
-    p = setters.setStopLoss(p, stopLoss)
+    stopLoss = riskManagmentHandler.getStopLoss(
+        p, stopLossByCandles, marketPrice)
 
-    takeProfit = riskManagmentHandler.getTakeProfit(p)
-    p = setters.setTakeProfit(p, takeProfit)
+    takeProfit = riskManagmentHandler.getTakeProfit(p, marketPrice, stopLoss)
 
     notifyHelper.sendMessage(p)
     api.createOrder(p)
     api.disconnect(ib)
 
-    return p
+    return {**p, **{'enterTime': functions.getTimeNow(),
+                    'enteryPrice': marketPrice,
+                    'stopLoss': stopLoss,
+                    'takeProfit': takeProfit,
+                    }}

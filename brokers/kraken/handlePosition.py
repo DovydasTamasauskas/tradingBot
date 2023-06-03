@@ -94,7 +94,6 @@ def handlePosition(p):
     p = functions.setEnterTimeNow(p)
 
     marketPrice = getMarketPrice(DEFAULT_PAIR)
-    p = functions.setEntryPrice(p, marketPrice)
 
     stopLoss = getStopLoss(p)
     p = setters.setStopLoss(p, stopLoss)

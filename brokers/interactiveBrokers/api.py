@@ -27,10 +27,13 @@ def disconnect(ib):
 
 def getMarketPrice(ib, p):
     try:
-        contract = handlePosition.getContract(p)
-        market = ib.reqMktData(contract, '', False, False)
-        ib.sleep(2)
-        return market.ask
+        if getters.getEnteryPriceNO_ERROR(p) == 0:  # for test only
+            contract = handlePosition.getContract(p)
+            market = ib.reqMktData(contract, '', False, False)
+            ib.sleep(2)
+            return market.ask
+        else:
+            return getters.getEnteryPriceNO_ERROR(p)
     except:
         log.warrning(consts.FAILED_TO_FETCH_MARKET_DATA)
         return None

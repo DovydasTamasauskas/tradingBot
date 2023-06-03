@@ -58,18 +58,5 @@ def getTimeNow():
 
 def setEnterTimeNow(p):
     timeNow = functions.getTimeNow()
-    log.info(consts.MESSAGE_FOUND + " " + timeNow)
     p = setters.setEnterTime(p, timeNow)
-    return p
-
-
-def setEntryPrice(p, marketPrice):
-    limitPrice = getters.getLimitPrice(p)
-    entryPrice = 0
-    if limitPrice > 0:
-        entryPrice = limitPrice
-    else:
-        entryPrice = marketPrice
-
-    p = setters.setEnteryPrice(p, entryPrice)
     return p
