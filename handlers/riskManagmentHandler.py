@@ -16,34 +16,8 @@ def isStopLossExceeded(params, stopLoss):
         return False
 
 
-def getStopLossHistorical(historicalData, params):
-    position = getters.getPosition(params)
-    stopLossCanldes = getters.getStopLossCanldes(params)
-    maxStopLoss = getters.getMaxStopLoss(params)
-    entryPrice = getters.getEnteryPrice(params)
-    historicalData = functions.slice(historicalData, -stopLossCanldes)
-
-    match position:
-        case consts.LONG:
-            stopLoss = getCandlesLow(historicalData)
-            if isStopLossExceeded(params, stopLoss):
-                stopLoss = 100 * (100 - maxStopLoss) / entryPrice
-        case consts.SHORT:
-            stopLoss = getCandlesHigh(historicalData)
-            if isStopLossExceeded(params, stopLoss):
-                stopLoss = 100 * (100 + maxStopLoss) / entryPrice
-        case _:
-            log.warrning(consts.FAILED_TO_SET_STOP_LOSS_HISTORICAL)
-            return 0
-
-    return round(stopLoss, 5)
-
-
-def getStopLossPercent(params):
+def getMaxStopLossByPercent(params):
     stopLossPercent = getters.getStopLossPercent(params)
-    maxStopLoss = getters.getMaxStopLoss(params)
-    if stopLossPercent > maxStopLoss:
-        stopLossPercent = maxStopLoss
     position = getters.getPosition(params)
     entryPrice = getters.getEnteryPrice(params)
 
@@ -73,23 +47,14 @@ def getTakeProfit(params):
     return round(takeProfit, 5)
 
 
-def getCandlesLow(array):
-    try:
-        low = 100000
-        for x in array:
-            if low > x['low']:
-                low = x['low']
-        return low
-    except:
-        log.warrning(consts.FAILED_TO_CALCULATE_LOW)
+def getStopLoss(p, stopLossByCandle):
+    realStopLossCanldes = getters.getRealStopLossCanldes(p)
 
+    if realStopLossCanldes == 0:
+        stopLoss = getMaxStopLossByPercent(p)
+    else:
+        stopLoss = stopLossByCandle
+        if isStopLossExceeded(p, stopLoss):
+            stopLoss = getMaxStopLossByPercent(p)
 
-def getCandlesHigh(array):
-    try:
-        high = 0
-        for x in array:
-            if high < x['high']:
-                high = x['high']
-        return high
-    except:
-        log.warrning(consts.FAILED_TO_CALCULATE_HIGH)
+    return stopLoss

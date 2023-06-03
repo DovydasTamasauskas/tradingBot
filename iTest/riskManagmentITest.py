@@ -37,42 +37,6 @@ def riskManagmentITest2():
         log.error("test failed. Got:" + str(stopLoss) + " Expected: 102")
 
 
-def riskManagmentITest3():
-    heplers.testTitle(
-        "maxStopLossPercent should override stopLossPercent long position")
-
-    TEST_JSON = heplers.createJson(stopLossPercent=2)
-    results = interactiveBrokers.handlePosition(TEST_JSON)
-
-    enterPrice = getters.getEnteryPrice(results)
-    stopLoss = getters.getStopLoss(results)
-    takeProfit = getters.getTakeProfit(results)
-
-    if round(stopLoss*100/enterPrice, 1) == 99 and round(takeProfit*100/enterPrice, 1) == 101.5:
-        log.success("test passed")
-        return 0
-
-    log.error("test failed")
-
-
-def riskManagmentITest4():
-    heplers.testTitle(
-        "maxStopLossPercent should override stopLossPercent short position")
-
-    TEST_JSON = heplers.createJson(position="short", stopLossPercent=2)
-    results = interactiveBrokers.handlePosition(TEST_JSON)
-
-    enterPrice = getters.getEnteryPrice(results)
-    stopLoss = getters.getStopLoss(results)
-    takeProfit = getters.getTakeProfit(results)
-
-    if round(stopLoss*100/enterPrice, 1) == 101 and round(takeProfit*100/enterPrice, 1) == 98.5:
-        log.success("test passed")
-        return 0
-
-    log.error("test failed")
-
-
 def riskManagmentITest5():
     heplers.testTitle("market order stopLoss and takeProfit long position")
 
@@ -146,8 +110,6 @@ def riskManagmentITest8():
 def runTests():
     riskManagmentITest1()
     riskManagmentITest2()
-    riskManagmentITest3()
-    riskManagmentITest4()
     riskManagmentITest5()
     riskManagmentITest6()
     riskManagmentITest7()

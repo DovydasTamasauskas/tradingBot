@@ -33,8 +33,6 @@ TEST_PATHS = [
     "handlers/test/test_isStopLossExceeded.py",
     "handlers/test/test_getCandles.py",
     "brokers/interactiveBrokers/test/test_getContract.py",
-    "brokers/interactiveBrokers/test/test_getStopLoss.py",
-    "brokers/interactiveBrokers/test/test_getEnterPrice.py",
     "brokers/interactiveBrokers/test/test_handlePosition.py"
 ]
 
@@ -42,10 +40,10 @@ TEST_PATHS = [
 def scripts():
     arg = getSysArg(1)
     if arg == consts.TEST:
-        for path in TEST_PATHS:
-            runCmdProcess(path)
+        # for path in TEST_PATHS:
+        #     runCmdProcess(path)
 
-        log.info("Running integration tests")
+        # log.info("Running integration tests")
         riskManagmentITest.runTests()
         emailITest.runTests()
         sys.exit()

@@ -24,8 +24,8 @@ class TestGetStopLossFunction(unittest.TestCase):
 
     def test_StopLossPercent(self):
 
-        riskManagmentHandler.getStopLossPercent = MagicMock()
-        riskManagmentHandler.getStopLossPercent.return_value = 10
+        riskManagmentHandler.getMaxStopLossByPercent = MagicMock()
+        riskManagmentHandler.getMaxStopLossByPercent.return_value = 10
 
         results = handlePosition.getStopLoss('', {})
         self.assertEqual(results, 10)

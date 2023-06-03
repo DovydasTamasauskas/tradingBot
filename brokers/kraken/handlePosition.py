@@ -31,7 +31,7 @@ def getMarketPrice(pair):
     #     print(ticker[x])
 
     # documentation - https://docs.kraken.com/rest/#tag/Market-Data/operation/getTickerInformation
-    return ticker['c'][0]
+    return float(ticker['c'][0])
 
 
 def getBalance():
@@ -77,7 +77,7 @@ def getStopLoss(p):
     position = getters.getPosition(p)
 
     if realStopLossCanldes == 0:
-        stopLoss = riskManagmentHandler.getStopLossPercent(p)
+        stopLoss = riskManagmentHandler.getMaxStopLossByPercent(p)
     else:
         match position:
             case consts.LONG:

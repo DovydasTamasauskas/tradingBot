@@ -69,7 +69,7 @@ def setEntryPrice(p, marketPrice):
     if limitPrice > 0:
         entryPrice = limitPrice
     else:
-        entryPrice = float(marketPrice)
+        entryPrice = marketPrice
 
     p = setters.setEnteryPrice(p, entryPrice)
     return p

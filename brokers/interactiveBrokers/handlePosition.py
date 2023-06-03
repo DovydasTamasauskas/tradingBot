@@ -26,22 +26,56 @@ def getContract(p):
     return contract
 
 
-def getStopLoss(ib, p):
+def getStopLossByCandles(ib, p):
+    historicalDataInterval = getters.getHistoryDataInterval(p)
+    time = getters.getTime(p)
     contract = getContract(p)
-    realStopLossCanldes = getters.getRealStopLossCanldes(p)
 
-    if realStopLossCanldes == 0:
-        stopLoss = riskManagmentHandler.getStopLossPercent(p)
-    else:
-        historicalDataInterval = getters.getHistoryDataInterval(p)
-        time = getters.getTime(p)
-
-        historicalData = api.getHistoricalData(
-            ib, contract, time, historicalDataInterval)
-        stopLoss = riskManagmentHandler.getStopLossHistorical(
-            historicalData, p)
+    historicalData = api.getHistoricalData(
+        ib, contract, time, historicalDataInterval)
+    stopLoss = getStopLossHistorical(
+        historicalData, p)
 
     return stopLoss
+
+
+def getStopLossHistorical(historicalData, params):
+    position = getters.getPosition(params)
+    stopLossCanldes = getters.getStopLossCanldes(params)
+    historicalData = functions.slice(historicalData, -stopLossCanldes)
+
+    match position:
+        case consts.LONG:
+            stopLoss = getCandlesLow(historicalData)
+        case consts.SHORT:
+            stopLoss = getCandlesHigh(historicalData)
+        case _:
+            log.warrning(consts.FAILED_TO_SET_STOP_LOSS_HISTORICAL)
+            return 0
+
+    return round(stopLoss, 5)
+
+
+def getCandlesLow(array):
+    try:
+        low = 100000
+        for x in array:
+            if low > x['low']:
+                low = x['low']
+        return low
+    except:
+        log.warrning(consts.FAILED_TO_CALCULATE_LOW)
+
+
+def getCandlesHigh(array):
+    try:
+        high = 0
+        for x in array:
+            if high < x['high']:
+                high = x['high']
+        return high
+    except:
+        log.warrning(consts.FAILED_TO_CALCULATE_HIGH)
 
 
 def handlePosition(p):
@@ -52,7 +86,8 @@ def handlePosition(p):
     marketPrice = api.getMarketPrice(ib, p)
     p = functions.setEntryPrice(p, marketPrice)
 
-    stopLoss = getStopLoss(ib, p)
+    stopLossByCandles = getStopLossByCandles(ib, p)
+    stopLoss = riskManagmentHandler.getStopLoss(p, stopLossByCandles)
     p = setters.setStopLoss(p, stopLoss)
 
     takeProfit = riskManagmentHandler.getTakeProfit(p)
