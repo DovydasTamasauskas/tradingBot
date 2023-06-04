@@ -27,25 +27,24 @@ SLEEP_TIME = 1
 TEST_PATHS = [
     "shared/test/test_isRequiredParamsDefined.py",
     "shared/test/test_slice.py",
-    "handlers/test/test_getStopLossPercent.py",
-    "handlers/test/test_getStopLossHistorical.py",
     "handlers/test/test_getTakeProfit.py",
     "handlers/test/test_isStopLossExceeded.py",
-    "handlers/test/test_getCandles.py",
     "brokers/interactiveBrokers/test/test_getContract.py",
-    "brokers/interactiveBrokers/test/test_handlePosition.py"
+    "brokers/interactiveBrokers/test/test_handlePosition.py",
+    "brokers/interactiveBrokers/test/test_getStopLossHistorical.py",
+    "brokers/interactiveBrokers/test/test_getCandles.py"
 ]
 
 
 def scripts():
     arg = getSysArg(1)
     if arg == consts.TEST:
-        # for path in TEST_PATHS:
-        #     runCmdProcess(path)
+        for path in TEST_PATHS:
+            runCmdProcess(path)
 
-        # log.info("Running integration tests")
+        log.info("Running integration tests")
         riskManagmentITest.runTests()
-        # emailITest.runTests()
+        emailITest.runTests()
         sys.exit()
     if arg == consts.SEND_EMAIL:
         sendEmail.sendEmail()
