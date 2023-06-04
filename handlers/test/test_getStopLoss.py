@@ -1,8 +1,6 @@
 import unittest
-import brokers.interactiveBrokers.handlePosition as handlePosition
 import shared.log as log
 from unittest.mock import MagicMock
-import brokers.interactiveBrokers.api as api
 import handlers.riskManagmentHandler as riskManagmentHandler
 
 
@@ -14,18 +12,19 @@ class TestGetStopLossFunction(unittest.TestCase):
     def test_GetStopLoss(self):
 
         riskManagmentHandler.getMaxStopLossByPercent = MagicMock()
-        riskManagmentHandler.getMaxStopLossByPercent.return_value = 10
+        riskManagmentHandler.getMaxStopLossByPercent.return_value = 8
 
-        results = handlePosition.getStopLoss({}, 5)
-        self.assertEqual(results, 10)
+        results = riskManagmentHandler.getStopLoss({}, 9, 10)
+        self.assertEqual(results, 8)
 
     def test_GetStopLoss2(self):
 
         riskManagmentHandler.isStopLossExceeded = MagicMock()
         riskManagmentHandler.isStopLossExceeded.return_value = False
 
-        results = handlePosition.getStopLoss({'stopLossCanldes': 2}, 5)
-        self.assertEqual(results, 5)
+        results = riskManagmentHandler.getStopLoss(
+            {'stopLossCanldes': 2}, 9, 10)
+        self.assertEqual(results, 9)
 
     def test_GetStopLoss3(self):
 
@@ -33,10 +32,11 @@ class TestGetStopLossFunction(unittest.TestCase):
         riskManagmentHandler.isStopLossExceeded.return_value = True
 
         riskManagmentHandler.getMaxStopLossByPercent = MagicMock()
-        riskManagmentHandler.getMaxStopLossByPercent.return_value = 10
+        riskManagmentHandler.getMaxStopLossByPercent.return_value = 8
 
-        results = handlePosition.getStopLoss({'stopLossCanldes': 2}, 5)
-        self.assertEqual(results, 10)
+        results = riskManagmentHandler.getStopLoss(
+            {'stopLossCanldes': 2}, 7, 10)
+        self.assertEqual(results, 8)
 
 
 if __name__ == '__main__':

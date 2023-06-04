@@ -25,14 +25,18 @@ def runCmdProcess(path):
 SLEEP_TIME = 1
 
 TEST_PATHS = [
-    "shared/test/test_isRequiredParamsDefined.py",
-    "shared/test/test_slice.py",
+    "brokers/interactiveBrokers/test/test_getCandles.py",
+    "brokers/interactiveBrokers/test/test_getContract.py",
+    "brokers/interactiveBrokers/test/test_getStopLossByCandles.py",
+    "brokers/interactiveBrokers/test/test_getStopLossHistorical.py",
+    "brokers/interactiveBrokers/test/test_handlePosition.py",
+
+    "handlers/test/test_getStopLoss.py",
     "handlers/test/test_getTakeProfit.py",
     "handlers/test/test_isStopLossExceeded.py",
-    "brokers/interactiveBrokers/test/test_getContract.py",
-    "brokers/interactiveBrokers/test/test_handlePosition.py",
-    "brokers/interactiveBrokers/test/test_getStopLossHistorical.py",
-    "brokers/interactiveBrokers/test/test_getCandles.py"
+
+    "shared/test/test_isRequiredParamsDefined.py",
+    "shared/test/test_slice.py",
 ]
 
 
