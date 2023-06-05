@@ -1,12 +1,10 @@
 import shared.consts as consts
 import handlers.jsonHandler.getters as getters
 import shared.log as log
-import shared.functions as functions
 
 
-def isStopLossExceeded(params, stopLoss):
+def isStopLossExceeded(params, stopLoss, entryPrice):
     maxStopLoss = getters.getMaxStopLoss(params)
-    entryPrice = getters.getEnteryPrice(params)
 
     stopLossOnPrice = (100 * stopLoss / entryPrice) - 100
 
@@ -51,7 +49,7 @@ def getStopLoss(p, stopLossByCandle, entryPrice):
         stopLoss = getMaxStopLossByPercent(p, entryPrice)
     else:
         stopLoss = stopLossByCandle
-        if isStopLossExceeded(p, stopLoss):
+        if isStopLossExceeded(p, stopLoss, entryPrice):
             stopLoss = getMaxStopLossByPercent(p, entryPrice)
 
     return stopLoss
