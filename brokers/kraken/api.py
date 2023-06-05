@@ -49,7 +49,7 @@ def sendPrivateRequest(path, pair=None, type=None, volume=None, leverage=None, o
         return api_data['result']
 
     except Exception as error:
-        print('Failed (%s)' % error)
+        print('Failed (%s)' % error, api_data)
 
 
 def sendPublicRequest(path, pair=None, interval=None, since=None):
@@ -70,7 +70,7 @@ def sendPublicRequest(path, pair=None, interval=None, since=None):
         api_data = json.loads(api_response)
         return api_data['result']
     except Exception as error:
-        print('Failed (%s)' % error)
+        print('Failed (%s)' % error, api_data)
     return 0
 
 

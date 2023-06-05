@@ -51,4 +51,4 @@ def scripts():
         emailITest.runTests()
         sys.exit()
     if arg == consts.SEND_EMAIL:
-        sendEmail.sendEmail()
+        sendEmail.sendEmail2()

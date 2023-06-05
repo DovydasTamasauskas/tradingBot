@@ -25,9 +25,9 @@ def main():
         connection.close()
 
         for message in messages:
-            positionResults = interactiveBrokers.handlePosition(message)
+            # positionResults = interactiveBrokers.handlePosition(message)
+            positionResults = krakenHandler.handlePosition(message)
             notifyHelper.sendMessage(positionResults)
-            # krakenHandler.handlePosition(message)
 
         functions.sleep(SLEEP_INTERVAL_SEC)
 

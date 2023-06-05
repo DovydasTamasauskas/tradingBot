@@ -90,10 +90,10 @@ def getStopLoss(p, entryPrice):
     return stopLoss
 
 
-def openPosition(p, stopLoss, takeProfit):
+def open(p, stopLoss, takeProfit):
     if (getters.getPosition(p) == consts.SHORT):
-        openPosition(DEFAULT_PAIR, 'buy', 'limit', takeProfit)
-        openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', stopLoss)
+        openPosition(DEFAULT_PAIR, 'buy', 'limit', round(takeProfit, 1))
+        openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', round(stopLoss, 1))
         openPosition(DEFAULT_PAIR, 'sell', 'market')
     # else:
     #     openPosition(DEFAULT_PAIR, 'sell', 'limit', stopLoss)
@@ -102,7 +102,6 @@ def openPosition(p, stopLoss, takeProfit):
 
 
 def handlePosition(p):
-
     marketPrice = getMarketPrice(p, DEFAULT_PAIR)
 
     stopLoss = riskManagmentHandler.getStopLoss(
@@ -110,7 +109,7 @@ def handlePosition(p):
 
     takeProfit = riskManagmentHandler.getTakeProfit(p, marketPrice, stopLoss)
 
-    openPosition(p, stopLoss, takeProfit)
+    open(p, stopLoss, takeProfit)
 
     return {**p, **{'enterTime': functions.getTimeNow(),
                     'enteryPrice': marketPrice,

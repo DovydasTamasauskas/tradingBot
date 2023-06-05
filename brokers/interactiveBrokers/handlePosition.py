@@ -89,7 +89,6 @@ def handlePosition(p):
 
     takeProfit = riskManagmentHandler.getTakeProfit(p, marketPrice, stopLoss)
 
-    notifyHelper.sendMessage(p)
     api.createOrder(p)
     api.disconnect(ib)
 
