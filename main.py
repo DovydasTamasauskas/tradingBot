@@ -4,6 +4,7 @@ import shared.functions as functions
 import iTest.heplers as heplers
 import scripts
 import brokers.kraken.handlePosition as krakenHandler
+import notification.helpers.sendMessage as notifyHelper
 
 SLEEP_INTERVAL_SEC = 5
 
@@ -24,7 +25,8 @@ def main():
         connection.close()
 
         for message in messages:
-            interactiveBrokers.handlePosition(message)
+            positionResults = interactiveBrokers.handlePosition(message)
+            notifyHelper.sendMessage(positionResults)
             # krakenHandler.handlePosition(message)
 
         functions.sleep(SLEEP_INTERVAL_SEC)

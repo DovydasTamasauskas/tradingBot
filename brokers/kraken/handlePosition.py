@@ -24,14 +24,14 @@ def getHistoricalTicks(pair, interval, candlesRange):
     return api.sendPublicRequest('OHLC', pair,  interval, since)[pair]
 
 
-def getMarketPrice(pair):
-    ticker = api.sendPublicRequest('Ticker', pair)[pair]
-    # ticker = api.getTickerInfo(pair)[pair]
-    # for x in ticker:
-    #     print(ticker[x])
+def getMarketPrice(p, pair):
+    if getters.getEnteryPriceNO_ERROR(p) == 0:  # for test only
+        ticker = api.sendPublicRequest('Ticker', pair)[pair]
 
-    # documentation - https://docs.kraken.com/rest/#tag/Market-Data/operation/getTickerInformation
-    return float(ticker['c'][0])
+        # documentation - https://docs.kraken.com/rest/#tag/Market-Data/operation/getTickerInformation
+        return float(ticker['c'][0])
+    else:
+        return getters.getEnteryPriceNO_ERROR(p)
 
 
 def getBalance():
@@ -72,12 +72,12 @@ def getCandlesHight(pair, interval, candlesRange):
     return sorted(highs, reverse=True)[0]
 
 
-def getStopLoss(p):
+def getStopLoss(p, entryPrice):
     realStopLossCanldes = getters.getRealStopLossCanldes(p)
     position = getters.getPosition(p)
 
     if realStopLossCanldes == 0:
-        stopLoss = riskManagmentHandler.getMaxStopLossByPercent(p)
+        stopLoss = riskManagmentHandler.getMaxStopLossByPercent(p, entryPrice)
     else:
         match position:
             case consts.LONG:
@@ -90,24 +90,30 @@ def getStopLoss(p):
     return stopLoss
 
 
+def openPosition(p, stopLoss, takeProfit):
+    if (getters.getPosition(p) == consts.SHORT):
+        openPosition(DEFAULT_PAIR, 'buy', 'limit', takeProfit)
+        openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', stopLoss)
+        openPosition(DEFAULT_PAIR, 'sell', 'market')
+    # else:
+    #     openPosition(DEFAULT_PAIR, 'sell', 'limit', stopLoss)
+    #     openPosition(DEFAULT_PAIR, 'sell', 'stop-loss', takeProfit)
+    #     openPosition(DEFAULT_PAIR, 'buy', 'market')
+
+
 def handlePosition(p):
-    p = functions.setEnterTimeNow(p)
 
-    marketPrice = getMarketPrice(DEFAULT_PAIR)
+    marketPrice = getMarketPrice(p, DEFAULT_PAIR)
 
-    stopLoss = getStopLoss(p)
-    p = setters.setStopLoss(p, stopLoss)
+    stopLoss = riskManagmentHandler.getStopLoss(
+        p, 0, marketPrice)
 
-    takeProfit = riskManagmentHandler.getTakeProfit(p)
-    p = setters.setTakeProfit(p, takeProfit)
+    takeProfit = riskManagmentHandler.getTakeProfit(p, marketPrice, stopLoss)
 
-    notifyHelper.sendMessage(p)
-    api.createOrder(p)
+    openPosition(p, stopLoss, takeProfit)
 
-    return p
-
-
-# TODO handle position
-# openPosition(DEFAULT_PAIR, 'buy', 'limit', '26600')
-# openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', '30000')
-# openPosition(DEFAULT_PAIR, 'sell', 'market')
+    return {**p, **{'enterTime': functions.getTimeNow(),
+                    'enteryPrice': marketPrice,
+                    'stopLoss': stopLoss,
+                    'takeProfit': takeProfit,
+                    }}
