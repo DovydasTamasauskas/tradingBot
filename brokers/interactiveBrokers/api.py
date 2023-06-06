@@ -55,25 +55,24 @@ def getHistoricalData(ib, contract, timeInterval, historyInterval):
         return None
 
 
-def createOrder(params):
+def createOrder(ib, params, stopLoss, takeProfit):
     contract = handlePosition.getContract(params)
-    position = getters.getPosition(params)
     size = getters.getSize(params)
-    if position == 'long':
-        position2 = "BUY"
-    if position == "short":
-        position2 = "SELL"
+
+    if (getters.getPosition(params) == consts.SHORT):
+        limit = ib_insync.LimitOrder("BUY", size, takeProfit)
+        stopLoss = ib_insync.StopOrder("SELL", size, takeProfit)
+        market = ib_insync.MarketOrder("SELL", size)
+        trade = ib.placeOrder(contract, limit)
+        trade = ib.placeOrder(contract, stopLoss)
+        trade = ib.placeOrder(contract, market)
 
     logEnteredPosition = getters.getLogEnteredPosition(params)
     if logEnteredPosition == True:
 
         json_formatted_str = json.dumps(params, indent=2)
-        log.info("entered position "+position2 + " "+str(size))
+        log.info("entered position long "+str(size))
         log.info(json_formatted_str)
-    # ib = ib_insync.IB()
-    # order = ib_insync.LimitOrder(position2, size, 1.11)
-    # trade = ib.placeOrder(contract, order)
-    # print(trade)
 
 
 def setForexContract(pair):

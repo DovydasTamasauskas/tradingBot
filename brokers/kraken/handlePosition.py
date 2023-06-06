@@ -1,9 +1,7 @@
 import brokers.kraken.api as api
 import time
 import handlers.jsonHandler.getters as getters
-import handlers.jsonHandler.setters as setters
 import handlers.riskManagmentHandler as riskManagmentHandler
-import notification.helpers.sendMessage as notifyHelper
 import shared.consts as consts
 import shared.log as log
 import shared.functions as functions
@@ -96,6 +94,13 @@ def open(p, stopLoss, takeProfit):
         openPosition(DEFAULT_PAIR, 'sell', 'limit', round(takeProfit, 1))
         openPosition(DEFAULT_PAIR, 'sell', 'stop-loss', round(stopLoss, 1))
         openPosition(DEFAULT_PAIR, 'buy', 'market')
+
+    # TODO move porition printing to shared file
+    logEnteredPosition = getters.getLogEnteredPosition(p)
+    if logEnteredPosition == True:
+        log.info("entered position " + getters.getPosition(p))
+        log.info("limit - " + str(takeProfit))
+        log.info("stopLoss - " + str(stopLoss))
 
 
 def handlePosition(p):

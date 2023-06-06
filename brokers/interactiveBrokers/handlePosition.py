@@ -89,7 +89,7 @@ def handlePosition(p):
 
     takeProfit = riskManagmentHandler.getTakeProfit(p, marketPrice, stopLoss)
 
-    api.createOrder(p)
+    api.createOrder(ib, p, stopLoss, takeProfit)
     api.disconnect(ib)
 
     return {**p, **{'enterTime': functions.getTimeNow(),
