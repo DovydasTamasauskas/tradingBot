@@ -22,14 +22,12 @@ def sendEmail():
     connection.close()
 
 
-def sendEmail2():
+def sendEmailBTC():
     heplers.testTitle("Sending email")
     TEST_JSON = heplers.createJson(
         position='short',
-        # limitPrice=1.07,
-        pair="EURUSD",
+        pair="XXBTZUSD",
         size=0.0001,
-        time='15 mins',
         stopLossCanldes=4,
         logEnteredPosition=True
     )

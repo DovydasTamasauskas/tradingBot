@@ -72,21 +72,18 @@ def getCandlesHight(pair, interval, candlesRange):
     return sorted(highs, reverse=True)[0]
 
 
-def getStopLoss(p, entryPrice):
-    realStopLossCanldes = getters.getRealStopLossCanldes(p)
+def getStopLossByCandles(p):
     position = getters.getPosition(p)
 
-    if realStopLossCanldes == 0:
-        stopLoss = riskManagmentHandler.getMaxStopLossByPercent(p, entryPrice)
-    else:
-        match position:
-            case consts.LONG:
-                stopLoss = getCandlesLow(DEFAULT_PAIR, 15, 4)
-            case consts.SHORT:
-                stopLoss = getCandlesHight(DEFAULT_PAIR, 15, 4)
-            case _:
-                log.warrning(consts.FAILED_TO_SET_STOP_LOSS_PERCENT)
-                return 0
+    match position:
+        case consts.LONG:
+            stopLoss = getCandlesLow(DEFAULT_PAIR, 15, 4)
+        case consts.SHORT:
+            stopLoss = getCandlesHight(DEFAULT_PAIR, 15, 4)
+        case _:
+            log.warrning(consts.FAILED_TO_SET_STOP_LOSS_PERCENT)
+            return 0
+
     return stopLoss
 
 
@@ -95,17 +92,19 @@ def open(p, stopLoss, takeProfit):
         openPosition(DEFAULT_PAIR, 'buy', 'limit', round(takeProfit, 1))
         openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', round(stopLoss, 1))
         openPosition(DEFAULT_PAIR, 'sell', 'market')
-    # else:
-    #     openPosition(DEFAULT_PAIR, 'sell', 'limit', stopLoss)
-    #     openPosition(DEFAULT_PAIR, 'sell', 'stop-loss', takeProfit)
-    #     openPosition(DEFAULT_PAIR, 'buy', 'market')
+    else:
+        openPosition(DEFAULT_PAIR, 'sell', 'limit', round(takeProfit, 1))
+        openPosition(DEFAULT_PAIR, 'sell', 'stop-loss', round(stopLoss, 1))
+        openPosition(DEFAULT_PAIR, 'buy', 'market')
 
 
 def handlePosition(p):
     marketPrice = getMarketPrice(p, DEFAULT_PAIR)
 
+    stopLossByCandles = getStopLossByCandles(p)
+
     stopLoss = riskManagmentHandler.getStopLoss(
-        p, 0, marketPrice)
+        p, stopLossByCandles, marketPrice)
 
     takeProfit = riskManagmentHandler.getTakeProfit(p, marketPrice, stopLoss)
 
