@@ -1,7 +1,6 @@
 import brokers.interactiveBrokers.handlePosition as interactiveBrokers
 import notification.gmail as notification
 import shared.functions as functions
-import iTest.heplers as heplers
 import scripts
 import brokers.kraken.handlePosition as krakenHandler
 import notification.helpers.sendMessage as notifyHelper
@@ -33,13 +32,5 @@ def main():
 
 
 if __name__ == "__main__":
-    # json = heplers.createJson(
-    #     position="short",
-    #     # stopLossPercent=1,
-    #     stopLossCanldes=3,
-    #     limitPrice=100,
-    #     logEnteredPosition=True
-    # )
-    # krakenHandler.handlePosition(json)
     scripts.scripts()
     main()

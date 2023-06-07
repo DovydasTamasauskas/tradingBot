@@ -59,13 +59,13 @@ def createOrder(ib, params, stopLoss, takeProfit):
     contract = handlePosition.getContract(params)
     size = getters.getSize(params)
 
-    if (getters.getPosition(params) == consts.SHORT):
-        limit = ib_insync.LimitOrder("BUY", size, takeProfit)
-        stopLoss = ib_insync.StopOrder("SELL", size, takeProfit)
-        market = ib_insync.MarketOrder("SELL", size)
-        trade = ib.placeOrder(contract, limit)
-        trade = ib.placeOrder(contract, stopLoss)
-        trade = ib.placeOrder(contract, market)
+    # if (getters.getPosition(params) == consts.SHORT):
+    # limit = ib_insync.LimitOrder("BUY", size, takeProfit)
+    # stopLoss = ib_insync.StopOrder("SELL", size, takeProfit)
+    # market = ib_insync.MarketOrder("SELL", size)
+    # trade = ib.placeOrder(contract, limit)
+    # trade = ib.placeOrder(contract, stopLoss)
+    # trade = ib.placeOrder(contract, market)
 
     logEnteredPosition = getters.getLogEnteredPosition(params)
     if logEnteredPosition == True:
