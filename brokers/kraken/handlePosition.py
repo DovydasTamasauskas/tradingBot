@@ -17,6 +17,10 @@ def openPosition(pair, type, ordertype, price=None, volume=DEFAULT_VOLUME, lever
 
 
 def getHistoricalTicks(pair, interval, candlesRange):
+    if interval == '15 mins':  # TODO fix bug in interactive brkers
+        interval = 15
+    else:
+        interval = 15
     nowts = int(round(time.time()))
     since = nowts - interval*60*candlesRange
     return api.sendPublicRequest('OHLC', pair,  interval, since)[pair]
@@ -72,12 +76,14 @@ def getCandlesHight(pair, interval, candlesRange):
 
 def getStopLossByCandles(p):
     position = getters.getPosition(p)
+    interval = getters.getTime(p)
+    stopLossCanldes = getters.getStopLossCanldes(p)
 
     match position:
         case consts.LONG:
-            stopLoss = getCandlesLow(DEFAULT_PAIR, 15, 4)
+            stopLoss = getCandlesLow(DEFAULT_PAIR, interval, stopLossCanldes)
         case consts.SHORT:
-            stopLoss = getCandlesHight(DEFAULT_PAIR, 15, 4)
+            stopLoss = getCandlesHight(DEFAULT_PAIR, interval, stopLossCanldes)
         case _:
             log.warrning(consts.FAILED_TO_SET_STOP_LOSS_PERCENT)
             return 0
@@ -89,11 +95,11 @@ def open(p, stopLoss, takeProfit):
     if (getters.getPosition(p) == consts.SHORT):
         openPosition(DEFAULT_PAIR, 'buy', 'limit', round(takeProfit, 1))
         openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', round(stopLoss, 1))
-        openPosition(DEFAULT_PAIR, 'sell', 'market')
+        # openPosition(DEFAULT_PAIR, 'sell', 'market')
     else:
         openPosition(DEFAULT_PAIR, 'sell', 'limit', round(takeProfit, 1))
         openPosition(DEFAULT_PAIR, 'sell', 'stop-loss', round(stopLoss, 1))
-        openPosition(DEFAULT_PAIR, 'buy', 'market')
+        # openPosition(DEFAULT_PAIR, 'buy', 'market')
 
     # TODO move porition printing to shared file
     logEnteredPosition = getters.getLogEnteredPosition(p)
