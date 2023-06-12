@@ -29,7 +29,7 @@ def sendEmailBTC():
         pair="XXBTZUSD",
         size=0.0001,
         stopLossCanldes=4,
-        # time='15 mins', TODO implement
+        time='15 mins',
         logEnteredPosition=True
     )
 

@@ -8,6 +8,7 @@ from datetime import datetime
 import shared.functions as functions
 import handlers.jsonHandler.setters as setters
 import handlers.jsonHandler.getters as getters
+import re
 
 
 def slice(val: str, start=0, end=None):
@@ -60,3 +61,12 @@ def setEnterTimeNow(p):
     timeNow = functions.getTimeNow()
     p = setters.setEnterTime(p, timeNow)
     return p
+
+
+def getTimeInterval(p):
+    time = getters.getTime(p)
+    if isinstance(time, int):
+        return time
+    if time.find("min") != -1:
+        return int(re.search(r'\d+', time).group())
+    return 15

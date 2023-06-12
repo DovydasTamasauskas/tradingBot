@@ -17,10 +17,6 @@ def openPosition(pair, type, ordertype, price=None, volume=DEFAULT_VOLUME, lever
 
 
 def getHistoricalTicks(pair, interval, candlesRange):
-    if interval == '15 mins':  # TODO fix bug in interactive brkers
-        interval = 15
-    else:
-        interval = 15
     nowts = int(round(time.time()))
     since = nowts - interval*60*candlesRange
     return api.sendPublicRequest('OHLC', pair,  interval, since)[pair]
@@ -76,7 +72,7 @@ def getCandlesHight(pair, interval, candlesRange):
 
 def getStopLossByCandles(p):
     position = getters.getPosition(p)
-    interval = getters.getTime(p)
+    interval = functions.getTimeInterval(p)
     stopLossCanldes = getters.getStopLossCanldes(p)
 
     match position:
