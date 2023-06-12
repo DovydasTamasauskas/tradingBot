@@ -17,10 +17,19 @@ def getFailedPositionTitle(positionType: str, pair):
     return consts.RESULTS + ": Failed to enter " + getPositionTitle(positionType, pair)
 
 
-def sendMessage(params):
+def sendEmail(params):
     sendResult = getters.getSendResultEmail(params)
     if sendResult == True:
         position = getters.getPosition(params)
         pair = getters.getPair(params)
         title = getSuccessPositionTitle(position, pair)
         gmail.sendMail(title, consts.RESULTS+str(params))
+
+
+def printToConsole(p):
+    logEnteredPosition = getters.getLogEnteredPosition(p)
+    if logEnteredPosition == True:
+        log.info("entered position - " + getters.getPosition(p))
+        log.info("entered price - " + str(getters.getEnteryPrice(p)))
+        log.info("limit - " + str(getters.getTakeProfit(p)))
+        log.info("stopLoss - " + str(getters.getStopLoss(p)))

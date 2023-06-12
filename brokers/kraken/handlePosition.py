@@ -97,13 +97,6 @@ def open(p, stopLoss, takeProfit):
         openPosition(DEFAULT_PAIR, 'sell', 'stop-loss', round(stopLoss, 1))
         # openPosition(DEFAULT_PAIR, 'buy', 'market')
 
-    # TODO move porition printing to shared file
-    logEnteredPosition = getters.getLogEnteredPosition(p)
-    if logEnteredPosition == True:
-        log.info("entered position " + getters.getPosition(p))
-        log.info("limit - " + str(takeProfit))
-        log.info("stopLoss - " + str(stopLoss))
-
 
 def handlePosition(p):
     marketPrice = getMarketPrice(p, DEFAULT_PAIR)

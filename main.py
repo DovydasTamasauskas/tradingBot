@@ -3,7 +3,7 @@ import notification.gmail as notification
 import shared.functions as functions
 import scripts
 import brokers.kraken.handlePosition as krakenHandler
-import notification.helpers.sendMessage as notifyHelper
+import notification.helpers.messages as notifyHelper
 
 SLEEP_INTERVAL_SEC = 5
 
@@ -26,7 +26,8 @@ def main():
         for message in messages:
             # positionResults = interactiveBrokers.handlePosition(message)
             positionResults = krakenHandler.handlePosition(message)
-            notifyHelper.sendMessage(positionResults)
+            notifyHelper.sendEmail(positionResults)
+            notifyHelper.printToConsole(positionResults)
 
         functions.sleep(SLEEP_INTERVAL_SEC)
 

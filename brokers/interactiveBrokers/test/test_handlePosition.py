@@ -4,7 +4,7 @@ import shared.log as log
 from unittest.mock import MagicMock
 import brokers.interactiveBrokers.api as api
 import handlers.riskManagmentHandler as riskManagmentHandler
-import notification.helpers.sendMessage as notifyHelper
+import notification.helpers.messages as notifyHelper
 import shared.functions as functions
 
 
@@ -30,7 +30,7 @@ class TestHandlePositionFunction(unittest.TestCase):
         riskManagmentHandler.getTakeProfit = MagicMock()
         riskManagmentHandler.getTakeProfit.return_value = 102
 
-        notifyHelper.sendMessage = MagicMock()
+        notifyHelper.sendEmail = MagicMock()
 
         api.createOrder = MagicMock()
 
