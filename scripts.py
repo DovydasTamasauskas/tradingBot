@@ -35,6 +35,7 @@ TEST_PATHS = [
     "handlers/test/test_getTakeProfit.py",
     "handlers/test/test_isStopLossExceeded.py",
 
+    "shared/test/test_getTimeInterval.py",
     "shared/test/test_isRequiredParamsDefined.py",
     "shared/test/test_slice.py",
 ]
