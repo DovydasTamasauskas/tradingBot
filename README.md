@@ -38,7 +38,11 @@ Kraken brokers is for crypto trades. Interactive brokers - forex, stocks
 
 You need to define credentials in ./credentials.py. E.g ./credentials.samle.py
 
-## Instalation
+# Tests
+
+There are 39 unit tests and 8 integration tests. run tests `python3 main.py test`
+
+# Instalation
 
 - pip install ib_insync
 - pip install DateTime
