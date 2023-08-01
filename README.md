@@ -25,7 +25,6 @@ email payload:
   "stopLossCanldes": 3,
   "maxStopLoss": 0.02,
   "takeProfitRatio": 1.5,
-  "historyDataInterval": "1 D",
   "AlertPrice": "{{close}}",
   "AlertTime": "{{timenow}}"
 }
