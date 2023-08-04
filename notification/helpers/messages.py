@@ -29,7 +29,7 @@ def sendEmail(params):
 def printToConsole(p):
     logEnteredPosition = getters.getLogEnteredPosition(p)
     if logEnteredPosition == True:
-        log.info("entered position - " + getters.getPosition(p))
-        log.info("entered price - " + str(getters.getEnteryPrice(p)))
-        log.info("limit - " + str(getters.getTakeProfit(p)))
-        log.info("stopLoss - " + str(getters.getStopLoss(p)))
+        log.blank("entered position - " + getters.getPosition(p) +
+                  " | entry - " + str(getters.getEnteryPrice(p)) +
+                  " | takeProfit - " + str(getters.getTakeProfit(p)) +
+                  " | stopLoss - " + str(getters.getStopLoss(p)))

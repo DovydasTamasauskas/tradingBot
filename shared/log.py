@@ -17,6 +17,10 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
+def blank(message):
+    print(message)
+
+
 def info(message):
     print(bcolors.OKCYAN + message + bcolors.ENDC)
 
