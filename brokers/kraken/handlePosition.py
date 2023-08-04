@@ -16,6 +16,14 @@ def openPosition(pair, type, ordertype, price=None, volume=DEFAULT_VOLUME, lever
                            volume, leverage, ordertype, price)
 
 
+def openOrders():
+    return len(api.sendPrivateRequest('OpenOrders')['open'])
+
+
+def cancelAllOrders():
+    api.sendPrivateRequest('CancelAll')
+
+
 def getHistoricalTicks(pair, interval, candlesRange):
     nowts = int(round(time.time()))
     since = nowts - interval*60*candlesRange
@@ -91,27 +99,35 @@ def open(p, stopLoss, takeProfit):
     if (getters.getPosition(p) == consts.SHORT):
         openPosition(DEFAULT_PAIR, 'buy', 'limit', round(takeProfit, 1))
         openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', round(stopLoss, 1))
-        # openPosition(DEFAULT_PAIR, 'sell', 'market')
+        openPosition(DEFAULT_PAIR, 'sell', 'market')
     else:
         openPosition(DEFAULT_PAIR, 'sell', 'limit', round(takeProfit, 1))
         openPosition(DEFAULT_PAIR, 'sell', 'stop-loss', round(stopLoss, 1))
-        # openPosition(DEFAULT_PAIR, 'buy', 'market')
+        openPosition(DEFAULT_PAIR, 'buy', 'market')
 
 
 def handlePosition(p):
-    marketPrice = getMarketPrice(p, DEFAULT_PAIR)
+    if openOrders() == 0:
+        marketPrice = getMarketPrice(p, DEFAULT_PAIR)
 
-    stopLossByCandles = getStopLossByCandles(p)
+        stopLossByCandles = getStopLossByCandles(p)
 
-    stopLoss = riskManagmentHandler.getStopLoss(
-        p, stopLossByCandles, marketPrice)
+        stopLoss = riskManagmentHandler.getStopLoss(
+            p, stopLossByCandles, marketPrice)
 
-    takeProfit = riskManagmentHandler.getTakeProfit(p, marketPrice, stopLoss)
+        takeProfit = riskManagmentHandler.getTakeProfit(
+            p, marketPrice, stopLoss)
 
-    open(p, stopLoss, takeProfit)
+        open(p, stopLoss, takeProfit)
 
-    return {**p, **{'enterTime': functions.getTimeNow(),
-                    'enteryPrice': marketPrice,
-                    'stopLoss': stopLoss,
-                    'takeProfit': takeProfit,
-                    }}
+        return {**p, **{'enterTime': functions.getTimeNow(),
+                        'enteryPrice': marketPrice,
+                        'stopLoss': stopLoss,
+                        'takeProfit': takeProfit,
+                        }}
+
+
+def removeInvalideOrders():
+
+    if openOrders() == 1:
+        cancelAllOrders()

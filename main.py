@@ -26,9 +26,11 @@ def main():
         for message in messages:
             # positionResults = interactiveBrokers.handlePosition(message)
             positionResults = krakenHandler.handlePosition(message)
-            notifyHelper.sendEmail(positionResults)
-            notifyHelper.printToConsole(positionResults)
+            if positionResults != None:
+                notifyHelper.sendEmail(positionResults)
+                notifyHelper.printToConsole(positionResults)
 
+        positionResults = krakenHandler.removeInvalideOrders()
         functions.sleep(SLEEP_INTERVAL_SEC)
 
 
