@@ -8,6 +8,7 @@ import time
 import credentials
 import handlers.jsonHandler.getters as getters
 import shared.log as log
+import ssl
 
 api_key_public = credentials.KRAKEN_API_KEY
 api_key_private = credentials.KRAKEN_PRIVETE_KEY
@@ -43,13 +44,15 @@ def sendPrivateRequest(path, pair=None, type=None, volume=None, leverage=None, o
         api_request.add_header('API-Sign', api_signature)
         api_request.add_header(
             'User-Agent', 'Kraken trading bot example')
+        
+        gcontext = ssl.SSLContext() 
         api_response = urllib.request.urlopen(
-            api_request).read().decode()
+            api_request, context=gcontext).read().decode()
         api_data = json.loads(api_response)
         return api_data['result']
 
     except Exception as error:
-        print('Failed (%s)' % error, api_data)
+        print('Failed (%s)' % error)
 
 
 def sendPublicRequest(path, pair=None, interval=None, since=None):
@@ -66,11 +69,13 @@ def sendPublicRequest(path, pair=None, interval=None, since=None):
         api_request = urllib.request.Request(
             'https://api.kraken.com' + api_path)
         api_request.add_header('User-Agent', 'Kraken trading bot example')
-        api_response = urllib.request.urlopen(api_request).read().decode()
+
+        gcontext = ssl.SSLContext() 
+        api_response = urllib.request.urlopen(api_request, context=gcontext).read().decode()
         api_data = json.loads(api_response)
         return api_data['result']
     except Exception as error:
-        print('Failed (%s)' % error, api_data)
+        print('Failed (%s)' % error)
     return 0
 
 
