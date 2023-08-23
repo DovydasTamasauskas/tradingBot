@@ -23,6 +23,8 @@ def sleep(sleepTime):
 
 def toJson(subject):
     try:
+        if subject[0] != '{':
+            subject = subject[subject.find("{"):]
         return json.loads(subject)
     except Exception as inst:
         print(inst)
@@ -49,6 +51,7 @@ def isRequiredParamsDefined(json):
             json[param]
         except:
             log.warrning(consts.FAILED_TO_GET_REQUIRED_PARAMS)
+            log.warrning(str(json))
             return False
     return True
 

@@ -36,5 +36,5 @@ def sendEmailBTC():
     TEST_JSON_STR = json.dumps(TEST_JSON)
 
     connection = notification.openConnection()
-    notification.sendMail(str(TEST_JSON_STR), str(TEST_JSON_STR))
+    notification.sendMail("Alert: "+str(TEST_JSON_STR), str(TEST_JSON_STR))
     connection.close()
