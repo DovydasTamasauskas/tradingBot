@@ -52,5 +52,5 @@ def EmailResultsITest():
 
 
 def runTests():
-    # EmailITest()
+    EmailITest()
     EmailResultsITest()
