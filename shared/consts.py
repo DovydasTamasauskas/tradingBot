@@ -52,3 +52,6 @@ TEST_RUNNING_MESSAGE = "Test running ..."
 
 SHORT = 'short'
 LONG = 'long'
+
+KRAKEN = 'kraken'
+INTERACTIVE_BROKERS = 'interactive_brokers'

@@ -20,6 +20,7 @@ enteryPrice = 'enteryPrice'
 stopLossPercent = 'stopLossPercent'
 sendResultEmail = 'sendResultEmail'
 logEnteredPosition = 'logEnteredPosition'
+broker = 'broker'
 
 
 def getPosition(params):
@@ -179,3 +180,10 @@ def getLogEnteredPosition(params):
         return params[logEnteredPosition]
     except:
         return True
+
+
+def getBroker(params):
+    try:
+        return params[broker]
+    except:
+        return "Kraken"
