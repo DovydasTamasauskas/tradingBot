@@ -14,23 +14,24 @@ def main():
         msgs = notification.searchUnseenMessages(connection)
 
         messages = []
-        for msg in msgs[0].split():
-            subject = notification.fetchMessage(connection, msg)['subject']
-            if functions.isResultMessage(subject) == False:
-                subjectJSON = functions.toJson(subject)
-                if subjectJSON != None and functions.isRequiredParamsDefined(subjectJSON):
-                    messages.append(subjectJSON)
+        if msgs != None:
+            for msg in msgs[0].split():
+                subject = notification.fetchMessage(connection, msg)['subject']
+                if functions.isResultMessage(subject) == False:
+                    subjectJSON = functions.toJson(subject)
+                    if subjectJSON != None and functions.isRequiredParamsDefined(subjectJSON):
+                        messages.append(subjectJSON)
+
+            for message in messages:
+                # positionResults = interactiveBrokers.handlePosition(message)
+                positionResults = krakenHandler.handlePosition(message)
+                if positionResults != None:
+                    notifyHelper.sendEmail(positionResults)
+                    notifyHelper.printToConsole(positionResults)
+
+            positionResults = krakenHandler.removeInvalideOrders()
 
         connection.close()
-
-        for message in messages:
-            # positionResults = interactiveBrokers.handlePosition(message)
-            positionResults = krakenHandler.handlePosition(message)
-            if positionResults != None:
-                notifyHelper.sendEmail(positionResults)
-                notifyHelper.printToConsole(positionResults)
-
-        positionResults = krakenHandler.removeInvalideOrders()
         functions.sleep(SLEEP_INTERVAL_SEC)
 
 

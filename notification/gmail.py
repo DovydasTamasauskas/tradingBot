@@ -25,6 +25,7 @@ def searchUnseenMessages(connection):
         _, msgs = connection.search(None, "(UNSEEN)")
     except:
         log.warrning(consts.FAILED_TO_SEARCH_FOR_UNSEEN_MESSAGES)
+        return None
     return msgs
 
 

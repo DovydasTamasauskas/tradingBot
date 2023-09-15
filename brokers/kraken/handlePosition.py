@@ -96,14 +96,15 @@ def getStopLossByCandles(p):
 
 
 def open(p, stopLoss, takeProfit):
-    if (getters.getPosition(p) == consts.SHORT):
-        openPosition(DEFAULT_PAIR, 'buy', 'limit', round(takeProfit, 1))
-        openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', round(stopLoss, 1))
-        openPosition(DEFAULT_PAIR, 'sell', 'market')
-    else:
-        openPosition(DEFAULT_PAIR, 'sell', 'limit', round(takeProfit, 1))
-        openPosition(DEFAULT_PAIR, 'sell', 'stop-loss', round(stopLoss, 1))
-        openPosition(DEFAULT_PAIR, 'buy', 'market')
+    if takeProfit > 0 and stopLoss > 0:
+        if (getters.getPosition(p) == consts.SHORT):
+            openPosition(DEFAULT_PAIR, 'buy', 'limit', round(takeProfit, 1))
+            openPosition(DEFAULT_PAIR, 'buy', 'stop-loss', round(stopLoss, 1))
+            openPosition(DEFAULT_PAIR, 'sell', 'market')
+        else:
+            openPosition(DEFAULT_PAIR, 'sell', 'limit', round(takeProfit, 1))
+            openPosition(DEFAULT_PAIR, 'sell', 'stop-loss', round(stopLoss, 1))
+            openPosition(DEFAULT_PAIR, 'buy', 'market')
 
 
 def handlePosition(p):

@@ -38,6 +38,8 @@ def getTakeProfit(params, entryPrice, stopLoss):
     else:
         if entryPrice < stopLoss:
             takeProfit = entryPrice-(stopLoss-entryPrice) * takeProfitRatio
+        else:
+            takeProfit = 0
 
     return round(takeProfit, 5)
 

@@ -59,6 +59,7 @@ def createOrder(ib, params, stopLoss, takeProfit):
     contract = handlePosition.getContract(params)
     size = getters.getSize(params)
 
+    # if takeProfit > 0 and stopLoss > 0:
     # if (getters.getPosition(params) == consts.SHORT):
     # limit = ib_insync.LimitOrder("BUY", size, takeProfit)
     # stopLoss = ib_insync.StopOrder("SELL", size, takeProfit)

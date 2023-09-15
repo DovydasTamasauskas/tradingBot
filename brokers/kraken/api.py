@@ -44,8 +44,8 @@ def sendPrivateRequest(path, pair=None, type=None, volume=None, leverage=None, o
         api_request.add_header('API-Sign', api_signature)
         api_request.add_header(
             'User-Agent', 'Kraken trading bot example')
-        
-        gcontext = ssl.SSLContext() 
+
+        gcontext = ssl.SSLContext()
         api_response = urllib.request.urlopen(
             api_request, context=gcontext).read().decode()
         api_data = json.loads(api_response)
@@ -53,6 +53,7 @@ def sendPrivateRequest(path, pair=None, type=None, volume=None, leverage=None, o
 
     except Exception as error:
         print('Failed (%s)' % error)
+        return {"open": []}
 
 
 def sendPublicRequest(path, pair=None, interval=None, since=None):
@@ -70,8 +71,9 @@ def sendPublicRequest(path, pair=None, interval=None, since=None):
             'https://api.kraken.com' + api_path)
         api_request.add_header('User-Agent', 'Kraken trading bot example')
 
-        gcontext = ssl.SSLContext() 
-        api_response = urllib.request.urlopen(api_request, context=gcontext).read().decode()
+        gcontext = ssl.SSLContext()
+        api_response = urllib.request.urlopen(
+            api_request, context=gcontext).read().decode()
         api_data = json.loads(api_response)
         return api_data['result']
     except Exception as error:
