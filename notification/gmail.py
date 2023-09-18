@@ -23,10 +23,10 @@ def sendMail(title, message):
 def searchUnseenMessages(connection):
     try:
         _, msgs = connection.search(None, "(UNSEEN)")
+        return msgs
     except:
         log.warrning(consts.FAILED_TO_SEARCH_FOR_UNSEEN_MESSAGES)
-        return None
-    return msgs
+    return None
 
 
 def fetchMessage(connection, msg):
@@ -45,6 +45,7 @@ def openConnection():
         connection.login(credentials.EMAIL_ADDRESS,
                          credentials.EMAIL_PASSWORD)
         connection.select("Inbox")
+        return connection
     except:
         log.warrning(consts.FAILED_TO_OPEN_EMAIL_CONNECTION)
-    return connection
+    return None
