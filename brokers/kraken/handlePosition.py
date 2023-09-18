@@ -126,6 +126,8 @@ def handlePosition(p):
                         'stopLoss': stopLoss,
                         'takeProfit': takeProfit,
                         }}
+    else:
+        log.blank("did not entered position. Other trade in progress...")
 
 
 def removeInvalideOrders():
