@@ -15,16 +15,12 @@ def main():
         messages = notification.searchUnseenMessages()
         for message in messages:
             if getters.getBroker(message) == consts.INTERACTIVE_BROKERS:
-                positionResults = interactiveBrokers.handlePosition(
+                interactiveBrokers.handlePosition(
                     message)
             else:
-                positionResults = krakenHandler.handlePosition(message)
+                krakenHandler.handlePosition(message)
 
-                if positionResults != None:
-                    notifyHelper.sendEmail(positionResults)
-                    notifyHelper.printToConsole(positionResults)
-                positionResults = krakenHandler.removeInvalideOrders()
-
+        krakenHandler.removeInvalideOrders()
         functions.sleep(SLEEP_INTERVAL_SEC)
 
 

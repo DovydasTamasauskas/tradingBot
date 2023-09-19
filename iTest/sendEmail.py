@@ -23,7 +23,7 @@ def sendEmail():
 def sendEmailBTC():
     heplers.testTitle("Sending email")
     TEST_JSON = heplers.createJson(
-        position='long',
+        position='short',
         pair="XXBTZUSD",
         size=0.01,
         stopLossCanldes=4,

@@ -5,6 +5,7 @@ import handlers.riskManagmentHandler as riskManagmentHandler
 import shared.consts as consts
 import shared.log as log
 import shared.functions as functions
+import notification.helpers.messages as notifyHelper
 
 
 DEFAULT_PAIR = 'XXBTZUSD'
@@ -121,11 +122,15 @@ def handlePosition(p):
 
         open(p, stopLoss, takeProfit)
 
-        return {**p, **{'enterTime': functions.getTimeNow(),
-                        'enteryPrice': marketPrice,
-                        'stopLoss': stopLoss,
-                        'takeProfit': takeProfit,
-                        }}
+        results = {**p, **{'enterTime': functions.getTimeNow(),
+                           'enteryPrice': marketPrice,
+                           'stopLoss': stopLoss,
+                           'takeProfit': takeProfit,
+                           }}
+
+        if results != None:
+            notifyHelper.sendEmail(results)
+            notifyHelper.printToConsole(results)
     else:
         log.warrning("did not entered position. Other trade in progress...")
 
