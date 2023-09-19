@@ -2,7 +2,7 @@ import brokers.interactiveBrokers.handlePosition as interactiveBrokers
 import notification.gmail as notification
 import shared.functions as functions
 import scripts
-import brokers.kraken.handlePosition as krakenHandler
+import brokers.kraken.handlePosition as kraken
 import notification.helpers.messages as notifyHelper
 import handlers.jsonHandler.getters as getters
 import shared.consts as consts
@@ -18,9 +18,9 @@ def main():
                 interactiveBrokers.handlePosition(
                     message)
             else:
-                krakenHandler.handlePosition(message)
+                kraken.handlePosition(message)
 
-        krakenHandler.removeInvalideOrders()
+        kraken.removeInvalideOrders()
         functions.sleep(SLEEP_INTERVAL_SEC)
 
 
