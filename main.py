@@ -12,28 +12,19 @@ SLEEP_INTERVAL_SEC = 5
 
 def main():
     while True == True:
-        msgs = notification.searchUnseenMessages()
 
-        messages = []
-        if msgs != None:
-            for msg in msgs[0].split():
-                subject = notification.fetchMessage(msg)[consts.BODY]
-                if functions.isResultMessage(subject) == False:
-                    subjectJSON = functions.toJson(subject)
-                    if subjectJSON != None and functions.isRequiredParamsDefined(subjectJSON):
-                        messages.append(subjectJSON)
+        messages = notification.searchUnseenMessages()
+        for message in messages:
+            if getters.getBroker(message) == consts.INTERACTIVE_BROKERS:
+                positionResults = interactiveBrokers.handlePosition(
+                    message)
+            else:
+                positionResults = krakenHandler.handlePosition(message)
+                if positionResults != None:
+                    notifyHelper.sendEmail(positionResults)
+                    notifyHelper.printToConsole(positionResults)
 
-            for message in messages:
-                if getters.getBroker(message) == consts.INTERACTIVE_BROKERS:
-                    positionResults = interactiveBrokers.handlePosition(
-                        message)
-                else:
-                    positionResults = krakenHandler.handlePosition(message)
-                    if positionResults != None:
-                        notifyHelper.sendEmail(positionResults)
-                        notifyHelper.printToConsole(positionResults)
-
-            positionResults = krakenHandler.removeInvalideOrders()
+        positionResults = krakenHandler.removeInvalideOrders()
 
         functions.sleep(SLEEP_INTERVAL_SEC)
 

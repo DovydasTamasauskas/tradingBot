@@ -17,20 +17,12 @@ def EmailITest():
 
     functions.sleep(5)
 
-    msgs = notification.searchUnseenMessages()
+    messages = notification.searchUnseenMessages()
 
-    messages = []
-    if msgs != None:
-        for msg in msgs[0].split():
-            subject = notification.fetchMessage(msg)[consts.BODY]
-            if functions.isResultMessage(subject) == False:
-                subjectJSON = functions.toJson(subject)
-                messages.append(subjectJSON)
-
-        for message in messages:
-            if message == TEST_JSON:
-                log.success("test passed")
-                return 0
+    for message in messages:
+        if message == TEST_JSON:
+            log.success("test passed")
+            return 0
 
     log.error("test failed")
 

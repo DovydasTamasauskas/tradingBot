@@ -5,6 +5,7 @@ import shared.log as log
 import shared.consts as consts
 from time import time
 import credentials
+import shared.functions as functions
 
 connection = None
 
@@ -28,19 +29,21 @@ def searchUnseenMessages():
         global connection
         connection = openConnection()
         _, msgs = connection.search(None, "(UNSEEN)")
-        return msgs
+        messages = []
+        if msgs != None:
+            for msg in msgs[0].split():
+                _, data = connection.fetch(msg, "(RFC822)")
+                message = email.message_from_bytes(data[0][1])
+                # {consts.TITLE: message.get("Subject"), consts.BODY: message.get_payload(decode=True).decode()}
+                subject = message.get_payload(
+                    decode=True).decode()  # get email body
+                if functions.isResultMessage(subject) == False:
+                    subjectJSON = functions.toJson(subject)
+                    if subjectJSON != None and functions.isRequiredParamsDefined(subjectJSON):
+                        messages.append(subjectJSON)
+        return messages
     except:
         log.warrning(consts.FAILED_TO_SEARCH_FOR_UNSEEN_MESSAGES)
-    return None
-
-
-def fetchMessage(msg):
-    try:
-        _, data = connection.fetch(msg, "(RFC822)")
-        message = email.message_from_bytes(data[0][1])
-        return {consts.TITLE: message.get("Subject"), consts.BODY: message.get_payload(decode=True).decode()}
-    except:
-        log.warrning(consts.FAILED_TO_FETCH_MESSAGES)
     return None
 
 
