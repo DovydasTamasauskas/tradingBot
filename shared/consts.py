@@ -55,3 +55,7 @@ LONG = 'long'
 
 KRAKEN = 'kraken'
 INTERACTIVE_BROKERS = 'interactive_brokers'
+
+# for gmail
+BODY = 'body'
+TITLE = 'title'

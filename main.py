@@ -18,7 +18,8 @@ def main():
         messages = []
         if msgs != None:
             for msg in msgs[0].split():
-                subject = notification.fetchMessage(connection, msg)['subject']
+                subject = notification.fetchMessage(
+                    connection, msg)[consts.BODY]
                 if functions.isResultMessage(subject) == False:
                     subjectJSON = functions.toJson(subject)
                     if subjectJSON != None and functions.isRequiredParamsDefined(subjectJSON):
