@@ -6,9 +6,12 @@ import shared.consts as consts
 from time import time
 import credentials
 
+connection = None
+
 
 def sendMail(title, message):
     try:
+        global connection
         connection = openConnection()
         new_message = Message()
         new_message["From"] = credentials.BOT_EMAIL_ADDRESS
@@ -20,8 +23,10 @@ def sendMail(title, message):
         log.warrning(consts.FAILED_TO_SEND_EMAIL)
 
 
-def searchUnseenMessages(connection):
+def searchUnseenMessages():
     try:
+        global connection
+        connection = openConnection()
         _, msgs = connection.search(None, "(UNSEEN)")
         return msgs
     except:
@@ -29,7 +34,7 @@ def searchUnseenMessages(connection):
     return None
 
 
-def fetchMessage(connection, msg):
+def fetchMessage(msg):
     try:
         _, data = connection.fetch(msg, "(RFC822)")
         message = email.message_from_bytes(data[0][1])

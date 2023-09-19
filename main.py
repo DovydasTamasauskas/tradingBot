@@ -12,14 +12,12 @@ SLEEP_INTERVAL_SEC = 5
 
 def main():
     while True == True:
-        connection = notification.openConnection()
-        msgs = notification.searchUnseenMessages(connection)
+        msgs = notification.searchUnseenMessages()
 
         messages = []
         if msgs != None:
             for msg in msgs[0].split():
-                subject = notification.fetchMessage(
-                    connection, msg)[consts.BODY]
+                subject = notification.fetchMessage(msg)[consts.BODY]
                 if functions.isResultMessage(subject) == False:
                     subjectJSON = functions.toJson(subject)
                     if subjectJSON != None and functions.isRequiredParamsDefined(subjectJSON):
@@ -37,7 +35,6 @@ def main():
 
             positionResults = krakenHandler.removeInvalideOrders()
 
-        connection.close()
         functions.sleep(SLEEP_INTERVAL_SEC)
 
 

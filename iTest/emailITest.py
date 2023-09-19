@@ -13,19 +13,16 @@ def EmailITest():
     TEST_JSON = heplers.createJson()
     TEST_JSON_STR = json.dumps(TEST_JSON)
 
-    connection = notification.openConnection()
     notification.sendMail("Title", str(TEST_JSON_STR))
-    connection.close()
 
     functions.sleep(5)
 
-    connection = notification.openConnection()
-    msgs = notification.searchUnseenMessages(connection)
+    msgs = notification.searchUnseenMessages()
 
     messages = []
     if msgs != None:
         for msg in msgs[0].split():
-            subject = notification.fetchMessage(connection, msg)[consts.BODY]
+            subject = notification.fetchMessage(msg)[consts.BODY]
             if functions.isResultMessage(subject) == False:
                 subjectJSON = functions.toJson(subject)
                 messages.append(subjectJSON)
@@ -35,7 +32,6 @@ def EmailITest():
                 log.success("test passed")
                 return 0
 
-    connection.close()
     log.error("test failed")
 
 

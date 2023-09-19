@@ -17,9 +17,7 @@ def sendEmail():
 
     TEST_JSON_STR = json.dumps(TEST_JSON)
 
-    connection = notification.openConnection()
     notification.sendMail("Title", str(TEST_JSON_STR))
-    connection.close()
 
 
 def sendEmailBTC():
@@ -36,6 +34,4 @@ def sendEmailBTC():
 
     TEST_JSON_STR = json.dumps(TEST_JSON)
 
-    connection = notification.openConnection()
     notification.sendMail("Title", str(TEST_JSON_STR))
-    connection.close()
