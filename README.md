@@ -1,5 +1,6 @@
 # TradingBot
 
+Demo - https://www.youtube.com/watch?v=86W9DY49nLY
 This trading bot opens long or short positions with stopLoss and takeProfit orders.
 
 # Integration
